@@ -5,8 +5,8 @@ const Registration = () => {
     <div className="flex flex-col min-h-screen font-popp">
       {/* Navbar */}
       <div className="flex flex-row w-full justify-center px-3 py-[28px]">
-        <div className="flex flex-row items-center justify-center gap-[21px]">
-          <img src="/images/ED-(1).png" className="w-full h-[40px]" />
+        <div className="flex flex-row items-center justify-center gap-2 md:gap-[21px]">
+          <img src="/images/ED-(1).png" className="w-full h-[30px] md:h-[40px]" />
           <span className="text-[#027D52] font-popp text-[25px] md:text-[43.441px] font-[700]">
             OptiCCS
           </span>
@@ -38,7 +38,7 @@ const Registration = () => {
                     Email address<span className="ml-2 text-red-500">*</span>
                   </label>
                   <input
-                    className="p-[16px] text-primary10 bg-transparent outline-none rounded-[8px] border border-primary10"
+                    className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                     placeholder="Enter your email address"
                   />
                 </div>
@@ -46,8 +46,8 @@ const Registration = () => {
                   <label className="text-[16px] font-[500] text-dark90">
                     Account Type<span className="ml-2 text-red-500">*</span>
                   </label>
-                  <select className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10">
-                    <option value="" disabled defaultValue>
+                  <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10">
+                    <option value="" disabled >
                       Choose a value
                     </option>
                     <option value="option1">Option 1</option>
@@ -60,7 +60,7 @@ const Registration = () => {
                     Phone Number<span className="ml-2 text-red-500">*</span>
                   </label>
                   <input
-                    className="p-[16px] bg-transparent text-primary10 outline-none rounded-[8px] border border-primary10"
+                    className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-primary10"
                     placeholder="XXXX XXXX X4380"
                   />
                 </div>
