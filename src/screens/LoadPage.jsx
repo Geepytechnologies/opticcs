@@ -2,7 +2,7 @@ import React from 'react';
 import ProgressBar from '../components/ProgressBar';
 
 const LoadPage = () => {
-  const progress = 50;
+  const progress = 0;
   return (
     <div className="flex flex-col min-h-screen justify-center items-center">
       {/* logo */}

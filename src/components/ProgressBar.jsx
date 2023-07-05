@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const ProgressBar = ({ progress }) => {
+  useEffect(() => {
+    console.log(progress)
+  }, [progress]);
   return (
     <div className="progress-bar">
       <div
