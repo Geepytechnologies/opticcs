@@ -10,6 +10,7 @@ export default {
         light10: '#FEFEFE',
         secondary400: '#3B4250',
         secondary300: '#6A707F',
+        secondary30: '#899197',
         dark90: '#141619',
       },
     },

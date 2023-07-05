@@ -1,19 +1,21 @@
 import React from 'react';
 
 const Login = () => {
+  const screenSize = document.documentElement.clientWidth;
   return (
     <div className="flex flex-col h-screen font-popp">
+
       {/* Navbar */}
-      <div className="flex flex-row w-full px-[65px] py-[28px]">
+      <div className="flex flex-row w-full justify-center px-3 py-[28px]">
         <div className="flex flex-row items-center justify-center gap-[21px]">
-          <img src="/images/ED-(1).png" />
-          <span className="text-[#027D52] font-popp text-[43.441px] font-[700]">
+          <img src="/images/ED-(1).png" className="w-full h-[40px]" />
+          <span className="text-[#027D52] font-popp text-[25px] md:text-[43.441px] font-[700]">
             OptiCCS
           </span>
         </div>
-        {/* register button */}
-        <div className="px-[26px] py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
-          <p>Register to OptiCCS</p>
+        {/* login button */}
+        <div className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
+          <p>{screenSize < "640" ? "Register" : "Register to OptiCCS"}</p>
         </div>
       </div>
       {/* form */}
@@ -23,7 +25,7 @@ const Login = () => {
         <div className="absolute top-0 inset-0">
           <div className="flex flex-col items-center justify-center h-full">
             <div className="flex flex-row gap-[9px]">
-              <p className="text-[64px] font-popp font-[600] tracking-[0.64px] text-light10">
+              <p className="md:text-[64px] text-[35px] font-popp font-[600] tracking-[0.64px] text-light10">
                 Welcome back
               </p>
               <img src="/images/handemoji.png" />

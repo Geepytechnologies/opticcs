@@ -29,3 +29,7 @@
   background: linear-gradient(180deg, #028c5c 0%, #06ce89 100%);
   padding: 16px 26px;
 }
+.backbtn {
+  border-radius: 8px;
+  padding: 16px 26px;
+}
