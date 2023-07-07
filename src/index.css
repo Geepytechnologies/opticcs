@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Poppins", "sans-serif";
+}
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
 .progress-bar {
   width: 280px;
   height: 8px;
@@ -29,6 +37,13 @@
   border-radius: 8px;
   background: linear-gradient(180deg, #028c5c 0%, #06ce89 100%);
   padding: 16px 26px;
+}
+.adminmenu {
+  max-height: 100vh;
+  height: auto;
+  position: sticky;
+  top: 0px;
+  /* flex: 1; */
 }
 .backbtn {
   border-radius: 8px;

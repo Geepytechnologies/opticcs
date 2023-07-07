@@ -6,6 +6,7 @@ import Registration from './screens/Registration';
 import Registration2 from './components/Registration2';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import RegistrationOtp from './components/RegistrationOtp';
+import Dashboard from './screens/dashboard/Dashboard';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/register2" element={<Registration2 />}></Route>
         <Route path="/register3" element={<RegistrationOtp />}></Route>
         <Route path="/register4" element={<RegistrationSuccess />}></Route>
+        <Route path="/user/dashboard/*" element={<Dashboard />}></Route>
+
       </Routes>
     </BrowserRouter>
   );
