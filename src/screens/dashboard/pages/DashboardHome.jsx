@@ -1,15 +1,34 @@
-import React from 'react'
-import { FiChevronDown } from 'react-icons/fi'
-import { HiOutlineChatBubbleOvalLeftEllipsis } from "react-icons/hi2"
-import { IoMdNotificationsOutline } from "react-icons/io"
+import React, { useState } from 'react'
 import { LuCalendarDays } from 'react-icons/lu'
 import { RxDashboard } from 'react-icons/rx'
 import IndicatorOutcome from '../components/IndicatorOutcome'
 import IntermediateResult1 from '../components/IntermediateResult1'
 import Activity from '../components/Activity'
+import IntermediateResult2 from '../components/IntermediateResult2'
 
 
 const DashboardHome = () => {
+    const [navigatorSlide, setNavigatorSlide] = useState(1);
+
+    let componentToRender;
+
+    switch (navigatorSlide) {
+        case 1:
+            componentToRender = <IndicatorOutcome />;
+            break;
+        case 2:
+            componentToRender = <IntermediateResult1 />;
+            break;
+        case 3:
+            componentToRender = <IntermediateResult2 />;
+            break;
+        case 4:
+            componentToRender = <Activity />;
+            break;
+        default:
+            componentToRender = null;
+            break;
+    }
     return (
         <div>
             {/* content */}
@@ -128,19 +147,15 @@ const DashboardHome = () => {
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
                         {/* navigator */}
                         <div className='flex items-center gap-4'>
-                            <div className='text-primary70 border-b-4 font-[500] pb-2 border-primary70'>Outcome</div>
-                            <div className='text-light90 border-b-4 font-[500] pb-2 border-primary70'>Intermediate Result 1</div>
-                            <div className='text-primary70 border-b-4 font-[500] pb-2 border-primary70'>Intermediate Result 2</div>
-                            <div className='text-primary70 border-b-4 font-[500] pb-2 border-primary70'>Activity 1-3</div>
+                            <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Outcome</div>
+                            <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Intermediate Result 1</div>
+                            <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Intermediate Result 2</div>
+                            <div onClick={() => setNavigatorSlide(4)} className={`cursor-pointer text-center ${navigatorSlide === 4 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Activity 1-3</div>
                         </div>
                         {/* outcome analysis */}
-                        <IndicatorOutcome />
+                        {componentToRender}
                     </div>
                 </div>
-                {/* intermediate Result1 analysis */}
-                <IntermediateResult1 />
-                {/* activity analysis */}
-                <Activity />
             </div>
         </div>
     )

@@ -1,14 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const ProgressBar = ({ progress }) => {
+const ProgressBar = ({ loaderFinished }) => {
+  const progressRef = useRef(null);
+
   useEffect(() => {
-    console.log(progress)
-  }, [progress]);
+    const handleAnimationEnd = () => {
+      if (loaderFinished) {
+        loaderFinished();
+      }
+    };
+
+    progressRef.current.addEventListener('animationend', handleAnimationEnd);
+
+    return () => {
+      progressRef.current.removeEventListener('animationend', handleAnimationEnd);
+    };
+  }, []);
+
   return (
     <div className="progress-bar">
-      <div
-        className="progress-bar-fill"
-        style={{ width: `${progress}%` }}
+      <div ref={progressRef}
+        className="h-full bg-primary70 rounded-[5px]" style={{ animation: 'progress-animation 4s linear' }}
       ></div>
     </div>
   );

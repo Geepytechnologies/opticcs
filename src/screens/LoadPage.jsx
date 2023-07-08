@@ -1,14 +1,32 @@
-import React from 'react';
-import ProgressBar from '../components/ProgressBar';
+import React, { useEffect, useRef } from 'react';
 
-const LoadPage = () => {
-  const progress = 0;
+const LoadPage = ({ loaderFinished }) => {
+  const progressRef = useRef(null);
+
+  useEffect(() => {
+    const handleAnimationEnd = () => {
+      if (loaderFinished) {
+        loaderFinished();
+      }
+    };
+
+    progressRef.current.addEventListener('animationend', handleAnimationEnd);
+
+    return () => {
+      progressRef.current.removeEventListener('animationend', handleAnimationEnd);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen justify-center items-center">
       {/* logo */}
-      <img src="/images/Logo.png" />
+      <img src="/images/Logo.svg" />
       {/* progress bar */}
-      <ProgressBar progress={progress} />
+      <div className="progress-bar">
+        <div ref={progressRef}
+          className="h-full bg-primary70 rounded-[5px]" style={{ animation: 'progress-animation 4s linear' }}
+        ></div>
+      </div>
     </div>
   );
 };

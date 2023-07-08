@@ -1,11 +1,20 @@
 import React from 'react'
 import { LuCalendarDays } from 'react-icons/lu'
+import { motion } from "framer-motion"
 
 const Activity = () => {
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2  w-full mt-7'>
+        <motion.div initial={{
+            opacity: 0,
+        }}
+            animate={{
+                opacity: 1,
+            }}
+            transition={{
+                duration: 1.5,
+            }} className='grid grid-cols-1 lg:grid-cols-2 gap-5 overflow-x-scroll mt-7'>
             {/* Activity 1 */}
-            <div className='w-[80%] flex flex-col gap-5'>
+            <div className=' flex flex-col gap-5 min-w-[500px] '>
                 <p className='text-primary90 text-[24px] font-[600]'>Activity 1</p>
                 <div className='bg-primary10 flex flex-col items-center justify-center'>
                     <p className='text-primary90 text-[12px] font-[500]'>To Increase the number of ANC visits, following the first antenatal visit until delivery, thereby reducing dropout rates
@@ -16,7 +25,7 @@ const Activity = () => {
                     <p className='font-[500] text-[14px] text-dark90'>Number of women who attended ANC after a follow- up visit or call from WDC/CHIPS/Health provider</p>
                     {/* 1 indicator alone */}
                     <div className=''>
-                        <div className='flex items-center px-4 bg-primary90 gap-8 min-h-[100px] min-w-[400px] rounded-[20px]'>
+                        <div className='flex items-center px-4 bg-primary90 gap-8 min-h-[100px] min-w-[100%] rounded-[20px]'>
                             <div className="min-w-[38px] min-h-[38px] flex items-center justify-center rounded-full bg-[#ffffff7c]">
                                 <LuCalendarDays className='text-white' />
                             </div>
@@ -66,7 +75,7 @@ const Activity = () => {
                 </div>
             </div>
             {/* Activity 2 */}
-            <div className='w-[80%] flex flex-col gap-5'>
+            <div className=' flex flex-col min-w-[500px] gap-5'>
                 <p className='text-primary90 text-[24px] font-[600]'>Activity 2</p>
                 <div className='bg-primary10 flex flex-col items-center justify-center'>
                     <p className='text-primary90 text-[12px] font-[500]'>To build capacity of healthcare workers on the provision of quality ANC services and integrated of PHC
@@ -135,7 +144,7 @@ const Activity = () => {
                 </div>
             </div>
             {/* Activity 3 */}
-            <div className='w-[80%] flex flex-col gap-5'>
+            <div className=' flex flex-col min-w-[500px] gap-5'>
                 <p className='text-primary90 text-[24px] font-[600]'>Activity 3</p>
                 <div className='bg-primary10 flex flex-col items-center justify-center'>
                     <p className='text-primary90 text-[12px] font-[500]'>To obtain data that can be used towards informing policy makers on ANC optimizat
@@ -216,7 +225,7 @@ const Activity = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

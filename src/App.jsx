@@ -6,6 +6,7 @@ import Registration from './screens/Registration';
 import Registration2 from './components/Registration2';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import RegistrationOtp from './components/RegistrationOtp';
+import Test from './components/Test';
 import Dashboard from './screens/dashboard/Dashboard';
 
 function App() {

@@ -1,8 +1,18 @@
 import React from 'react'
+import { motion } from "framer-motion"
+import { LuCalendarDays } from 'react-icons/lu'
 
 const IntermediateResult2 = () => {
     return (
-        <div className='flex items-center justify-center w-full mt-7'>
+        <motion.div initial={{
+            opacity: 0,
+        }}
+            animate={{
+                opacity: 1,
+            }}
+            transition={{
+                duration: 1.5,
+            }} className='flex items-center justify-center w-full mt-7'>
             <div className='w-[80%] flex flex-col gap-5'>
                 <p className='text-primary90 text-[24px] font-[600]'>Intermediate Result 2</p>
                 <div className='bg-primary10 flex flex-col items-center justify-center'>
@@ -163,7 +173,7 @@ const IntermediateResult2 = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

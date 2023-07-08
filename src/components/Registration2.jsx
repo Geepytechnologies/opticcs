@@ -6,7 +6,7 @@ const Registration2 = () => {
       {/* Navbar */}
       <div className="flex flex-row w-full justify-center px-3 py-[28px]">
         <div className="flex flex-row items-center justify-center gap-[21px]">
-          <img src="/images/ED-(1).png" className="w-full h-[40px]" />
+          <img src="/images/ED-(1).png" className="h-[30px] md:h-[40px]" />
           <span className="text-[#027D52] font-popp text-[25px] md:text-[43.441px] font-[700]">
             OptiCCS
           </span>

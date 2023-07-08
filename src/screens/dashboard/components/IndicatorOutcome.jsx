@@ -1,9 +1,18 @@
 import React from 'react'
 import { LuCalendarDays } from 'react-icons/lu'
+import { motion } from "framer-motion"
 
 const IndicatorOutcome = () => {
     return (
-        <div className='flex items-center justify-center w-full mt-7'>
+        <motion.div initial={{
+            opacity: 0,
+        }}
+            animate={{
+                opacity: 1,
+            }}
+            transition={{
+                duration: 1.5,
+            }} className='flex items-center justify-center w-full mt-7'>
             <div className='w-[80%] flex flex-col gap-5'>
                 <p className='text-primary90 text-[24px] font-[600]'>Indicator Outcome</p>
                 <div className='bg-primary10 flex flex-col items-center justify-center'>
@@ -34,7 +43,7 @@ const IndicatorOutcome = () => {
                     </div>
                 </div>
                 {/* 1 indicator alone */}
-                <div className='pl-3'>
+                <div className=''>
                     <div className='flex items-center px-4 bg-primary90 gap-8 h-[100px] w-[400px] rounded-[20px]'>
                         <div className="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-[#ffffff7c]">
                             <LuCalendarDays className='text-white' />
@@ -62,7 +71,7 @@ const IndicatorOutcome = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

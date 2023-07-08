@@ -31,9 +31,9 @@ const DashboardMenu = () => {
     return (
         <div className="text-[#5a5b5c] h-auto px-2">
             <div className="flex w-full items-center justify-center">
-                <div className="w-[80px] h-[80px] flex items-center justify-center">
+                <Link to="/" className="w-[80px] h-[80px] flex items-center justify-center">
                     <img src="/images/Logo.png" alt="logo" className="max-w-full max-h-full" />
-                </div>
+                </Link>
             </div>
             <div className="">
                 {/* dashboard */}
@@ -92,17 +92,15 @@ const DashboardMenu = () => {
                     <p>Health Worker</p>
                 </Link>
                 {/* Health Facility*/}
-                <div className="cursor-pointer">
-                    <div
-                        className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-facility")
-                            ? "bg-primary90 text-white drop-shadow-xl"
-                            : " hover:text-[black] hover:bg-gray-200"
-                            }`}
-                    >
-                        <IoBagAddOutline />
-                        <p>Health Facility</p>
-                    </div>
-                </div>
+                <Link to="/user/dashboard/health-facility"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-facility")
+                        ? "bg-primary90 text-white drop-shadow-xl"
+                        : " hover:text-[black] hover:bg-gray-200"
+                        }`}
+                >
+                    <IoBagAddOutline />
+                    <p>Health Facility</p>
+                </Link>
                 {/* State */}
                 <Link to="/user/dashboard/state"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("state")

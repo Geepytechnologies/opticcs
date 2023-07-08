@@ -22,7 +22,15 @@ td {
   height: 100%;
   background-color: #14a673;
   border-radius: 5px;
-  animation: progress-animation 5s linear;
+  animation: progress-animation 4s linear;
+}
+@keyframes progress-animation {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 .gradientbg {
   background: linear-gradient(
@@ -48,13 +56,4 @@ td {
 .backbtn {
   border-radius: 8px;
   padding: 16px 26px;
-}
-
-@keyframes progress-animation {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
 }
