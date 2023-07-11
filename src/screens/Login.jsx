@@ -39,7 +39,7 @@ const Login = () => {
     loginUser();
     showSuccess("Login Successful")
     if (from.includes("/user/login")) {
-      navigate("/")
+      navigate("/", { replace: true })
     } else {
       navigate(from, { replace: true });
     }
