@@ -23,18 +23,18 @@ import { CgNotes } from "react-icons/cg"
 import { FiSettings } from "react-icons/fi"
 import { useAuth } from '../../../utils/hooks/useAuth';
 import PartnerLogo from '../../../components/PartnerLogo';
+import useLogout from '../../../utils/hooks/useLogout';
 
 const DashboardMenu = () => {
     const [currentPage, setCurrentPage] = useState("");
     const { auth, setAuth } = useAuth()
+    const logoutUser = useLogout()
     const location = useLocation();
     useEffect(() => {
         setCurrentPage(location.pathname);
     }, [location]);
     const logout = () => {
-        setAuth((prev) => {
-            return {}
-        })
+        logoutUser();
     }
     return (
         <div className="text-[#5a5b5c] h-auto px-2">
