@@ -1,14 +1,17 @@
 import axios from "axios";
 
+const domain = import.meta.env.VITE_DOMAIN;
+console.log({ mydomain: domain });
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: `${domain}/api`,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: `${domain}/api`,
   headers: {
     "Content-Type": "application/json",
   },
