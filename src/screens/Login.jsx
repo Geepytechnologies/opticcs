@@ -20,19 +20,23 @@ const Login = () => {
     setValues({ ...values, [name]: value });
   };
   const loginUser = async () => {
+    console.log({ myValues: values })
+
     try {
       const res = await axiosPrivate.post("/auth/signin", {
         email: values.email,
         password: values.password,
       });
-      // console.log(res.data);
+      console.log({ res: res.data });
+      showSuccess("Login Successful")
+      navigate('/')
       setAuth((prevAuth) => {
         // This function receives the previous state as its argument
         // and returns the updated state
 
         return res.data;
       });
-      console.log({ authLogin: auth });
+      // console.log({ authLogin: auth });
 
 
     } catch (err) {
@@ -44,10 +48,8 @@ const Login = () => {
   const handleForm = async (e) => {
     e.preventDefault();
     loginUser();
-    console.log({ authLogin2: auth });
+    // console.log({ authLogin2: auth });
 
-    showSuccess("Login Successful")
-    navigate('/')
     // if (from.includes("/user/login")) {
     //   navigate("/", { replace: true })
     // } else {
