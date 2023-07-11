@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion"
 import { Link } from 'react-router-dom';
+import { axiosPrivate } from '../utils/axios';
 
 const Registration = () => {
   const [values1, setValues1] = useState({ email: "", accountType: "", phone: "" });
   const [values2, setValues2] = useState({ firstname: "", lastname: "", accountType: "", staffid: "", password: "" });
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState("1234");
   const [stage1, setStage1] = useState(true)
   const [stage2, setStage2] = useState(false)
   const [stage3, setStage3] = useState(false)
@@ -13,6 +14,22 @@ const Registration = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues1({ ...values1, [name]: value });
+  };
+  const register = async () => {
+    console.log({ values1, values2, otp })
+    const res = await axiosPrivate.post("/auth/signup", {
+      email: values1.email,
+      password: values2.password,
+      accountType: values1.accountType,
+      phone: values1.phone,
+      firstname: values2.firstname,
+      lastname: values2.lastname,
+      staffid: values2.staffid,
+      otp: otp
+    });
+    console.log(res);
+    return res.data;
+
   };
   const handleChange2 = (event) => {
     const { name, value } = event.target;
@@ -34,12 +51,20 @@ const Registration = () => {
     setStage2(false)
     setStage1(true)
   }
-  const registerUser = () => {
-    completeStage3()
+  const registerUser = async (e) => {
+    e.preventDefault()
+    const request = await register();
+    console.log({ request: request })
+    // completeStage3()
   }
   const handleOtp = (e) => {
     setOtp(e.target.value)
   }
+  const LoginButton = () => (
+    <Link to="/user/login" className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
+      <p>Login</p>
+    </Link>
+  )
   return (
     <>
       {stage1 ?
@@ -53,9 +78,7 @@ const Registration = () => {
               </span>
             </div>
             {/* login button */}
-            <div className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
-              <p>Login</p>
-            </div>
+            <LoginButton />
           </div>
           {/* form */}
           <div className="relative p-5 flex flex-1 items-center justify-center ">
@@ -100,7 +123,7 @@ const Registration = () => {
                       <label className="text-[16px] font-[500] text-dark90">
                         Phone Number<span className="ml-2 text-red-500">*</span>
                       </label>
-                      <input onChange={handleChange} type='password'
+                      <input onChange={handleChange} name='phone' type='number'
                         className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-primary10"
                         placeholder="XXXX XXXX X4380"
                       />
@@ -123,9 +146,7 @@ const Registration = () => {
               </span>
             </div>
             {/* login button */}
-            <div className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
-              <p>Login</p>
-            </div>
+            <LoginButton />
           </div>
           {/* form */}
           <div className="relative p-5 flex ">
@@ -223,9 +244,7 @@ const Registration = () => {
               </span>
             </div>
             {/* login button */}
-            <div className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
-              <p>Login</p>
-            </div>
+            <LoginButton />
           </div>
           {/* form */}
           <div className="relative flex flex-1 items-center justify-center ">
@@ -256,7 +275,7 @@ const Registration = () => {
                       <label className="text-[16px] font-[500] text-dark90">
                         OTP Code<span className="ml-2 text-red-500">*</span>
                       </label>
-                      <input type="number" onChange={handleOtp}
+                      <input value="1234" step="any" type="number" onChange={handleOtp}
                         className="p-[16px] mt-2 text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter OTP Code"
                       />
@@ -281,9 +300,7 @@ const Registration = () => {
               </span>
             </div>
             {/* login button */}
-            <div className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
-              <p>Login</p>
-            </div>
+            <LoginButton />
           </div>
           {/* form */}
           <div className="relative p-5 flex-1 flex ">
