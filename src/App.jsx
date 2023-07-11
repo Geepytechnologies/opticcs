@@ -8,18 +8,26 @@ import RegistrationSuccess from './components/RegistrationSuccess';
 import RegistrationOtp from './components/RegistrationOtp';
 import Test from './components/Test';
 import Dashboard from './screens/dashboard/Dashboard';
+import RequireAuth from "./utils/RequireAuth";
+import PersistLogin from './utils/PersistLogin';
+import Loader from './components/Loader';
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoadPage />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Registration />}></Route>
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            <Route path="/*" element={<Dashboard />}></Route>
+          </Route>
+        </Route>
+        <Route path="/user/login" element={<Login />}></Route>
+        <Route path="/user/register" element={<Registration />}></Route>
         <Route path="/register2" element={<Registration2 />}></Route>
         <Route path="/register3" element={<RegistrationOtp />}></Route>
         <Route path="/register4" element={<RegistrationSuccess />}></Route>
-        <Route path="/user/dashboard/*" element={<Dashboard />}></Route>
+        <Route path="/loader" element={<Loader />}></Route>
 
       </Routes>
     </BrowserRouter>

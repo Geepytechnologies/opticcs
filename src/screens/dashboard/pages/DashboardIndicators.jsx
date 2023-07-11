@@ -50,9 +50,9 @@ const DashboardIndicators = () => {
 
                 {/* selectbox1 */}
                 <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
+                    <div className='bg-white m-3 w-auto min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
                         {/* 1 */}
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col '>
                             <label className='text-primary90 font-[400]'>Filter</label>
                             <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
                                 <option value="" disabled >

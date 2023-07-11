@@ -22,7 +22,7 @@ const PatientsSchedule = () => {
 
                 {/* selectbox1 */}
                 <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
+                    <div className='bg-white w-auto m-3 min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
                         {/* 1 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Filter</label>

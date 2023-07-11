@@ -21,13 +21,21 @@ import { LuCalendarDays } from "react-icons/lu"
 import { MdOutlineGroup } from "react-icons/md"
 import { CgNotes } from "react-icons/cg"
 import { FiSettings } from "react-icons/fi"
+import { useAuth } from '../../../utils/hooks/useAuth';
+import PartnerLogo from '../../../components/PartnerLogo';
 
 const DashboardMenu = () => {
     const [currentPage, setCurrentPage] = useState("");
+    const { auth, setAuth } = useAuth()
     const location = useLocation();
     useEffect(() => {
         setCurrentPage(location.pathname);
     }, [location]);
+    const logout = () => {
+        setAuth((prev) => {
+            return {}
+        })
+    }
     return (
         <div className="text-[#5a5b5c] h-auto px-2">
             <div className="flex w-full items-center justify-center">
@@ -38,8 +46,8 @@ const DashboardMenu = () => {
             <div className="">
                 {/* dashboard */}
                 <Link
-                    to="/user/dashboard"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/user/dashboard"
+                    to="/"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/"
                         ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -48,7 +56,7 @@ const DashboardMenu = () => {
                     <p>Dashboard</p>
                 </Link>
                 {/* Indicators */}
-                <Link to="/user/dashboard/indicators"
+                <Link to="/admin/indicators"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("indicators")
                         ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -60,8 +68,8 @@ const DashboardMenu = () => {
 
                 {/* Manage users */}
                 <Link
-                    to="/user/dashboard/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "patients"
+                    to="/admin/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/admin/patients"
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -71,7 +79,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Patients Schedule */}
                 <Link
-                    to="/user/dashboard/patients-schedule"
+                    to="/admin/patients-schedule"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -82,7 +90,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Health Worker */}
                 <Link
-                    to="/user/dashboard/health-worker"
+                    to="/admin/health-worker"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-worker")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -92,7 +100,7 @@ const DashboardMenu = () => {
                     <p>Health Worker</p>
                 </Link>
                 {/* Health Facility*/}
-                <Link to="/user/dashboard/health-facility"
+                <Link to="/admin/health-facility"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-facility")
                         ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -102,7 +110,7 @@ const DashboardMenu = () => {
                     <p>Health Facility</p>
                 </Link>
                 {/* State */}
-                <Link to="/user/dashboard/state"
+                <Link to="/admin/state"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("state")
                         ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -112,7 +120,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* LGA */}
                 <Link
-                    to="/user/dashboard/lga"
+                    to="/admin/lga"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("lga")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -123,7 +131,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* User Request */}
                 <Link
-                    to="/user/dashboard/user-request"
+                    to="/admin/user-request"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("user-request")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -134,7 +142,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Message */}
                 <Link
-                    to="/user/dashboard/message"
+                    to="/admin/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -145,7 +153,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Settings */}
                 <Link
-                    to="/user/dashboard/settings"
+                    to="/admin/settings"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("settings")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -156,7 +164,7 @@ const DashboardMenu = () => {
                 </Link>
                 {/* My Profile */}
                 <Link
-                    to="/user/dashboard/profile"
+                    to="/admin/profile"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("profile")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
@@ -166,16 +174,19 @@ const DashboardMenu = () => {
                     <p>My Profile</p>
                 </Link>
                 {/* Logout */}
-                <Link
-                    to="/user/dashboard/logout"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("logout")
+                <div onClick={logout}
+                    className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
                     <BiLogOut />
                     <p>Logout</p>
-                </Link>
+                </div>
+                <div className='w-full flex py-4 items-center justify-center'>
+
+                    <PartnerLogo />
+                </div>
             </div>
         </div>
     )

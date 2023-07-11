@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import DashboardHome from "./pages/DashboardHome";
 import DashboardMenu from "./components/DashboardMenu";
@@ -14,35 +14,42 @@ import UserRequest from "./pages/UserRequest";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
+import LoadPage from "../LoadPage";
 
 
 const Dashboard = () => {
+    const [loaderFinished, setLoaderFinished] = useState(false);
+    const finished = () => {
+        setLoaderFinished(true);
+    }
     return (
         <>
-            <div className="flex w-full">
-                <div id="menu" className="flex-1 min-w-[250px] adminmenu overflow-y-scroll">
-                    <DashboardMenu />
-                </div>
-                <div id="page" className="flex-[4] bg-[#f8f9fa]">
-                    <DashboardNavbar />
-                    <div className="">
-                        <Routes>
-                            <Route index path="/" element={<DashboardHome />}></Route>
-                            <Route index path="/indicators" element={<DashboardIndicators />}></Route>
-                            <Route index path="/patients" element={<Patients />}></Route>
-                            <Route index path="/patients-schedule" element={<PatientsSchedule />}></Route>
-                            <Route index path="/health-worker" element={<HealthWorker />}></Route>
-                            <Route index path="/health-facility" element={<HealthFacility />}></Route>
-                            <Route index path="/state" element={<State />}></Route>
-                            <Route index path="/lga" element={<LGA />}></Route>
-                            <Route index path="/user-request" element={<UserRequest />}></Route>
-                            <Route index path="/message" element={<Messages />}></Route>
-                            <Route index path="/settings" element={<Settings />}></Route>
-                            <Route index path="/profile" element={<Profile />}></Route>
-                        </Routes>
+            {!loaderFinished ? <LoadPage loaderFinished={finished} /> :
+                <div className="flex w-full">
+                    <div id="menu" className="flex-1 min-w-[250px] adminmenu overflow-y-scroll">
+                        <DashboardMenu />
+                    </div>
+                    <div id="page" className="flex-[4] bg-[#f8f9fa]">
+                        <DashboardNavbar />
+                        <div className="">
+                            <Routes>
+                                <Route index path="/" element={<DashboardHome />}></Route>
+                                <Route index path="/admin/indicators" element={<DashboardIndicators />}></Route>
+                                <Route index path="/admin/patients" element={<Patients />}></Route>
+                                <Route index path="/admin/patients-schedule" element={<PatientsSchedule />}></Route>
+                                <Route index path="/admin/health-worker" element={<HealthWorker />}></Route>
+                                <Route index path="/admin/health-facility" element={<HealthFacility />}></Route>
+                                <Route index path="/admin/state" element={<State />}></Route>
+                                <Route index path="/admin/lga" element={<LGA />}></Route>
+                                <Route index path="/admin/user-request" element={<UserRequest />}></Route>
+                                <Route index path="/admin/message" element={<Messages />}></Route>
+                                <Route index path="/admin/settings" element={<Settings />}></Route>
+                                <Route index path="/admin/profile" element={<Profile />}></Route>
+                            </Routes>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </>
     );
 };
