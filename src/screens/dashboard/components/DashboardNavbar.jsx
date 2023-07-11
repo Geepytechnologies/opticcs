@@ -6,7 +6,8 @@ import { useAuth } from '../../../utils/hooks/useAuth'
 
 const DashboardNavbar = () => {
     const { auth, setAuth } = useAuth();
-    const { name } = auth?.others;
+    const { email } = auth?.others;
+    const onlyname = email.split('@')[0]
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     };
@@ -14,16 +15,16 @@ const DashboardNavbar = () => {
     return (
         <div className='h-[90px] flex items-center justify-between px-2 bg-white'>
             <div className='flex flex-col'>
-                <h1 className='text-[22px] text-secondary400 font-[500]'>Welcome, {capitalizeFirstLetter(name)}</h1>
+                <h1 className='text-[22px] text-secondary400 font-[500]'>Welcome, {capitalizeFirstLetter(onlyname)}</h1>
                 <h2>Have a nice day at work</h2>
             </div>
             <div className='flex flex-row gap-2 items-center'>
                 <HiOutlineChatBubbleOvalLeftEllipsis />
                 <IoMdNotificationsOutline />
                 <div className='rounded-full flex items-center text-[16px] font-[500] justify-center bg-primary50 text-light10 w-[40px] h-[40px]'>
-                    <span>{name.charAt(0).toUpperCase()}</span>
+                    <span>{onlyname.charAt(0).toUpperCase()}</span>
                 </div>
-                <h2 className='text-[12px] font-[500] text-[#000]'>{capitalizeFirstLetter(name)} {capitalizeFirstLetter(name)}</h2>
+                <h2 className='text-[12px] font-[500] text-[#000]'>{capitalizeFirstLetter(onlyname)}</h2>
                 <FiChevronDown />
             </div>
         </div>

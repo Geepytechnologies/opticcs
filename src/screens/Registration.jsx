@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from "framer-motion"
 import { Link } from 'react-router-dom';
 import { axiosPrivate } from '../utils/axios';
+import ToastBox from '../utils/ToastBox';
+import { showSuccess } from '../utils/Toastmessage';
 
 const Registration = () => {
   const [values1, setValues1] = useState({ email: "", accountType: "", phone: "" });
@@ -55,7 +57,10 @@ const Registration = () => {
     e.preventDefault()
     const request = await register();
     console.log({ request: request })
-    // completeStage3()
+    if (request) {
+      showSuccess("Registration Successful")
+      completeStage3()
+    }
   }
   const handleOtp = (e) => {
     setOtp(e.target.value)
@@ -67,6 +72,7 @@ const Registration = () => {
   )
   return (
     <>
+      <ToastBox />
       {stage1 ?
         <div className="flex flex-col min-h-screen font-popp">
           {/* Navbar */}
