@@ -4,10 +4,11 @@ import { useAuth } from '../utils/hooks/useAuth';
 import { axiosPrivate } from '../utils/axios';
 import { useQuery } from 'react-query';
 import ToastBox from '../utils/ToastBox';
-import { showSuccess } from '../utils/Toastmessage';
+import { showError, showSuccess } from '../utils/Toastmessage';
 import Loader from '../components/Loader';
 import LoaderSmall from '../components/LoaderSmall';
 import CustomToast from '../components/CustomToast';
+import { motion } from "framer-motion"
 
 
 const Login = () => {
@@ -34,13 +35,14 @@ const Login = () => {
     console.log({ myValues: values })
     setIsLoading(true);
     try {
-      const res = await axiosPrivate.post("/auth/signin", {
+      const res = await axiosPrivate.post("/admin/auth/signin", {
         email: values.email,
         password: values.password,
       });
       if (res.data) {
+        setIsLoading(false)
         console.log({ res: res.data });
-        // loadToast("Login Successful")
+        showSuccess("Login Successful")
         navigate('/')
         setAuth((prevAuth) => {
           // This function receives the previous state as its argument
@@ -54,6 +56,8 @@ const Login = () => {
 
 
     } catch (err) {
+      setIsLoading(false)
+      showError("Something went wrong")
       console.log({ loginError: err })
     }
 
@@ -93,7 +97,15 @@ const Login = () => {
         </div>
         {/* form */}
         <div className="relative flex flex-1 ">
-          <div className="absolute top-0 inset-0 bg-cover bg-[url('/images/Registration.png')]"></div>
+          <motion.div initial={{
+            opacity: 0.5,
+          }}
+            animate={{
+              opacity: 1,
+            }}
+            transition={{
+              duration: 1.5,
+            }} className="absolute top-0 inset-0 bg-cover bg-[url('/images/Registration.png')]"></motion.div>
           <div className="absolute top-0 inset-0 gradientbg opacity-20"></div>
           <div className="absolute top-0 inset-0">
             <div className="flex flex-col items-center justify-center h-full">
