@@ -1,49 +1,181 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion"
 import { Link } from 'react-router-dom';
-import { axiosPrivate } from '../utils/axios';
+import axiosInstance, { axiosPrivate } from '../utils/axios';
 import ToastBox from '../utils/ToastBox';
-import { showSuccess } from '../utils/Toastmessage';
+import { showError, showSuccess } from '../utils/Toastmessage';
 
 const Registration = () => {
   const [values1, setValues1] = useState({ email: "", accountType: "", phone: "" });
   const [values2, setValues2] = useState({ firstname: "", lastname: "", accountType: "", staffid: "", password: "" });
-  const [otp, setOtp] = useState("1234");
+  const [otp, setOtp] = useState("");
+  const [confirmPassword, setConfirmpassword] = useState("");
   const [stage1, setStage1] = useState(true)
   const [stage2, setStage2] = useState(false)
   const [stage3, setStage3] = useState(false)
   const [stage4, setStage4] = useState(false)
+  const [valuesPasswordmatch, setValuesPasswordmatch] = useState(false)
+  const [otpCode, setOtpCode] = useState("")
+  const [otpRef, setOtpRef] = useState("")
+  const [emailError, setEmailError] = useState({ status: false, message: "" })
+  const [accountTypeError, setAccountTypeError] = useState({ status: false, message: "" })
+  const [phoneError, setPhoneError] = useState({ status: false, message: "" })
+  const [firstnameError, setFirstnameError] = useState({ status: false, message: "" })
+  const [lastnameError, setLastnameError] = useState({ status: false, message: "" })
+  const [staffidError, setStaffidError] = useState({ status: false, message: "" })
+  const [passwordError, setPasswordError] = useState({ status: false, message: "" })
+  const [confirmpasswordError, setConfirmpasswordError] = useState({ status: false, message: "" })
+
+  const checkpasswordmatch = (e) => {
+    let noErrors = true;
+    setConfirmpassword(e.target.value)
+    if (values2.password !== e.target.value) {
+      setConfirmpasswordError({ status: true, message: "Passwords don't match" })
+      noErrors = false
+    } else {
+      setConfirmpasswordError({ status: false, message: "" })
+      noErrors = true
+    }
+    setValuesPasswordmatch(noErrors)
+    return noErrors;
+  }
   const handleChange = (event) => {
     const { name, value } = event.target;
+    name == 'email' && setEmailError({ status: false, message: "" });
+    name == "accountType" && setAccountTypeError({ status: false, message: "" });
+    name == "phone" && setPhoneError({ status: false, message: "" });
     setValues1({ ...values1, [name]: value });
   };
+  const handleChange2 = (event) => {
+    const { name, value } = event.target;
+    name == "password" && setPasswordError({ status: false, message: "" })
+    name == "firstname" && setFirstnameError({ status: false, message: "" })
+    name == "lastname" && setLastnameError({ status: false, message: "" })
+    name == "staffid" && setStaffidError({ status: false, message: "" })
+    name == "accountType" && setAccountTypeError({ status: false, message: "" })
+    setValues2({ ...values2, [name]: value });
+  };
+  const validateValues1 = () => {
+    let noErrors = true;
+
+    if (values1.email === "") {
+      setEmailError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+
+    if (values1.phone === "") {
+      setPhoneError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+
+    if (values1.accountType === "") {
+      setAccountTypeError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+
+    return noErrors;
+  };
+  const validateValues2 = () => {
+    let noErrors = true;
+
+    if (values2.firstname === "") {
+      setFirstnameError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+
+    if (values2.lastname === "") {
+      setLastnameError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+
+    if (values2.accountType === "") {
+      setAccountTypeError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+    if (values2.staffid === "") {
+      setStaffidError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+    if (values2.password === "") {
+      setPasswordError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+    if (confirmPassword === "") {
+      setConfirmpasswordError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+    if (!valuesPasswordmatch) {
+      noErrors = false;
+    }
+
+
+    return noErrors;
+  };
+
+  const sendOtp = async () => {
+    try {
+      const res = await axiosInstance.post("/admin/auth/sendOtp", {
+        mobile_number: values1.phone
+      })
+      setOtpCode(res.data.data.token)
+      setOtpRef(res.data.data.reference)
+      console.log({ otpres: res })
+      return res;
+    } catch (err) {
+
+    }
+  }
+  const confirmOtp = async () => {
+    console.log(otpRef)
+    console.log(otpCode)
+    try {
+      const res = await axiosInstance.post("/admin/auth/confirmOtp", {
+        verification_reference: otpRef,
+        verification_code: otpCode
+      })
+      return res;
+    } catch (err) {
+
+    }
+  }
   const register = async () => {
-    console.log({ values1, values2, otp })
-    const res = await axiosPrivate.post("/auth/signup", {
+    const res = await axiosPrivate.post("/admin/auth/signup", {
       email: values1.email,
       password: values2.password,
       accountType: values1.accountType,
       phone: values1.phone,
       firstname: values2.firstname,
       lastname: values2.lastname,
-      staffid: values2.staffid,
-      otp: otp
+      staffid: values2.staffid
     });
     console.log(res);
     return res.data;
 
   };
-  const handleChange2 = (event) => {
-    const { name, value } = event.target;
-    setValues2({ ...values2, [name]: value });
-  };
-  const completeStage1 = () => {
-    setStage1(false);
-    setStage2(true)
+
+  const completeStage1 = (e) => {
+    e.preventDefault()
+    const validationStatus = validateValues1()
+    if (validationStatus) {
+      setStage1(false);
+      setStage2(true)
+
+    }
   }
-  const completeStage2 = () => {
-    setStage2(false);
-    setStage3(true)
+  const completeStage2 = async (e) => {
+    e.preventDefault()
+    const validationStatus = validateValues2()
+    if (validationStatus) {
+      setStage2(false);
+      //send otp
+      const otprequest = await sendOtp()
+      if (otprequest?.data?.status === "success") {
+        setStage3(true)
+      } else {
+        showError("Try again later")
+        setStage2(true)
+      }
+    }
   }
   const completeStage3 = () => {
     setStage3(false)
@@ -55,16 +187,61 @@ const Registration = () => {
   }
   const registerUser = async (e) => {
     e.preventDefault()
-    const request = await register();
-    console.log({ request: request })
-    if (request) {
-      showSuccess("Registration Successful")
-      completeStage3()
+    const confirm = await confirmOtp()
+    console.log(confirm)
+    if (confirm?.data.status === "failed") {
+      showError("The OTP Code has Expired")
+      setStage1(true)
+    }
+    if (confirm?.data.data?.status === "verified") {
+      const request = await register();
+      console.log({ request: request })
+      if (request) {
+        showSuccess("Registration Successful")
+        completeStage3()
+      }
+
     }
   }
   const handleOtp = (e) => {
     setOtp(e.target.value)
   }
+
+  const handleEmailBlur = () => {
+    if (values1.email === '') {
+      setEmailError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handlePhoneBlur = () => {
+    if (values1.phone === '') {
+      setPhoneError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handleAccountBlur = () => {
+    if (values1.accountType === '') {
+      setAccountTypeError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handleFirstnameBlur = () => {
+    if (values2.firstname === '') {
+      setFirstnameError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handleLastnameBlur = () => {
+    if (values2.lastname === '') {
+      setLastnameError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handleStaffidBlur = () => {
+    if (values2.staffid === '') {
+      setStaffidError({ status: true, message: 'This field is required' });
+    }
+  };
+  const handlePasswordBlur = () => {
+    if (values2.password === '') {
+      setPasswordError({ status: true, message: 'This field is required' });
+    }
+  };
   const LoginButton = () => (
     <Link to="/user/login" className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
       <p>Login</p>
@@ -104,34 +281,44 @@ const Registration = () => {
                   </div>
                   <form onSubmit={completeStage1} className="flex flex-col gap-4 mt-4">
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Email address<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input onChange={handleChange} name='email' type="email"
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Email address<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {emailError.status && <span className='text-[12px] font-[500] italic text-red-500'>{emailError.message}</span>}
+                      </div>
+                      <input onBlur={handleEmailBlur} onChange={handleChange} name='email' type="email"
                         className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter your email address"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Account Type<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <select onChange={handleChange} name='accountType' defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10">
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Account Type<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {accountTypeError.status && <span className='text-[12px] font-[500] italic text-red-500'>{accountTypeError.message}</span>}
+                      </div>
+                      <select onBlur={handleAccountBlur} onChange={handleChange} name='accountType' defaultValue="" className="p-[16px] myselect  text-secondary30 bg-transparent outline-none rounded-[8px] border-0 ">
                         <option value="" disabled >
                           Choose a value
                         </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option className=' ' value="State">State</option>
+                        <option value="LGA">LGA</option>
+                        <option value="National">National</option>
+                        <option value="HealthFacility">Health Facility</option>
                       </select>
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Phone Number<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input onChange={handleChange} name='phone' type='number'
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Phone Number<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {phoneError.status && <span className='text-[12px] font-[500] italic text-red-500'>{phoneError.message}</span>}
+                      </div>
+                      <input onBlur={handlePhoneBlur} onChange={handleChange} name='phone' type='number'
                         className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-primary10"
-                        placeholder="XXXX XXXX X4380"
+                        placeholder="2344321112245"
                       />
                     </div>
                     <button type='submit' className="text-[#fff] font-[500] font-popp text-[16px] flex items-center justify-center rounded-[8px] registerbtngrad">
@@ -170,61 +357,92 @@ const Registration = () => {
                 }} className="bg-white py-9 rounded-2xl md:rounded-[30px] w-[90%] md:w-[65%] flex items-center justify-center">
                 <div className=" w-[90%]">
                   <div className="flex items-center justify-center p-2 mb-8"><img src="/images/ProgressBar2.png" /></div>
+                  <div className="flex flex-col my-2 items-center justify-center">
+                    <div className="flex flex-row gap-[9px] mt-3">
+                      <p className="text-[18px] font-popp font-[500] tracking-[0.64px] text-secondary400">
+                        Account Verification
+                      </p>
+                    </div>
+                    <div className="text-center mt-2 text-[14px] font-popp font-[500] tracking-[0.14px] text-secondary300 w-[300px]">
+                      Please enter your mobile number, then we will send you an OTP to verify
+                    </div>
+
+                  </div>
                   <form onSubmit={completeStage2} className="grid grid-cols-1 p-3 md:grid-cols-2 gap-4 mt-4">
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        First Name<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input type='text' name="firstname" onChange={handleChange2}
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          First Name<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {firstnameError.status && <span className='text-[12px] font-[500] italic text-red-500'>{firstnameError.message}</span>}
+                      </div>
+                      <input type='text' name="firstname" onBlur={handleFirstnameBlur} onChange={handleChange2}
                         className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter your First Name"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Last Name<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input type='text' name="lastname" onChange={handleChange2}
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Last Name<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {lastnameError.status && <span className='text-[12px] font-[500] italic text-red-500'>{lastnameError.message}</span>}
+                      </div>
+                      <input type='text' name="lastname" onBlur={handleLastnameBlur} onChange={handleChange2}
                         className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter your Last Name"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Staff ID<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input type='text' name="staffid" onChange={handleChange2}
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Staff ID<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {staffidError.status && <span className='text-[12px] font-[500] italic text-red-500'>{staffidError.message}</span>}
+                      </div>
+                      <input type='text' name="staffid" onBlur={handleStaffidBlur} onChange={handleChange2}
                         className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter your staff ID"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Account Type<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <select name="accountType" onChange={handleChange2} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10">
-                        <option value="" disabled defaultValue>
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Account Type<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {accountTypeError.status && <span className='text-[12px] font-[500] italic text-red-500'>{accountTypeError.message}</span>}
+                      </div>
+                      <select name="accountType" onChange={handleChange2} onBlur={handleAccountBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10">
+                        <option value="" disabled >
                           Choose a value
                         </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option className=' ' value="State">State</option>
+                        <option value="LGA">LGA</option>
+                        <option value="National">National</option>
+                        <option value="HealthFacility">Health Facility</option>
                       </select>
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Create Password<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input type="password" name="password" onChange={handleChange2}
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Create Password<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
+                      </div>
+                      <input type="password" name="password" onChange={handleChange2} onBlur={handlePasswordBlur}
                         className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter your password"
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="text-[16px] font-[500] text-dark90">
-                        Confirm Password<span className="ml-2 text-red-500">*</span>
-                      </label>
-                      <input type="password"
+                      <div className='flex gap-3 items-center'>
+                        <label className="text-[16px] font-[500] text-dark90">
+                          Confirm Password<span className="ml-2 text-red-500">*</span>
+                        </label>
+                        {confirmpasswordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{confirmpasswordError.message}</span>}
+                      </div>
+                      <input type="password" onChange={checkpasswordmatch}
+                        name="confirmpassword"
                         className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-primary10"
                         placeholder="Confirm Password"
                       />
@@ -274,14 +492,14 @@ const Registration = () => {
                     </p>
                   </div>
                   <div className="text-center mt-2 text-[14px] font-popp font-[500] tracking-[0.14px] text-secondary300 w-[300px]">
-                    Please enter email and mobile number, then we will send OTP to verify
+                    Please enter your OTP code
                   </div>
                   <form onSubmit={registerUser} className="flex flex-col w-full gap-4 mt-4">
                     <div className="flex flex-col my-[70px]">
                       <label className="text-[16px] font-[500] text-dark90">
                         OTP Code<span className="ml-2 text-red-500">*</span>
                       </label>
-                      <input value="1234" step="any" type="number" onChange={handleOtp}
+                      <input step="any" type="number" onChange={handleOtp}
                         className="p-[16px] mt-2 text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary10"
                         placeholder="Enter OTP Code"
                       />

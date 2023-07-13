@@ -5,13 +5,24 @@ import { axiosPrivate } from '../utils/axios';
 import { useQuery } from 'react-query';
 import ToastBox from '../utils/ToastBox';
 import { showSuccess } from '../utils/Toastmessage';
+import Loader from '../components/Loader';
+import LoaderSmall from '../components/LoaderSmall';
+import CustomToast from '../components/CustomToast';
 
 
 const Login = () => {
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [toastmessage, setToastmessage] = useState("")
   const from = location.state?.from?.pathname || "/";
+
+  const loadToast = (myMessage) => {
+    setToastmessage(myMessage)
+    setShowToast(true);
+  }
 
   const screenSize = document.documentElement.clientWidth;
   const [values, setValues] = useState({ email: "", password: "" });
@@ -21,21 +32,24 @@ const Login = () => {
   };
   const loginUser = async () => {
     console.log({ myValues: values })
-
+    setIsLoading(true);
     try {
       const res = await axiosPrivate.post("/auth/signin", {
         email: values.email,
         password: values.password,
       });
-      console.log({ res: res.data });
-      showSuccess("Login Successful")
-      navigate('/')
-      setAuth((prevAuth) => {
-        // This function receives the previous state as its argument
-        // and returns the updated state
+      if (res.data) {
+        console.log({ res: res.data });
+        // loadToast("Login Successful")
+        navigate('/')
+        setAuth((prevAuth) => {
+          // This function receives the previous state as its argument
+          // and returns the updated state
 
-        return res.data;
-      });
+          return res.data;
+        });
+
+      }
       // console.log({ authLogin: auth });
 
 
@@ -59,7 +73,8 @@ const Login = () => {
 
   return (
     <>
-      <ToastBox />
+      {/* <ToastBox /> */}
+      {showToast && <CustomToast toastmessage={toastmessage} />}
       <div className="flex flex-col h-screen font-popp">
 
         {/* Navbar */}
@@ -110,9 +125,9 @@ const Login = () => {
                     placeholder="XXXX XXXX X4380"
                   />
                 </div>
-                <button type='submit' className="text-primary90 font-[500] font-popp text-[16px] w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]">
+                {!isLoading ? <button type='submit' className="text-primary90 font-[500] font-popp text-[16px] min-w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]">
                   Log In
-                </button>
+                </button> : <div className='min-w-[380px]'><LoaderSmall /></div>}
               </form>
             </div>
           </div>

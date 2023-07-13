@@ -24,6 +24,14 @@ const Registration2 = () => {
           <div className="bg-white py-9 rounded-2xl md:rounded-[30px] w-[90%] md:w-[65%] flex items-center justify-center">
             <div className=" w-[90%]">
               <div className="flex items-center justify-center p-2 mb-8"><img src="/images/ProgressBar2.png" /></div>
+              <div className="flex flex-row gap-[9px] mt-3">
+                <p className="text-[18px] font-popp font-[500] tracking-[0.64px] text-secondary400">
+                  Account Verification
+                </p>
+              </div>
+              <div className="text-center mt-2 text-[14px] font-popp font-[500] tracking-[0.14px] text-secondary300 w-[300px]">
+                Please your mobile number, then we will send an OTP to verify
+              </div>
               <form className="grid grid-cols-1 p-3 md:grid-cols-2 gap-4 mt-4">
                 <div className="flex flex-col">
                   <label className="text-[16px] font-[500] text-dark90">
