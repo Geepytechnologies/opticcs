@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import axiosInstance, { axiosPrivate } from '../utils/axios';
 import ToastBox from '../utils/ToastBox';
 import { showError, showSuccess } from '../utils/Toastmessage';
+import CustomToast from '../components/CustomToast';
 
 const Registration = () => {
+  const [showToast, setShowToast] = useState(true)
+  const [toastmessage, setToastmessage] = useState("")
+  const [toastStatus, setToastStatus] = useState("")
   const [values1, setValues1] = useState({ email: "", accountType: "", phone: "" });
   const [values2, setValues2] = useState({ firstname: "", lastname: "", accountType: "", staffid: "", password: "" });
   const [otp, setOtp] = useState("");
@@ -26,6 +30,14 @@ const Registration = () => {
   const [passwordError, setPasswordError] = useState({ status: false, message: "" })
   const [confirmpasswordError, setConfirmpasswordError] = useState({ status: false, message: "" })
 
+  const loadToast = (myMessage, status) => {
+    setToastmessage(myMessage)
+    setShowToast(true);
+    setToastStatus(status)
+  }
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
   const checkpasswordmatch = (e) => {
     let noErrors = true;
     setConfirmpassword(e.target.value)
@@ -113,6 +125,7 @@ const Registration = () => {
   };
 
   const sendOtp = async () => {
+    console.log(values1.phone)
     try {
       const res = await axiosInstance.post("/admin/auth/sendOtp", {
         mobile_number: values1.phone
@@ -122,7 +135,7 @@ const Registration = () => {
       console.log({ otpres: res })
       return res;
     } catch (err) {
-
+      console.log({ otperr: err })
     }
   }
   const confirmOtp = async () => {
@@ -169,10 +182,11 @@ const Registration = () => {
       setStage2(false);
       //send otp
       const otprequest = await sendOtp()
+      console.log(otprequest)
       if (otprequest?.data?.status === "success") {
         setStage3(true)
       } else {
-        showError("Try again later")
+        loadToast("Code not sent", "success")
         setStage2(true)
       }
     }
@@ -190,14 +204,14 @@ const Registration = () => {
     const confirm = await confirmOtp()
     console.log(confirm)
     if (confirm?.data.status === "failed") {
-      showError("The OTP Code has Expired")
+      loadToast("The OTP Code has Expired", "error")
       setStage1(true)
     }
     if (confirm?.data.data?.status === "verified") {
       const request = await register();
       console.log({ request: request })
       if (request) {
-        showSuccess("Registration Successful")
+        loadToast("Registration Successful", "success")
         completeStage3()
       }
 
@@ -249,7 +263,9 @@ const Registration = () => {
   )
   return (
     <>
-      <ToastBox />
+      {showToast && (
+        <CustomToast toastmessage={toastmessage} onClose={handleToastClose} status={toastStatus} />
+      )}
       {stage1 ?
         <div className="flex flex-col min-h-screen font-popp">
           {/* Navbar */}

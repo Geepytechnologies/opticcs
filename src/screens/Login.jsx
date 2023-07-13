@@ -16,14 +16,19 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false)
-  const [showToast, setShowToast] = useState(false)
+  const [showToast, setShowToast] = useState(true)
   const [toastmessage, setToastmessage] = useState("")
+  const [toastStatus, setToastStatus] = useState("")
   const from = location.state?.from?.pathname || "/";
 
-  const loadToast = (myMessage) => {
+  const loadToast = (myMessage, status) => {
     setToastmessage(myMessage)
     setShowToast(true);
+    setToastStatus(status)
   }
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
 
   const screenSize = document.documentElement.clientWidth;
   const [values, setValues] = useState({ email: "", password: "" });
@@ -42,7 +47,7 @@ const Login = () => {
       if (res.data) {
         setIsLoading(false)
         console.log({ res: res.data });
-        showSuccess("Login Successful")
+        loadToast("Login Successful", "success")
         navigate('/')
         setAuth((prevAuth) => {
           // This function receives the previous state as its argument
@@ -57,7 +62,7 @@ const Login = () => {
 
     } catch (err) {
       setIsLoading(false)
-      showError("Something went wrong")
+      loadToast(err.response.data, "error")
       console.log({ loginError: err })
     }
 
@@ -78,8 +83,9 @@ const Login = () => {
   return (
     <>
       {/* <ToastBox /> */}
-      {showToast && <CustomToast toastmessage={toastmessage} />}
-      <div className="flex flex-col h-screen font-popp">
+      {showToast && (
+        <CustomToast toastmessage={toastmessage} onClose={handleToastClose} status={toastStatus} />
+      )}      <div className="flex flex-col h-screen font-popp">
 
         {/* Navbar */}
         <div className="flex flex-row w-full justify-center px-3 py-[28px]">
