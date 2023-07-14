@@ -3,7 +3,7 @@ import { FaRegUser } from 'react-icons/fa'
 
 const Profile = () => {
     return (
-        <div><div className='bg-primary10'>
+        <div><div className='bg-primary10 min-w-[800px]'>
             {/* dashboard */}
             <div className='flex w-full items-center justify-between px-3 py-3'>
                 <div className='flex gap-2 items-center p-2'>
@@ -13,7 +13,7 @@ const Profile = () => {
 
             </div>
             <div className='w-full flex items-center justify-center font-inter my-5'>
-                <div className='bg-white w-[95%] flex flex-col pl-6 py-4'>
+                <div className='bg-white w-[95%] flex flex-col px-2 py-4'>
                     <div className=' mt-6'>
                         <div className='grid grid-cols-2 mt-6 gap-6'>
                             <div className="flex flex-col">

@@ -111,7 +111,7 @@ const CreateStateAccount = () => {
     return (
         <div>
             <form onSubmit={createAccount} className="mt-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 mt-4">
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
                     <div className="flex flex-col">
                         <div className='flex gap-3 items-center'>
                             <label className="text-[16px] font-[500] text-dark90">

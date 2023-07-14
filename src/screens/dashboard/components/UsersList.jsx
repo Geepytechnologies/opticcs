@@ -5,7 +5,7 @@ const UsersList = () => {
     const array = [1, 2, 3, 4]
 
     return (
-        <div className='w-full'>
+        <div className='min-w-[1000px]'>
             <div className='flex gap-2 my-8 justify-start'>
                 <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
                 <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>

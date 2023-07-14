@@ -24,7 +24,7 @@ const CustomToast = ({ toastmessage, onClose, status }) => {
     }, [onClose]);
 
     return (
-        <div className='flex items-center justify-center absolute p-2 w-full z-[999] top-0'>
+        <div className='flex items-center justify-center sticky p-2 w-full z-[999] top-0'>
             <div className='bg-white relative drop-shadow-lg rounded-md w-[250px] flex items-center justify-center h-[80px]'>
                 <div onClick={onClose} className='absolute top-0 cursor-pointer right-0 p-2'>
                     <GrFormClose />

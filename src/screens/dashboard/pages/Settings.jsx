@@ -4,7 +4,7 @@ import { FiSettings } from 'react-icons/fi'
 const Settings = () => {
     return (
         <div>
-            <div className='bg-primary10'>
+            <div className='bg-primary10 min-w-[1000px]'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>

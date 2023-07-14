@@ -7,7 +7,7 @@ const Messages = () => {
     const array = [1, 2, 3, 4]
     return (
         <div>
-            <div className='bg-primary10 p-2'>
+            <div className='bg-primary10 pb-8 p-2'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>
@@ -22,14 +22,14 @@ const Messages = () => {
                             <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
                         </div>
                         {/* message chats */}
-                        <div className='bg-white max-w-[320px]'>
+                        <div className='bg-white min-w-[320px] max-w-[320px]'>
                             <Chatboxitem />
                             <Chatboxitem />
                             <Chatboxitem />
                         </div>
                     </div>
                     {/* chat box */}
-                    <div className=' flex-[3] p-2 bg-white'>
+                    <div className=' flex-[3] min-w-[400px] p-2 bg-white'>
                         {/* header */}
                         <div className='flex items-center justify-between p-3 bg-primary70'>
                             <div className='flex gap-2 items-center'>

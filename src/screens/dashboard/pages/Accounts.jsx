@@ -29,8 +29,8 @@ const Accounts = () => {
     }
 
     return (
-        <div>
-            <div className='bg-primary10'>
+        <div className=''>
+            <div className='bg-primary10 min-w-[1000px] w-full'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>
@@ -42,7 +42,7 @@ const Accounts = () => {
 
 
                 <div className='w-full flex items-center justify-center font-inter my-5'>
-                    <div className='bg-white w-[95%] flex flex-col items-center justify-start px-3 py-4'>
+                    <div className='bg-white w-[90%]  flex flex-col items-center justify-start px-3 py-4'>
                         {/* navigator */}
                         <div className='flex items-center justify-evenly w-full gap-4'>
                             <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>User List</div>
