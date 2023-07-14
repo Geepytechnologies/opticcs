@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import LoadPage from './screens/LoadPage';
 import Login from './screens/Login';
 import Registration from './screens/Registration';
@@ -13,6 +13,7 @@ import PersistLogin from './utils/PersistLogin';
 import Loader from './components/Loader';
 import { useAuth } from './utils/hooks/useAuth';
 import RequireIsSignedIn from './utils/RequireIsSignedIn';
+import ProtectedRoute from './utils/ProtectedRoute';
 
 
 function App() {
@@ -22,10 +23,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<PersistLogin />}>
-          <Route path="/user/login" element={<Login />}></Route>
+          <Route element={<RequireIsSignedIn />}>
+            <Route path="/user/login" element={<Login />}></Route>
+          </Route>
         </Route>
-
-        <Route path="/user/register" element={<Registration />}></Route>
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireIsSignedIn />}>
+            <Route path="/user/register" element={<Registration />}></Route>
+          </Route>
+        </Route>
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth />}>
             <Route path="/*" element={<Dashboard />}></Route>

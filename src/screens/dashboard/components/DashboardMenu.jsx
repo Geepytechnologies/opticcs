@@ -38,7 +38,7 @@ const DashboardMenu = () => {
         console.log({ authLogout: auth })
     }
     return (
-        <div className="text-[#5a5b5c] h-auto px-2">
+        <div className="text-[#5a5b5c]  h-auto px-2">
             <div className="flex w-full items-center justify-center">
                 <Link to="/" className="w-[80px] h-[80px] flex items-center justify-center">
                     <img src="/images/Logo.png" alt="logo" className="max-w-full max-h-full" />
@@ -132,14 +132,14 @@ const DashboardMenu = () => {
                 </Link>
                 {/* User Request */}
                 <Link
-                    to="/admin/user-request"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("user-request")
+                    to="/admin/accounts"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("accounts")
                         ? "bg-primary90 text-white drop-shadow-2xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
                     <HiOutlineUserPlus />
-                    <p>User Request</p>
+                    <p>Accounts</p>
                 </Link>
                 {/* Message */}
                 <Link

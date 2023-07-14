@@ -62,7 +62,7 @@ const Login = () => {
 
     } catch (err) {
       setIsLoading(false)
-      loadToast(err.response.data, "error")
+      loadToast("something went wrong", "error")
       console.log({ loginError: err })
     }
 

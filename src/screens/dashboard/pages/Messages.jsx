@@ -7,7 +7,7 @@ const Messages = () => {
     const array = [1, 2, 3, 4]
     return (
         <div>
-            <div className='bg-primary10'>
+            <div className='bg-primary10 p-2'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>
@@ -15,10 +15,10 @@ const Messages = () => {
                         <p className='text-secondary400 text-[18px] font-[600]'>Messages</p>
                     </div>
                 </div>
-                <div className='flex flex-row gap-6  w-full'>
+                <div className='flex flex-row gap-6 mt-2 w-full'>
                     <div className=''>
-                        <div className='flex gap-2'>
-                            <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
+                        <div className='flex gap-2 my-8'>
+                            <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="LGA Name or LGA ID" />
                             <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
                         </div>
                         {/* message chats */}

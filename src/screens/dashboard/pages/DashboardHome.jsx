@@ -7,9 +7,13 @@ import Activity from '../components/Activity'
 import IntermediateResult2 from '../components/IntermediateResult2'
 import axiosInstance from '../../../utils/axios'
 import { useRef } from 'react'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 
 const DashboardHome = () => {
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [healthWorkers, setHealthWorkers] = useState()
     const [patients, setPatients] = useState()
@@ -139,7 +143,7 @@ const DashboardHome = () => {
                 </div>
                 {/* download csv */}
                 <div className='flex items-center justify-end mt-[40px] pr-4'>
-                    <button onClick={downloadTable = {}} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
+                    <button onClick={downloadTable} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
                 </div>
                 {/* selectbox1 */}
                 <div className='w-full flex items-center justify-center my-5'>
@@ -148,12 +152,13 @@ const DashboardHome = () => {
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Filter</label>
                             <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
+                                <option value="">
                                     General
                                 </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
+                                <option value="national">National</option>
+                                <option value="state">State</option>
+                                <option value="lga">LGA</option>
+                                <option value="healthFacility">Health Facility</option>
                             </select>
 
                         </div>
@@ -173,14 +178,21 @@ const DashboardHome = () => {
                         {/* 3 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Date From</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
+                            {/* <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
                                 <option value="" disabled >
                                     Date From
                                 </option>
                                 <option value="option1">Option 1</option>
                                 <option value="option2">Option 2</option>
                                 <option value="option3">Option 3</option>
-                            </select>
+                            </select> */}
+                            <DatePicker
+                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+                                selected={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                dateFormat="yyyy-MM-dd"
+                                defaultValue={selectedDate}
+                            />
 
                         </div>
                         {/* 4 */}
