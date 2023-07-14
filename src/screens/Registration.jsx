@@ -5,12 +5,14 @@ import axiosInstance, { axiosPrivate } from '../utils/axios';
 import ToastBox from '../utils/ToastBox';
 import { showError, showSuccess } from '../utils/Toastmessage';
 import CustomToast from '../components/CustomToast';
+import LoaderSmall from '../components/LoaderSmall';
 
 const Registration = () => {
   const [showToast, setShowToast] = useState(true)
   const [toastmessage, setToastmessage] = useState("")
   const [toastStatus, setToastStatus] = useState("")
-  const [values1, setValues1] = useState({ email: "", accountType: "", phone: "" });
+  const [isLoading, setIsloading] = useState(false)
+  const [values1, setValues1] = useState({ email: "", phone: "" });
   const [values2, setValues2] = useState({ firstname: "", lastname: "", accountType: "", staffid: "", password: "" });
   const [otp, setOtp] = useState("");
   const [confirmPassword, setConfirmpassword] = useState("");
@@ -54,7 +56,6 @@ const Registration = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     name == 'email' && setEmailError({ status: false, message: "" });
-    name == "accountType" && setAccountTypeError({ status: false, message: "" });
     name == "phone" && setPhoneError({ status: false, message: "" });
     setValues1({ ...values1, [name]: value });
   };
@@ -77,11 +78,6 @@ const Registration = () => {
 
     if (values1.phone === "") {
       setPhoneError({ status: true, message: "This field is required" });
-      noErrors = false;
-    }
-
-    if (values1.accountType === "") {
-      setAccountTypeError({ status: true, message: "This field is required" });
       noErrors = false;
     }
 
@@ -125,22 +121,17 @@ const Registration = () => {
   };
 
   const sendOtp = async () => {
-    console.log(values1.phone)
     try {
       const res = await axiosInstance.post("/admin/auth/sendOtp", {
         mobile_number: values1.phone
       })
       setOtpCode(res.data.data.token)
       setOtpRef(res.data.data.reference)
-      console.log({ otpres: res })
       return res;
     } catch (err) {
-      console.log({ otperr: err })
     }
   }
   const confirmOtp = async () => {
-    console.log(otpRef)
-    console.log(otpCode)
     try {
       const res = await axiosInstance.post("/admin/auth/confirmOtp", {
         verification_reference: otpRef,
@@ -161,7 +152,6 @@ const Registration = () => {
       lastname: values2.lastname,
       staffid: values2.staffid
     });
-    console.log(res);
     return res.data;
 
   };
@@ -182,11 +172,10 @@ const Registration = () => {
       setStage2(false);
       //send otp
       const otprequest = await sendOtp()
-      console.log(otprequest)
       if (otprequest?.data?.status === "success") {
         setStage3(true)
       } else {
-        loadToast("Code not sent", "success")
+        loadToast("Code not sent, try again", "warning")
         setStage2(true)
       }
     }
@@ -201,21 +190,30 @@ const Registration = () => {
   }
   const registerUser = async (e) => {
     e.preventDefault()
-    const confirm = await confirmOtp()
-    console.log(confirm)
-    if (confirm?.data.status === "failed") {
-      loadToast("The OTP Code has Expired", "error")
-      setStage1(true)
-    }
-    if (confirm?.data.data?.status === "verified") {
-      const request = await register();
-      console.log({ request: request })
-      if (request) {
-        loadToast("Registration Successful", "success")
-        completeStage3()
+    setIsloading(true)
+    try {
+      const confirm = await confirmOtp()
+      if (confirm?.data.status === "failed") {
+        loadToast("The OTP Code has Expired", "error")
+        setIsloading(false)
+        setStage1(true)
+      }
+      if (confirm?.data.status === "success") {
+        const request = await register();
+        if (request) {
+          setIsloading(false)
+          loadToast("Registration Successful", "success")
+          completeStage3()
+        }
+
       }
 
+    } catch (err) {
+      setIsloading(false)
+      loadToast("Registration Failed", "error")
+
     }
+    setIsloading(false)
   }
   const handleOtp = (e) => {
     setOtp(e.target.value)
@@ -308,7 +306,7 @@ const Registration = () => {
                         placeholder="Enter your email address"
                       />
                     </div>
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                       <div className='flex gap-3 items-center'>
                         <label className="text-[16px] font-[500] text-dark90">
                           Account Type<span className="ml-2 text-red-500">*</span>
@@ -324,7 +322,7 @@ const Registration = () => {
                         <option value="National">National</option>
                         <option value="HealthFacility">Health Facility</option>
                       </select>
-                    </div>
+                    </div> */}
                     <div className="flex flex-col">
                       <div className='flex gap-3 items-center'>
                         <label className="text-[16px] font-[500] text-dark90">
@@ -521,9 +519,9 @@ const Registration = () => {
                       />
                     </div>
 
-                    <button type="submit" className="text-[#fff] font-[500] font-popp text-[16px] flex items-center justify-center rounded-[8px] registerbtngrad">
+                    {!isLoading ? <button type="submit" className="text-[#fff] font-[500] font-popp text-[16px] flex items-center justify-center rounded-[8px] registerbtngrad">
                       Verify
-                    </button>
+                    </button> : <LoaderSmall />}
                   </form>
 
                 </div>
