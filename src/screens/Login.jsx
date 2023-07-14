@@ -16,7 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false)
-  const [showToast, setShowToast] = useState(true)
+  const [showToast, setShowToast] = useState(false)
   const [toastmessage, setToastmessage] = useState("")
   const [toastStatus, setToastStatus] = useState("")
   const from = location.state?.from?.pathname || "/";
@@ -62,7 +62,16 @@ const Login = () => {
 
     } catch (err) {
       setIsLoading(false)
-      loadToast("something went wrong", "error")
+      console.log(err.response.data)
+      if (err?.response?.data == "User not found") {
+        loadToast("User not found", "error")
+      }
+      else if (err?.response?.data == "Wrong credentials") {
+        loadToast("Wrong credentials", "error")
+      } else {
+        loadToast("Something Went wrong", "error")
+
+      }
       console.log({ loginError: err })
     }
 
