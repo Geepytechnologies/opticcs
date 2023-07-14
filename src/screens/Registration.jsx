@@ -8,7 +8,7 @@ import CustomToast from '../components/CustomToast';
 import LoaderSmall from '../components/LoaderSmall';
 
 const Registration = () => {
-  const [showToast, setShowToast] = useState(true)
+  const [showToast, setShowToast] = useState(false)
   const [toastmessage, setToastmessage] = useState("")
   const [toastStatus, setToastStatus] = useState("")
   const [isLoading, setIsloading] = useState(false)
@@ -170,11 +170,10 @@ const Registration = () => {
     const validationStatus = validateValues2()
     if (validationStatus) {
       setStage2(false);
+      setStage3(true)
       //send otp
       const otprequest = await sendOtp()
-      if (otprequest?.data?.status === "success") {
-        setStage3(true)
-      } else {
+      if (otprequest?.data?.status !== "success") {
         loadToast("Code not sent, try again", "warning")
         setStage2(true)
       }
@@ -205,13 +204,10 @@ const Registration = () => {
           loadToast("Registration Successful", "success")
           completeStage3()
         }
-
       }
-
     } catch (err) {
       setIsloading(false)
       loadToast("Registration Failed", "error")
-
     }
     setIsloading(false)
   }

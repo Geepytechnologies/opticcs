@@ -1,14 +1,69 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LuCalendarDays } from 'react-icons/lu'
 import { RxDashboard } from 'react-icons/rx'
 import IndicatorOutcome from '../components/IndicatorOutcome'
 import IntermediateResult1 from '../components/IntermediateResult1'
 import Activity from '../components/Activity'
 import IntermediateResult2 from '../components/IntermediateResult2'
+import axiosInstance from '../../../utils/axios'
+import { useRef } from 'react'
 
 
 const DashboardHome = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
+    const [healthWorkers, setHealthWorkers] = useState()
+    const [patients, setPatients] = useState()
+
+    const getAllHealthWorkers = async () => {
+        try {
+            const res = await axiosInstance.get('/users/find');
+            setHealthWorkers(res.data.length)
+        } catch (err) {
+
+        }
+    }
+    const getAllPatients = async () => {
+        try {
+            const res = await axiosInstance.get('/patients/find');
+            setPatients(res.data.length)
+        } catch (err) {
+
+        }
+    }
+    useEffect(() => {
+        getAllHealthWorkers()
+        getAllPatients()
+    })
+    function downloadTable() {
+        const table = tableRef.current;
+
+        if (table) {
+            const rows = Array.from(table.rows);
+            const headers = Array.from(rows.shift()?.cells || []).map(
+                (cell) => cell.textContent
+            );
+            const csv = [headers.join(",")];
+
+            for (const row of rows) {
+                const cells = Array.from(row.cells).map((cell) => cell.textContent);
+                csv.push(cells.join(","));
+            }
+
+            const blob = new Blob([csv.join("\n")], {
+                type: "text/csv;charset=utf-8;",
+            });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "mytable.csv");
+            link.style.display = "none";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert("Table downloaded as CSV!");
+        }
+    }
 
     let componentToRender;
 
@@ -29,10 +84,11 @@ const DashboardHome = () => {
             componentToRender = null;
             break;
     }
+    const tableRef = useRef()
     return (
         <div>
             {/* content */}
-            <div className='bg-primary10'>
+            <div ref={tableRef} className='bg-primary10'>
                 {/* dashboard */}
                 <div className='flex gap-2 items-center p-2'>
                     <RxDashboard />
@@ -46,7 +102,7 @@ const DashboardHome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>{patients}</h2>
                             <h2 className='text-[14px] font-[400]'>Patients</h2>
                         </div>
                     </div>
@@ -56,7 +112,7 @@ const DashboardHome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>{healthWorkers}</h2>
                             <h2 className='text-[14px] font-[400]'>Health Workers</h2>
                         </div>
                     </div>
@@ -83,7 +139,7 @@ const DashboardHome = () => {
                 </div>
                 {/* download csv */}
                 <div className='flex items-center justify-end mt-[40px] pr-4'>
-                    <button className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
+                    <button onClick={downloadTable = {}} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
                 </div>
                 {/* selectbox1 */}
                 <div className='w-full flex items-center justify-center my-5'>

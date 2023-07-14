@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import { HiOutlineChatBubbleOvalLeftEllipsis } from 'react-icons/hi2'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { useAuth } from '../../../utils/hooks/useAuth'
+import axiosInstance from '../../../utils/axios'
 
 const DashboardNavbar = () => {
     const { auth, setAuth } = useAuth();
@@ -10,6 +11,7 @@ const DashboardNavbar = () => {
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     };
+
 
     return (
         <div className='h-[90px] flex items-center justify-between px-2 bg-white'>
