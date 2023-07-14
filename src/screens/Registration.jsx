@@ -32,7 +32,15 @@ const Registration = () => {
   const [passwordError, setPasswordError] = useState({ status: false, message: "" })
   const [confirmpasswordError, setConfirmpasswordError] = useState({ status: false, message: "" })
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   const loadToast = (myMessage, status) => {
+    scrollToTop()
     setToastmessage(myMessage)
     setShowToast(true);
     setToastStatus(status)

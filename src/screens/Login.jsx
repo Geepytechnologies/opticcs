@@ -21,7 +21,16 @@ const Login = () => {
   const [toastStatus, setToastStatus] = useState("")
   const from = location.state?.from?.pathname || "/";
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+
   const loadToast = (myMessage, status) => {
+    scrollToTop();
     setToastmessage(myMessage)
     setShowToast(true);
     setToastStatus(status)
