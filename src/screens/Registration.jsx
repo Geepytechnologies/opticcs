@@ -284,7 +284,7 @@ const Registration = () => {
           {/* form */}
           <div className="relative p-5 flex flex-1 items-center justify-center ">
             <div className="absolute top-0 h-full inset-0 bg-cover bg-[url('/images/Registration.png')]"></div>
-            <div className="absolute top-0 h-full inset-0 gradientbg opacity-20"></div>
+            {/* <div className="absolute top-0 h-full inset-0 gradientbg opacity-20"></div> */}
             <div className="h-full w-full z-[20] my-5 flex flex-col items-center justify-center">
               <div className="bg-white py-9 rounded-2xl md:rounded-[30px] w-[90%] md:w-[65%] flex items-center justify-center">
                 <div className=" w-[90%]">

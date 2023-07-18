@@ -18,7 +18,7 @@ import Accounts from "./pages/Accounts";
 import Notifications from "./components/Notifications";
 
 
-const Dashboard = () => {
+const HealthFacilityApp = () => {
     const [loaderFinished, setLoaderFinished] = useState(false);
     const finished = () => {
         setLoaderFinished(true);
@@ -35,18 +35,18 @@ const Dashboard = () => {
                         <div className="">
                             <Routes>
                                 <Route index path="/" element={<DashboardHome />}></Route>
-                                <Route index path="/admin/indicators" element={<DashboardIndicators />}></Route>
-                                <Route index path="/admin/patients" element={<Patients />}></Route>
-                                <Route index path="/admin/patients-schedule" element={<PatientsSchedule />}></Route>
-                                <Route index path="/admin/health-worker" element={<HealthWorker />}></Route>
-                                <Route index path="/admin/health-facility" element={<HealthFacility />}></Route>
-                                <Route index path="/admin/state" element={<State />}></Route>
-                                <Route index path="/admin/lga" element={<LGA />}></Route>
-                                <Route index path="/admin/accounts" element={<Accounts />}></Route>
-                                <Route index path="/admin/message" element={<Messages />}></Route>
-                                <Route index path="/admin/settings" element={<Settings />}></Route>
-                                <Route index path="/admin/profile" element={<Profile />}></Route>
-                                <Route index path="/admin/notifications" element={<Notifications />}></Route>
+                                <Route index path="/indicators" element={<DashboardIndicators />}></Route>
+                                <Route index path="/patients" element={<Patients />}></Route>
+                                <Route index path="/patients-schedule" element={<PatientsSchedule />}></Route>
+                                <Route index path="/health-worker" element={<HealthWorker />}></Route>
+                                <Route index path="/health-facility" element={<HealthFacility />}></Route>
+                                <Route index path="/state" element={<State />}></Route>
+                                <Route index path="/lga" element={<LGA />}></Route>
+                                <Route index path="/accounts" element={<Accounts />}></Route>
+                                <Route index path="/message" element={<Messages />}></Route>
+                                <Route index path="/settings" element={<Settings />}></Route>
+                                <Route index path="/profile" element={<Profile />}></Route>
+                                <Route index path="/notifications" element={<Notifications />}></Route>
                             </Routes>
                         </div>
                     </div>
@@ -56,4 +56,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default HealthFacilityApp;

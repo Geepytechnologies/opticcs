@@ -3,17 +3,17 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from
 import LoadPage from './screens/LoadPage';
 import Login from './screens/Login';
 import Registration from './screens/Registration';
-import Registration2 from './components/Registration2';
-import RegistrationSuccess from './components/RegistrationSuccess';
-import RegistrationOtp from './components/RegistrationOtp';
-import Test from './components/Test';
-import Dashboard from './screens/dashboard/Dashboard';
 import RequireAuth from "./utils/RequireAuth";
 import PersistLogin from './utils/PersistLogin';
-import Loader from './components/Loader';
 import { useAuth } from './utils/hooks/useAuth';
 import RequireIsSignedIn from './utils/RequireIsSignedIn';
-import ProtectedRoute from './utils/ProtectedRoute';
+import StateApp from './screens/state/StateApp';
+import NationalApp from './screens/national/NationalApp';
+import HealthFacilityApp from './screens/healthFacility/HealthFacilityApp';
+import LgaApp from './screens/lga/LgaApp';
+import Loader from './components/Loader';
+import LandingPage from './components/LandingPage';
+
 
 
 function App() {
@@ -32,16 +32,15 @@ function App() {
             <Route path="/user/register" element={<Registration />}></Route>
           </Route>
         </Route>
+        <Route path="/" element={<LandingPage />}></Route>
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth />}>
-            <Route path="/*" element={<Dashboard />}></Route>
+            <Route path="/national/*" element={<NationalApp />}></Route>
+            <Route path="/state/*" element={<StateApp />}></Route>
+            <Route path="/lga/*" element={<LgaApp />}></Route>
+            <Route path="/healthfacility/*" element={<HealthFacilityApp />}></Route>
           </Route>
         </Route>
-
-        <Route path="/register2" element={<Registration2 />}></Route>
-        <Route path="/register3" element={<RegistrationOtp />}></Route>
-        <Route path="/register4" element={<RegistrationSuccess />}></Route>
-        <Route path="/loader" element={<Loader />}></Route>
 
       </Routes>
     </BrowserRouter>

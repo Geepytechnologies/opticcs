@@ -47,9 +47,9 @@ const DashboardMenu = () => {
             <div className="">
                 {/* dashboard */}
                 <Link
-                    to="/"
+                    to="/healthfacility"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/"
-                        ? "bg-primary90 text-white drop-shadow-xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -57,9 +57,9 @@ const DashboardMenu = () => {
                     <p>Dashboard</p>
                 </Link>
                 {/* Indicators */}
-                <Link to="/admin/indicators"
+                <Link to="/healthfacility/indicators"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("indicators")
-                        ? "bg-primary90 text-white drop-shadow-xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -69,9 +69,9 @@ const DashboardMenu = () => {
 
                 {/* Manage users */}
                 <Link
-                    to="/admin/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/admin/patients"
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                    to="/healthfacility/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/patients"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -80,9 +80,9 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Patients Schedule */}
                 <Link
-                    to="/admin/patients-schedule"
+                    to="/healthfacility/patients-schedule"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -91,50 +91,21 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Health Worker */}
                 <Link
-                    to="/admin/health-worker"
+                    to="/healthfacility/health-worker"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-worker")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
                     <MdOutlineGroup />
                     <p>Health Worker</p>
                 </Link>
-                {/* Health Facility*/}
-                <Link to="/admin/health-facility"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-facility")
-                        ? "bg-primary90 text-white drop-shadow-xl"
-                        : " hover:text-[black] hover:bg-gray-200"
-                        }`}
-                >
-                    <IoBagAddOutline />
-                    <p>Health Facility</p>
-                </Link>
-                {/* State */}
-                <Link to="/admin/state"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("state")
-                        ? "bg-primary90 text-white drop-shadow-xl"
-                        : " hover:text-[black] hover:bg-gray-200"
-                        }`}                    >
-                    <CgNotes />
-                    <p>State</p>
-                </Link>
-                {/* LGA */}
+
+                {/* Accounts */}
                 <Link
-                    to="/admin/lga"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("lga")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
-                        : " hover:text-[black] hover:bg-gray-200"
-                        }`}
-                >
-                    <BsBookmarkDash />
-                    <p>LGA</p>
-                </Link>
-                {/* User Request */}
-                <Link
-                    to="/admin/accounts"
+                    to="/healthfacility/accounts"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("accounts")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -143,9 +114,9 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Message */}
                 <Link
-                    to="/admin/message"
+                    to="/healthfacility/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -154,9 +125,9 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Settings */}
                 <Link
-                    to="/admin/settings"
+                    to="/healthfacility/settings"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("settings")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -165,9 +136,9 @@ const DashboardMenu = () => {
                 </Link>
                 {/* My Profile */}
                 <Link
-                    to="/admin/profile"
+                    to="/healthfacility/profile"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("profile")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -177,7 +148,7 @@ const DashboardMenu = () => {
                 {/* Logout */}
                 <div onClick={logout}
                     className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
