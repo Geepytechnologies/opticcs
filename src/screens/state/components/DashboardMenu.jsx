@@ -47,7 +47,7 @@ const DashboardMenu = () => {
             <div className="">
                 {/* dashboard */}
                 <Link
-                    to="/"
+                    to="/state"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/state"
                         ? "bg-[#141619] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"

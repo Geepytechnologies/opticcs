@@ -1,21 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import stateLocalGovts from '../../../utils/stateandlgas';
+import { useAuth } from '../hooks/useAuth';
+import axiosInstance from '../../../utils/axios';
+import LoaderSmall from '../../../components/LoaderSmall';
+import CustomToast from '../../../components/CustomToast';
 
 const CreateStateAccount = () => {
-    const [values, setValues] = useState({ state: "", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" });
+    const [localGovts, setLocalGovts] = useState([]);
+    const { stateAuth } = useAuth()
+    const state = stateAuth.others.state;
+    const [isLoading, setIsLoading] = useState(false)
+    const [showToast, setShowToast] = useState(false)
+    const [toastmessage, setToastmessage] = useState("")
+    const [toastStatus, setToastStatus] = useState("")
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+
+    const loadToast = (myMessage, status) => {
+        scrollToTop();
+        setToastmessage(myMessage)
+        setShowToast(true);
+        setToastStatus(status)
+    }
+    const handleToastClose = () => {
+        setShowToast(false);
+    };
+
+
+
+
+    const [values, setValues] = useState({ lga: "", lgaboard: "", lgaid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
-    const [stateError, setstateError] = useState({ status: false, message: "" })
-    const [stateboardError, setstateboardError] = useState({ status: false, message: "" })
-    const [stateidError, setstateidError] = useState({ status: false, message: "" })
+    const [lgaError, setlgaError] = useState({ status: false, message: "" })
+    const [lgaboardError, setlgaboardError] = useState({ status: false, message: "" })
+    const [lgaidError, setlgaidError] = useState({ status: false, message: "" })
     const [officeAddressError, setofficeAddressError] = useState({ status: false, message: "" })
     const [useridError, setUseridError] = useState({ status: false, message: "" })
     const [passwordError, setPasswordError] = useState({ status: false, message: "" })
     const handleChange2 = (event) => {
         const { name, value } = event.target;
         name == "officeaddress" && setofficeAddressError({ status: false, message: "" })
-        name == "state" && setstateError({ status: false, message: "" })
-        name == "stateboard" && setstateboardError({ status: false, message: "" })
-        name == "stateid" && setstateidError({ status: false, message: "" })
+        name == "lga" && setlgaError({ status: false, message: "" })
+        name == "lgaboard" && setlgaboardError({ status: false, message: "" })
+        name == "lgaid" && setlgaidError({ status: false, message: "" })
         name == "phone" && setPhoneError({ status: false, message: "" })
         name == "userid" && setUseridError({ status: false, message: "" })
         name == "email" && setEmailError({ status: false, message: "" })
@@ -25,17 +59,17 @@ const CreateStateAccount = () => {
     const validateValues = () => {
         let noErrors = true;
 
-        if (values.state === "") {
-            setstateError({ status: true, message: "This field is required" });
+        if (values.lga === "") {
+            setlgaError({ status: true, message: "This field is required" });
             noErrors = false;
         }
 
-        if (values.stateboard === "") {
-            setstateboardError({ status: true, message: "This field is required" });
+        if (values.lgaboard === "") {
+            setlgaboardError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        if (values.stateid === "") {
-            setstateidError({ status: true, message: "This field is required" });
+        if (values.lgaid === "") {
+            setlgaidError({ status: true, message: "This field is required" });
             noErrors = false;
         }
         if (values.officeaddress === "") {
@@ -81,18 +115,18 @@ const CreateStateAccount = () => {
         }
     };
     const handleStateBlur = () => {
-        if (values.state === '') {
-            setstateError({ status: true, message: 'This field is required' });
+        if (values.lga === '') {
+            setlgaError({ status: true, message: 'This field is required' });
         }
     };
     const handlestateboardBlur = () => {
-        if (values.stateboard === '') {
-            setstateboardError({ status: true, message: 'This field is required' });
+        if (values.lgaboard === '') {
+            setlgaboardError({ status: true, message: 'This field is required' });
         }
     };
     const handleStateidBlur = () => {
-        if (values.stateid === '') {
-            setstateidError({ status: true, message: 'This field is required' });
+        if (values.lgaid === '') {
+            setlgaidError({ status: true, message: 'This field is required' });
         }
     };
     const handleOfficeBlur = () => {
@@ -105,135 +139,131 @@ const CreateStateAccount = () => {
             setPasswordError({ status: true, message: 'This field is required' });
         }
     };
-    const createAccount = () => {
+    const createAccount = async (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await axiosInstance.post("/admin/lga", {
+                lga: values.lga,
+                boardname: values.lgaboard,
+                lgaID: values.lgaid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
+            })
+            if (res.data) {
+                setIsLoading(false)
+                console.log({ res: res.data });
+                loadToast("LGA Account created", "success")
 
+            }
+        } catch (err) {
+            setIsLoading(false)
+            loadToast("Something went wrong", "error")
+        }
     }
+    const capitalizeFirstLetter = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    };
+    useEffect(() => {
+        setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
+    }, [])
     return (
-        <div>
-            <form onSubmit={createAccount} className="mt-12">
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                Select State<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {stateError.status && <span className='text-[12px] font-[500] italic text-red-500'>{stateError.message}</span>}
+        <>
+            {showToast && (
+                <CustomToast toastmessage={toastmessage} onClose={handleToastClose} status={toastStatus} />
+            )}
+            <div>
+                <form onSubmit={createAccount} className="mt-12">
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    Select LGA<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {lgaError.status && <span className='text-[12px] font-[500] italic text-red-500'>{lgaError.message}</span>}
+                            </div>
+                            <select name="lga" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                                <option value="" >
+                                    Choose LGA
+                                </option>
+                                {localGovts?.map((localGovt) => (
+                                    <option key={localGovt} value={localGovt}>{localGovt}</option>
+                                ))}
+                            </select>
                         </div>
-                        <select name="state" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
-                            <option value="" disabled >
-                                Choose a value
-                            </option>
-                            <option value="Abia">Abia</option>
-                            <option value="Adamawa">Adamawa</option>
-                            <option value="Akwa Ibom">Akwa Ibom</option>
-                            <option value="Anambra">Anambra</option>
-                            <option value="Bauchi">Bauchi</option>
-                            <option value="Bayelsa">Bayelsa</option>
-                            <option value="Benue">Benue</option>
-                            <option value="Borno">Borno</option>
-                            <option value="Cross River">Cross River</option>
-                            <option value="Delta">Delta</option>
-                            <option value="Ebonyi">Ebonyi</option>
-                            <option value="Edo">Edo</option>
-                            <option value="Ekiti">Ekiti</option>
-                            <option value="Enugu">Enugu</option>
-                            <option value="Gombe">Gombe</option>
-                            <option value="Imo">Imo</option>
-                            <option value="Jigawa">Jigawa</option>
-                            <option value="Kaduna">Kaduna</option>
-                            <option value="Kano">Kano</option>
-                            <option value="Katsina">Katsina</option>
-                            <option value="Kebbi">Kebbi</option>
-                            <option value="Kogi">Kogi</option>
-                            <option value="Kwara">Kwara</option>
-                            <option value="Lagos">Lagos</option>
-                            <option value="Nasarawa">Nasarawa</option>
-                            <option value="Niger">Niger</option>
-                            <option value="Ogun">Ogun</option>
-                            <option value="Ondo">Ondo</option>
-                            <option value="Osun">Osun</option>
-                            <option value="Oyo">Oyo</option>
-                            <option value="Plateau">Plateau</option>
-                            <option value="Rivers">Rivers</option>
-                            <option value="Sokoto">Sokoto</option>
-                            <option value="Taraba">Taraba</option>
-                            <option value="Yobe">Yobe</option>
-                            <option value="Zamfara">Zamfara</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                State Board Name<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {stateboardError.status && <span className='text-[12px] font-[500] italic text-red-500'>{stateboardError.message}</span>}
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    LGA Board Name<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {lgaboardError.status && <span className='text-[12px] font-[500] italic text-red-500'>{lgaboardError.message}</span>}
+                            </div>
+                            <input type='text' name="lgaboard" onBlur={handlestateboardBlur} onChange={handleChange2}
+                                className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+                                placeholder="Enter lga health board name"
+                            />
                         </div>
-                        <input type='text' name="stateboard" onBlur={handlestateboardBlur} onChange={handleChange2}
-                            className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-                            placeholder="Enter state health board name"
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                State ID<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {stateidError.status && <span className='text-[12px] font-[500] italic text-red-500'>{stateidError.message}</span>}
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    LGA ID<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {lgaidError.status && <span className='text-[12px] font-[500] italic text-red-500'>{lgaidError.message}</span>}
+                            </div>
+                            <input type='text' name="lgaid" onBlur={handleStateidBlur} onChange={handleChange2}
+                                className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+                                placeholder="Enter Board ID"
+                            />
                         </div>
-                        <input type='text' name="stateid" onBlur={handleStateidBlur} onChange={handleChange2}
-                            className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-                            placeholder="Enter Board ID"
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                Office Address<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {officeAddressError.status && <span className='text-[12px] font-[500] italic text-red-500'>{officeAddressError.message}</span>}
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    Office Address<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {officeAddressError.status && <span className='text-[12px] font-[500] italic text-red-500'>{officeAddressError.message}</span>}
+                            </div>
+                            <input type="officeaddress" name="officeaddress" onChange={handleChange2} onBlur={handleOfficeBlur}
+                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
+                                placeholder="Enter office address"
+                            />
                         </div>
-                        <input type="officeaddress" name="officeaddress" onChange={handleChange2} onBlur={handleOfficeBlur}
-                            className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                            placeholder="Enter office address"
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                Phone Number<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {phoneError.status && <span className='text-[12px] font-[500] italic text-red-500'>{phoneError.message}</span>}
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    Phone Number<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {phoneError.status && <span className='text-[12px] font-[500] italic text-red-500'>{phoneError.message}</span>}
+                            </div>
+                            <input type="text" onChange={handleChange2}
+                                name="phone" onBlur={handlePhoneBlur}
+                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
+                                placeholder="Enter your phone number"
+                            />
                         </div>
-                        <input type="text" onChange={handleChange2}
-                            name="phone" onBlur={handlePhoneBlur}
-                            className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                            placeholder="Enter your phone number"
-                        />
-                    </div>
-                    <div className="flex flex-col">
-                        <div className='flex gap-3 items-center'>
-                            <label className="text-[16px] font-[500] text-dark90">
-                                Email address<span className="ml-2 text-red-500">*</span>
-                            </label>
-                            {emailError.status && <span className='text-[12px] font-[500] italic text-red-500'>{emailError.message}</span>}
+                        <div className="flex flex-col">
+                            <div className='flex gap-3 items-center'>
+                                <label className="text-[16px] font-[500] text-dark90">
+                                    Email address<span className="ml-2 text-red-500">*</span>
+                                </label>
+                                {emailError.status && <span className='text-[12px] font-[500] italic text-red-500'>{emailError.message}</span>}
+                            </div>
+                            <input type="email" onChange={handleChange2}
+                                name="email" onBlur={handleEmailBlur}
+                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
+                                placeholder="Enter your email address"
+                            />
                         </div>
-                        <input type="email" onChange={handleChange2}
-                            name="email" onBlur={handleEmailBlur}
-                            className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                            placeholder="Enter your email address"
-                        />
-                    </div>
-
-                </div>
-                <div className='flex flex-col'>
-                    <div className='flex items-center justify-center mt-8 w-full '>
-                        <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
-                            Create
-                        </button>
 
                     </div>
-                </div>
-            </form></div>
+                    <div className='flex flex-col'>
+                        <div className='flex items-center justify-center mt-8 w-full '>
+                            {!isLoading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
+                                Create
+                            </button> : <LoaderSmall />}
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </>
     )
 }
 

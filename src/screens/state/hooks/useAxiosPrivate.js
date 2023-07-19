@@ -5,13 +5,13 @@ import { useAuth } from "./useAuth";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshtoken();
-  const { auth } = useAuth();
+  const { stateAuth } = useAuth();
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+          config.headers["Authorization"] = `Bearer ${stateAuth?.accessToken}`;
         }
         return config;
       },
@@ -34,7 +34,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.response.eject(responseIntercept);
       axiosPrivate.interceptors.request.eject(requestIntercept);
     };
-  }, [auth, refresh]);
+  }, [stateAuth, refresh]);
   return axiosPrivate;
 };
 

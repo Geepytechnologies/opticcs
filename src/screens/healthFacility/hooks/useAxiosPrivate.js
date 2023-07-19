@@ -1,17 +1,19 @@
-import { axiosPrivate } from "../axios";
 import { useEffect } from "react";
 import useRefreshtoken from "./useRefreshtoken";
 import { useAuth } from "./useAuth";
+import { axiosPrivate } from "../../../utils/axios";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshtoken();
-  const { auth } = useAuth();
+  const { healthfacilityAuth } = useAuth();
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+          config.headers[
+            "Authorization"
+          ] = `Bearer ${healthfacilityAuth?.accessToken}`;
         }
         return config;
       },
@@ -30,11 +32,12 @@ const useAxiosPrivate = () => {
         return Promise.reject(error);
       }
     );
+    console.log("it ran");
     return () => {
       axiosPrivate.interceptors.response.eject(responseIntercept);
       axiosPrivate.interceptors.request.eject(requestIntercept);
     };
-  }, [auth, refresh]);
+  }, [healthfacilityAuth, refresh]);
   return axiosPrivate;
 };
 

@@ -1,9 +1,23 @@
 import React from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import axiosInstance from '../../../utils/axios'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 const LgaList = () => {
     const array = [1, 2, 3, 4]
+    const [lgalist, setLgalist] = useState()
+    const getLgas = async () => {
+        try {
+            const res = await axiosInstance.get("/admin/lga/find")
+            setLgalist(res.data)
+        } catch (err) {
 
+        }
+    }
+    useEffect(() => {
+        getLgas()
+    }, [])
     return (
         <div className='w-full '>
             <div className='flex gap-2 my-8 justify-start'>
@@ -14,21 +28,21 @@ const LgaList = () => {
                 <table className="cursor-default w-[95%]">
                     <tr>
                         <th>SN</th>
-                        <th>State</th>
-                        <th>State ID</th>
+                        <th>LGA</th>
+                        <th>LGA ID</th>
                         <th>Office Address</th>
                         <th>Date Created</th>
                         <th>Phone Number</th>
                         <th>Email</th>
                     </tr>
-                    {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                        <td>01</td>
-                        <td>Bagiwa Clinic</td>
-                        <td>26223</td>
-                        <td>Giwa</td>
+                    {lgalist?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                        <td>{item.id}</td>
+                        <td>{item.lga}</td>
+                        <td>{item.lgaid}</td>
+                        <td>{item.officeaddress}</td>
                         <td>21.03.2021</td>
-                        <td className=''>08052672772</td>
-                        <td className=''>PSI</td>
+                        <td className=''>{item.phone}</td>
+                        <td className=''>{item.email}</td>
 
                     </tr>)}
 

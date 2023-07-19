@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import stateLocalGovts from '../../../utils/stateandlgas';
+import { useAuth } from '../hooks/useAuth';
 
 const CreateStateUserAccount = () => {
-    const [values, setValues] = useState({ state: "Abia", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
+    const [localGovts, setLocalGovts] = useState([]);
+    const { stateAuth } = useAuth()
+    const state = stateAuth.others.state;
+
+
+    const [values, setValues] = useState({ lga: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
-    const [stateError, setstateError] = useState({ status: false, message: "" })
+    const [lgaError, setlgaError] = useState({ status: false, message: "" })
     const [staffnameError, setstaffnameError] = useState({ status: false, message: "" })
     const [staffidError, setstaffidError] = useState({ status: false, message: "" })
     const [genderError, setgenderError] = useState({ status: false, message: "" })
@@ -15,7 +22,7 @@ const CreateStateUserAccount = () => {
     const handleChange2 = (event) => {
         const { name, value } = event.target;
         name == "gender" && setgenderError({ status: false, message: "" })
-        name == "state" && setstateError({ status: false, message: "" })
+        name == "lga" && setlgaError({ status: false, message: "" })
         name == "staffname" && setstaffnameError({ status: false, message: "" })
         name == "staffid" && setstaffidError({ status: false, message: "" })
         name == "phone" && setPhoneError({ status: false, message: "" })
@@ -30,8 +37,8 @@ const CreateStateUserAccount = () => {
     const validateValues = () => {
         let noErrors = true;
 
-        if (values.state === "") {
-            setstateError({ status: true, message: "This field is required" });
+        if (values.lga === "") {
+            setlgaError({ status: true, message: "This field is required" });
             noErrors = false;
         }
 
@@ -94,8 +101,8 @@ const CreateStateUserAccount = () => {
         }
     };
     const handleStateBlur = () => {
-        if (values.state === '') {
-            setstateError({ status: true, message: 'This field is required' });
+        if (values.lga === '') {
+            setlgaError({ status: true, message: 'This field is required' });
         }
     };
     const handlestaffnameBlur = () => {
@@ -131,6 +138,12 @@ const CreateStateUserAccount = () => {
     const createAccount = () => {
 
     }
+    const capitalizeFirstLetter = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    };
+    useEffect(() => {
+        setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
+    }, [])
     return (
         <div>
             <form onSubmit={createAccount} className="mt-12">
@@ -138,50 +151,17 @@ const CreateStateUserAccount = () => {
                     <div className="flex flex-col">
                         <div className='flex gap-3 items-center'>
                             <label className="text-[16px] font-[500] text-dark90">
-                                Select State<span className="ml-2 text-red-500">*</span>
+                                Select LGA<span className="ml-2 text-red-500">*</span>
                             </label>
-                            {stateError.status && <span className='text-[12px] font-[500] italic text-red-500'>{stateError.message}</span>}
+                            {lgaError.status && <span className='text-[12px] font-[500] italic text-red-500'>{lgaError.message}</span>}
                         </div>
-                        <select name="state" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
-                            <option value="" disabled >
-                                Choose a value
+                        <select name="lga" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                            <option value="" >
+                                Choose LGA
                             </option>
-                            <option value="Abia">Abia</option>
-                            <option value="Adamawa">Adamawa</option>
-                            <option value="Akwa Ibom">Akwa Ibom</option>
-                            <option value="Anambra">Anambra</option>
-                            <option value="Bauchi">Bauchi</option>
-                            <option value="Bayelsa">Bayelsa</option>
-                            <option value="Benue">Benue</option>
-                            <option value="Borno">Borno</option>
-                            <option value="Cross River">Cross River</option>
-                            <option value="Delta">Delta</option>
-                            <option value="Ebonyi">Ebonyi</option>
-                            <option value="Edo">Edo</option>
-                            <option value="Ekiti">Ekiti</option>
-                            <option value="Enugu">Enugu</option>
-                            <option value="Gombe">Gombe</option>
-                            <option value="Imo">Imo</option>
-                            <option value="Jigawa">Jigawa</option>
-                            <option value="Kaduna">Kaduna</option>
-                            <option value="Kano">Kano</option>
-                            <option value="Katsina">Katsina</option>
-                            <option value="Kebbi">Kebbi</option>
-                            <option value="Kogi">Kogi</option>
-                            <option value="Kwara">Kwara</option>
-                            <option value="Lagos">Lagos</option>
-                            <option value="Nasarawa">Nasarawa</option>
-                            <option value="Niger">Niger</option>
-                            <option value="Ogun">Ogun</option>
-                            <option value="Ondo">Ondo</option>
-                            <option value="Osun">Osun</option>
-                            <option value="Oyo">Oyo</option>
-                            <option value="Plateau">Plateau</option>
-                            <option value="Rivers">Rivers</option>
-                            <option value="Sokoto">Sokoto</option>
-                            <option value="Taraba">Taraba</option>
-                            <option value="Yobe">Yobe</option>
-                            <option value="Zamfara">Zamfara</option>
+                            {localGovts?.map((localGovt) => (
+                                <option key={localGovt} value={localGovt}>{localGovt}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="flex flex-col">
@@ -273,7 +253,7 @@ const CreateStateUserAccount = () => {
                                 Choose a value
                             </option>
                             <option className='' value="national">National</option>
-                            <option value="state">State</option>
+                            <option value="lga">State</option>
                             <option value="lga">LGA</option>
                             <option value="health Facility">Health Facility</option>
                         </select>

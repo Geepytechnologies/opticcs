@@ -5,13 +5,13 @@ import { useAuth } from "./useAuth";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshtoken();
-  const { auth } = useAuth();
+  const { lgaAuth } = useAuth();
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+          config.headers["Authorization"] = `Bearer ${lgaAuth?.accessToken}`;
         }
         return config;
       },
@@ -30,11 +30,12 @@ const useAxiosPrivate = () => {
         return Promise.reject(error);
       }
     );
+    console.log("it ran");
     return () => {
       axiosPrivate.interceptors.response.eject(responseIntercept);
       axiosPrivate.interceptors.request.eject(requestIntercept);
     };
-  }, [auth, refresh]);
+  }, [lgaAuth, refresh]);
   return axiosPrivate;
 };
 

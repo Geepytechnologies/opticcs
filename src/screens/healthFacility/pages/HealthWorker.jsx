@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import { MdOutlineGroup } from 'react-icons/md'
 
 const HealthWorker = () => {
     const array = [1, 2, 3, 4]
+    useEffect(() => {
+
+    }, [])
     return (
         <div>
             <div className='bg-primary10'>
@@ -82,27 +85,31 @@ const HealthWorker = () => {
                     <div className='bg-white min-w-[95%] w-[1000px] flex flex-col items-center justify-start pl-6 py-4'>
 
                         <table className="cursor-default w-full">
-                            <tr>
-                                <th>SN</th>
-                                <th>Name</th>
-                                <th>Client ID</th>
-                                <th>Cadre</th>
-                                <th>State</th>
-                                <th>Health Facility</th>
-                                <th>Phone Number</th>
-                                <th>Email Address</th>
-                            </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>01</td>
-                                <td>Godspower</td>
-                                <td>26223</td>
-                                <td>Midwife</td>
-                                <td>Lagos</td>
-                                <td>Ikeja</td>
-                                <td>2600</td>
-                                <td>me@gmail.com</td>
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Name</th>
+                                    <th>Client ID</th>
+                                    <th>Cadre</th>
+                                    <th>State</th>
+                                    <th>Health Facility</th>
+                                    <th>Phone Number</th>
+                                    <th>Email Address</th>
+                                </tr>
 
-                            </tr>)}
+                            </thead>
+                            <tbody>
+                                {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                    <td>01</td>
+                                    <td>Godspower</td>
+                                    <td>26223</td>
+                                    <td>Midwife</td>
+                                    <td>Lagos</td>
+                                    <td>Ikeja</td>
+                                    <td>2600</td>
+                                    <td>me@gmail.com</td>
+                                </tr>)}
+                            </tbody>
 
                         </table>
                         {/* pagination */}

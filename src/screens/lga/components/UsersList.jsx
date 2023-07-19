@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import axiosInstance from '../../../utils/axios'
 
 const UsersList = () => {
     const array = [1, 2, 3, 4]
+    const [healthfacilityusers, setHealthfacilityusers] = useState()
+    const getHealthfacilityusers = async () => {
+        try {
+            const res = await axiosInstance.get("/admin/healthfacility/find/users")
+            setHealthfacilityusers(res.data)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getHealthfacilityusers()
+    }, [])
 
     return (
         <div className='min-w-[1000px]'>
@@ -15,19 +28,19 @@ const UsersList = () => {
                     <th>SN</th>
                     <th>Staff Name</th>
                     <th>Staff ID</th>
-                    <th>Staff</th>
+                    <th>Ward</th>
                     <th>Date Created</th>
                     <th>Phone Number</th>
                     <th>Cadre</th>
                 </tr>
-                {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                    <td>01</td>
-                    <td>Bagiwa Clinic</td>
-                    <td>26223</td>
-                    <td>Giwa</td>
-                    <td>21.03.2021</td>
-                    <td className=''>08052672772</td>
-                    <td className=''>PSI</td>
+                {healthfacilityusers?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                    <td>{item.id}</td>
+                    <td>{item.staffname}</td>
+                    <td>{item.staffid}</td>
+                    <td>{item.ward}</td>
+                    <td>{item.createdAt}</td>
+                    <td className=''>{item.phone}</td>
+                    <td className=''>{item.cadre}</td>
 
                 </tr>)}
 
