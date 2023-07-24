@@ -3,19 +3,19 @@ import { LuCalendarDays } from 'react-icons/lu'
 import { motion } from "framer-motion"
 import axiosInstance from '../../../utils/axios'
 
-const IndicatorOutcome = () => {
-    const [patients4visits, setPatients4visits] = useState()
+const IndicatorOutcome = ({ patients }) => {
+    const [patients4visits, setPatients4visits] = useState(0)
 
-    const getPatientswith4visits = async () => {
+    const numberOfWomen4visits = async () => {
         try {
             const res = await axiosInstance.get('/patients/find/4visits');
-            setPatients4visits(res.data.length)
+            setPatients4visits(res.data.result.length)
         } catch (err) {
 
         }
     }
     useEffect(() => {
-        getPatientswith4visits()
+        numberOfWomen4visits()
     })
     return (
         <motion.div initial={{
@@ -51,7 +51,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-dark50' />
                         </div>
                         <div className='flex flex-col text-dark50'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>{patients}</h2>
                             <h2 className='text-[14px] font-[400]'>Total number of women who visit intervention facilities for ANC</h2>
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
 import Loader from "../components/Loader";
 import useRefreshtoken from "../screens/national/hooks/useRefreshtoken";
+import { useAuth } from "./hooks/useAuth";
 
 
 const PersistNationalLogin = () => {

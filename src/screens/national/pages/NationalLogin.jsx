@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion"
 import { useAuth } from '../hooks/useAuth';
-import { axiosPrivate } from '../../../utils/axios';
+import axiosInstance, { axiosPrivate } from '../../../utils/axios';
 import CustomToast from '../../../components/CustomToast';
 import LoaderSmall from '../../../components/LoaderSmall';
 
@@ -42,7 +42,6 @@ const NationalLogin = () => {
         setValues({ ...values, [name]: value });
     };
     const loginUser = async () => {
-        console.log({ myValues: values })
         setIsLoading(true);
         try {
             const res = await axiosPrivate.post("/admin/national/signin", {
@@ -51,7 +50,7 @@ const NationalLogin = () => {
             });
             if (res.data) {
                 setIsLoading(false)
-                console.log({ res: res.data });
+                console.log({ res: res });
                 loadToast("Login Successful", "success")
                 navigate('/national')
                 setNationalAuth((prevAuth) => {
@@ -77,7 +76,6 @@ const NationalLogin = () => {
                 loadToast("Something Went wrong", "error")
 
             }
-            console.log({ loginError: err })
         }
 
 
@@ -119,7 +117,7 @@ const NationalLogin = () => {
                         transition={{
                             duration: 1.5,
                         }} className="absolute top-0 inset-0 bg-cover bg-[url('/images/Registration.png')]"></motion.div>
-                    <div className="absolute top-0 inset-0 gradientbg opacity-20"></div>
+                    {/* <div className="absolute top-0 inset-0 gradientbg opacity-20"></div> */}
                     <div className="absolute top-0 inset-0">
                         <div className="flex flex-col items-center justify-center h-full">
                             <div className="flex flex-row gap-[9px]">

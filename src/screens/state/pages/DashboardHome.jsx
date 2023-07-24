@@ -34,6 +34,22 @@ const DashboardHome = () => {
 
         }
     }
+    const getAllstates = async () => {
+        try {
+            const res = await axiosInstance.get('/admin/state/find');
+            setStatenumbers(res.data.result.length)
+        } catch (err) {
+
+        }
+    }
+    const getHealthfacilities = async () => {
+        try {
+            const res = await axiosInstance.get('/admin/healthfacility/find');
+            setHfnumbers(res.data.length)
+        } catch (err) {
+
+        }
+    }
     useEffect(() => {
         getAllHealthWorkers()
         getAllPatients()

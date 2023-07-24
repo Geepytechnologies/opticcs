@@ -6,7 +6,6 @@ const RequireStateAuth = () => {
     const location = useLocation();
     // Check if the user is coming from the signin page
     const isComingFromSignin = location.state?.from?.pathname === "/state/login";
-    console.log({ access: stateAuth?.accessToken })
 
     return stateAuth?.accessToken ? (
         !isComingFromSignin ? (

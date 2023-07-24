@@ -32,7 +32,6 @@ const useAxiosPrivate = () => {
         return Promise.reject(error);
       }
     );
-    console.log("it ran");
     return () => {
       axiosPrivate.interceptors.response.eject(responseIntercept);
       axiosPrivate.interceptors.request.eject(requestIntercept);

@@ -117,7 +117,7 @@ const LgaLogin = () => {
                         transition={{
                             duration: 1.5,
                         }} className="absolute top-0 inset-0 bg-cover bg-[url('/images/Registration.png')]"></motion.div>
-                    <div className="absolute top-0 inset-0 gradientbg opacity-20"></div>
+                    {/* <div className="absolute top-0 inset-0 gradientbg opacity-20"></div> */}
                     <div className="absolute top-0 inset-0">
                         <div className="flex flex-col items-center justify-center h-full">
                             <div className="flex flex-row gap-[9px]">
