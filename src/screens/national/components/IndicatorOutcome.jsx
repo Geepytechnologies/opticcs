@@ -79,7 +79,7 @@ const IndicatorOutcome = ({ patients }) => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>0</h2>
                             <h2 className='text-[14px] font-[400]'>Difference in the baseline and endline ANC coverage of intervention facilities </h2>
                         </div>
                     </div>

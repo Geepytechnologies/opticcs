@@ -5,6 +5,8 @@ import IndicatorNavigatorScreen2 from '../components/IndicatorNavigatorScreen2'
 import IndicatorNavigatorScreen3 from '../components/IndicatorNavigatorScreen3'
 import IndicatorNavigatorScreen4 from '../components/IndicatorNavigatorScreen4'
 import IndicatorNavigatorScreen5 from '../components/IndicatorNavigatorScreen5'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const DashboardIndicators = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
@@ -66,41 +68,26 @@ const DashboardIndicators = () => {
                         </div>
                         {/* 2 */}
                         <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 3 */}
-                        <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Date From</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date From
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
+                            <DatePicker
+                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+                                selected={selectedDateFrom}
+                                onChange={(date) => handleDateFromChange(date)}
+                                dateFormat="yyyy-MM-dd"
+                                defaultValue={selectedDateFrom}
+                            />
 
                         </div>
                         {/* 4 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Date To</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date To
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
+                            <DatePicker
+                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+                                selected={selectedDateTo}
+                                onChange={(date) => handleDateToChange(date)}
+                                dateFormat="yyyy-MM-dd"
+                                defaultValue={selectedDateTo}
+                            />
 
                         </div>
                     </div>

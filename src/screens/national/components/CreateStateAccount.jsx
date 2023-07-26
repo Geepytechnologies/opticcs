@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import axiosInstance from '../../../utils/axios';
 
 const CreateStateAccount = () => {
-    const [values, setValues] = useState({ state: "", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" });
+    const [loading, setLoading] = useState(false)
+    const [values, setValues] = useState({ state: "Abia", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
     const [stateError, setstateError] = useState({ status: false, message: "" })
@@ -50,17 +52,6 @@ const CreateStateAccount = () => {
             setEmailError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        if (values.userid === "") {
-            setUseridError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (values.password === "") {
-            setPasswordError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (!valuesofficeaddressmatch) {
-            noErrors = false;
-        }
 
 
         return noErrors;
@@ -73,11 +64,6 @@ const CreateStateAccount = () => {
     const handlePhoneBlur = () => {
         if (values.phone === '') {
             setPhoneError({ status: true, message: 'This field is required' });
-        }
-    };
-    const handleUseridBlur = () => {
-        if (values.userid === '') {
-            setUseridError({ status: true, message: 'This field is required' });
         }
     };
     const handleStateBlur = () => {
@@ -100,13 +86,25 @@ const CreateStateAccount = () => {
             setofficeAddressError({ status: true, message: 'This field is required' });
         }
     };
-    const handlePasswordBlur = () => {
-        if (values.password === '') {
-            setPasswordError({ status: true, message: 'This field is required' });
-        }
-    };
-    const createAccount = () => {
+    const createAccount = async (e) => {
+        e.preventDefault()
+        validateValues()
+        try {
+            setLoading(true)
+            const res = await axiosInstance.post("/admin/state", {
+                state: values.state,
+                boardname: values.stateboard,
+                stateid: values.stateid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
+            })
+            if (res.data) {
+                alert("State Account has been created")
+                setValues({ state: "Abia", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" })
+            }
+        } catch (error) {
 
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <div>
@@ -204,7 +202,7 @@ const CreateStateAccount = () => {
                             </label>
                             {phoneError.status && <span className='text-[12px] font-[500] italic text-red-500'>{phoneError.message}</span>}
                         </div>
-                        <input type="text" onChange={handleChange2}
+                        <input type="number" onChange={handleChange2}
                             name="phone" onBlur={handlePhoneBlur}
                             className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
                             placeholder="Enter your phone number"
@@ -226,37 +224,6 @@ const CreateStateAccount = () => {
 
                 </div>
                 <div className='flex flex-col'>
-
-                    <div className='text-primary90 cursor-pointer font-[500] text-[16px]'>Click to Generate User ID and Password</div>
-                    <div className='flex items-center gap-5 my-4'>
-                        <div className="flex flex-col">
-                            <div className='flex gap-3 items-center'>
-                                <label className="text-[16px] font-[500] text-dark90">
-                                    User ID<span className="ml-2 text-red-500">*</span>
-                                </label>
-                                {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
-                            </div>
-                            <input type="number" onChange={handleChange2}
-                                name="userid" onBlur={handleUseridBlur}
-                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="Enter your phone number"
-                            />
-                        </div>
-                        <div className="flex flex-col">
-                            <div className='flex gap-3 items-center'>
-                                <label className="text-[16px] font-[500] text-dark90">
-                                    Enter Password<span className="ml-2 text-red-500">*</span>
-                                </label>
-                                {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
-                            </div>
-                            <input type="password" onChange={handleChange2}
-                                name="password" onBlur={handlePasswordBlur}
-                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="XXXX XXXX X4380"
-                            />
-                        </div>
-
-                    </div>
                     <div className='flex items-center justify-center mt-8 w-full '>
                         <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                             Create

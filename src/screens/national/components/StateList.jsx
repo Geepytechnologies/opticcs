@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import axiosInstance from '../../../utils/axios'
+import moment from "moment"
 
 const StateList = () => {
-    const array = [1, 2, 3, 4]
+    const [states, setStates] = useState()
+    const [isActive, setIsActive] = useState(1)
 
+
+    const getAllStates = async () => {
+        try {
+            const res = await axiosInstance.get("/admin/state/find")
+            setStates(res.data.result)
+            console.log(states)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getAllStates()
+    }, [])
     return (
         <div className='w-full '>
             <div className='flex gap-2 my-8 justify-start'>
@@ -21,29 +37,33 @@ const StateList = () => {
                         <th>Phone Number</th>
                         <th>Email</th>
                     </tr>
-                    {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                        <td>01</td>
-                        <td>Bagiwa Clinic</td>
-                        <td>26223</td>
-                        <td>Giwa</td>
-                        <td>21.03.2021</td>
-                        <td className=''>08052672772</td>
-                        <td className=''>PSI</td>
+                    {states?.map((item, index) =>
+                        <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                            <td>{item.id}</td>
+                            <td>{item.state}</td>
+                            <td>{item.stateid}</td>
+                            <td>{item.officeaddress}</td>
+                            <td>{moment(item.createdat).fromNow()}</td>
+                            <td className=''>{item.phone}</td>
+                            <td className=''>{item.email}</td>
 
-                    </tr>)}
+                        </tr>)}
 
                 </table>
 
             </div>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <div className='flex items-center justify-center mt-4'>
+                <div className="flex items-center cursor-pointer gap-3">
+                    <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
+                    <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
+                    <div className=" text-center">2</div>
+                    <div className=" text-center">3</div>
+                    <div className=" text-center">4</div>
+                    <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
+                </div>
+            </div>
+        </div>
     )
 }
 

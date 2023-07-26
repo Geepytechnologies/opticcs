@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import axiosInstance from '../../../utils/axios';
 
 const CreateStateUserAccount = () => {
+    const [loading, setLoading] = useState(false)
     const [values, setValues] = useState({ state: "Abia", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
@@ -26,7 +28,6 @@ const CreateStateUserAccount = () => {
         name == "accountType" && setAccountTypeError({ status: false, message: "" })
         setValues({ ...values, [name]: value });
     };
-    console.log(values)
     const validateValues = () => {
         let noErrors = true;
 
@@ -69,9 +70,6 @@ const CreateStateUserAccount = () => {
         }
         if (values.accountType === "") {
             setAccountTypeError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (!valuesgendermatch) {
             noErrors = false;
         }
 
@@ -128,8 +126,32 @@ const CreateStateUserAccount = () => {
             setAccountTypeError({ status: true, message: 'This field is required' });
         }
     };
-    const createAccount = () => {
+    const createAccount = async (e) => {
+        e.preventDefault()
+        validateValues()
+        try {
+            setLoading(true)
+            const res = await axiosInstance.post("/admin/state/user", {
+                state: values.state,
+                staffname: values.staffname,
+                staffid: values.staffid,
+                gender: values.gender,
+                cadre: values.cadre,
+                phone: values.phone,
+                email: values.email,
+                accountType: values.accountType,
+                userid: values.userid,
+                password: values.password
+            })
+            if (res.data) {
+                alert("State User account has been created")
+                setValues({ state: "Abia", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" })
+            }
+        } catch (error) {
 
+        } finally {
+            setLoading(false)
+        }
     }
     return (
         <div>
@@ -291,7 +313,7 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
                             </div>
-                            <input type="number" onChange={handleChange2}
+                            <input type="text" onChange={handleChange2}
                                 name="userid" onBlur={handleUseridBlur}
                                 className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
                                 placeholder="Enter your phone number"
@@ -313,9 +335,11 @@ const CreateStateUserAccount = () => {
 
                     </div>
                     <div className='flex items-center justify-center mt-8 w-full '>
-                        <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
+                        {!loading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                             Create
-                        </button>
+                        </button> : <button disabled type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 opacity-30 createbtn">
+                            Create
+                        </button>}
 
                     </div>
                 </div>

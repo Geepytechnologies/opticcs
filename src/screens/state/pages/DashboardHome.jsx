@@ -9,14 +9,19 @@ import axiosInstance from '../../../utils/axios'
 import { useRef } from 'react'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useAuth } from '../hooks/useAuth'
 
 
 
 const DashboardHome = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [navigatorSlide, setNavigatorSlide] = useState(1);
-    const [healthWorkers, setHealthWorkers] = useState()
-    const [patients, setPatients] = useState()
+    const [healthWorkers, setHealthWorkers] = useState(0)
+    const [patients, setPatients] = useState(0)
+    const [statenumbers, setStatenumbers] = useState(0)
+    const [hfnumbers, setHfnumbers] = useState(0)
+    const { stateAuth } = useAuth()
+    console.log(stateAuth)
 
     const getAllHealthWorkers = async () => {
         try {
@@ -28,8 +33,9 @@ const DashboardHome = () => {
     }
     const getAllPatients = async () => {
         try {
-            const res = await axiosInstance.get('/patients/find');
-            setPatients(res.data.length)
+            const res = await axiosInstance.get('/patients/findwithworkers');
+            const statepatients = res.data.filter((obj) => obj.state == stateAuth.others.state)
+            setPatients(statepatients.length)
         } catch (err) {
 
         }
@@ -45,6 +51,7 @@ const DashboardHome = () => {
     const getHealthfacilities = async () => {
         try {
             const res = await axiosInstance.get('/admin/healthfacility/find');
+            console.log({ state: res.data })
             setHfnumbers(res.data.length)
         } catch (err) {
 
@@ -53,6 +60,8 @@ const DashboardHome = () => {
     useEffect(() => {
         getAllHealthWorkers()
         getAllPatients()
+        getAllstates()
+        getHealthfacilities()
     })
     function downloadTable() {
         const table = tableRef.current;

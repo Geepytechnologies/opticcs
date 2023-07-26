@@ -18,8 +18,8 @@ const DashboardHome = () => {
     const [filter, setFilter] = useState("general");
 
     const [navigatorSlide, setNavigatorSlide] = useState(1);
-    const [healthWorkers, setHealthWorkers] = useState()
-    const [patients, setPatients] = useState()
+    const [healthWorkers, setHealthWorkers] = useState(0)
+    const [patients, setPatients] = useState(0)
     const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
 

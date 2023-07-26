@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
+import axiosInstance from '../../../utils/axios'
 
 const Patients = () => {
-    const array = [1, 2, 3, 4]
+    const [patients, setPatients] = useState()
+    const [isActive, setIsActive] = useState(1)
+
+    const getAllPatients = async () => {
+        try {
+            const res = await axiosInstance.get('/patients/findwithworkers');
+            setPatients(res.data)
+        } catch (err) {
+
+        }
+    }
+    useEffect(() => {
+        getAllPatients()
+    }, [])
     return (
         <div>
             <div className='bg-primary10'>
@@ -25,19 +39,6 @@ const Patients = () => {
                         {/* 1 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
                             <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
                                 <option value="" disabled >
                                     General
@@ -90,26 +91,28 @@ const Patients = () => {
                                 <th>Health Facility</th>
                                 <th>Last Visit</th>
                             </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>01</td>
-                                <td>Godspower</td>
-                                <td>26223</td>
-                                <td>Lagos</td>
-                                <td>Ikeja</td>
-                                <td>2600</td>
-                                <td>03/03/22</td>
+                            {patients?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                <td>{index}</td>
+                                <td>{item.firstname}</td>
+                                <td>{item.id}</td>
+                                <td>{item.state}</td>
+                                <td>{item.lga}</td>
+                                <td>{item.healthFacility}</td>
+                                <td></td>
 
                             </tr>)}
 
                         </table>
                         {/* pagination */}
-                        <div className="flex items-center mt-4">
-                            <AiOutlineArrowLeft />
-                            <div className=" text-center">1</div>
-                            <div className=" text-center">2</div>
-                            <div className=" text-center">3</div>
-                            <div className=" text-center">4</div>
-                            <AiOutlineArrowRight />
+                        <div className='flex items-center justify-center mt-4'>
+                            <div className="flex items-center cursor-pointer gap-3">
+                                <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
+                                <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
+                                <div className=" text-center">2</div>
+                                <div className=" text-center">3</div>
+                                <div className=" text-center">4</div>
+                                <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
+                            </div>
                         </div>
                     </div>
                 </div>

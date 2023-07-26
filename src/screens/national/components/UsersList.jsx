@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import axiosInstance from '../../../utils/axios'
+import moment from 'moment'
 
 const UsersList = () => {
-    const array = [1, 2, 3, 4]
+    const [stateusers, setStateusers] = useState()
+    const [isActive, setIsActive] = useState(1)
 
+    const getStateUsers = async () => {
+        try {
+            const res = await axiosInstance.get("/admin/state/find/users")
+            setStateusers(res.data.result)
+            console.log(res.data.result)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getStateUsers()
+    }, [])
     return (
         <div className='min-w-[1000px]'>
             <div className='flex gap-2 my-8 justify-start'>
@@ -11,36 +26,45 @@ const UsersList = () => {
                 <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
             </div>
             <table className="cursor-default w-full">
-                <tr>
-                    <th>SN</th>
-                    <th>Staff Name</th>
-                    <th>Staff ID</th>
-                    <th>Staff</th>
-                    <th>Date Created</th>
-                    <th>Phone Number</th>
-                    <th>Cadre</th>
-                </tr>
-                {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                    <td>01</td>
-                    <td>Bagiwa Clinic</td>
-                    <td>26223</td>
-                    <td>Giwa</td>
-                    <td>21.03.2021</td>
-                    <td className=''>08052672772</td>
-                    <td className=''>PSI</td>
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Staff Name</th>
+                        <th>Staff ID</th>
+                        <th>Account Type</th>
+                        <th>Date Created</th>
+                        <th>Phone Number</th>
+                        <th>Cadre</th>
+                    </tr>
 
-                </tr>)}
+                </thead>
+                <tbody>
+                    {stateusers?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                        <td>{item.id}</td>
+                        <td>{item.staffname}</td>
+                        <td>{item.staffid}</td>
+                        <td>{item.accounttype}</td>
+                        <td>{moment(item.createdat).fromNow()}</td>
+                        <td className=''>{item.phone}</td>
+                        <td className=''>{item.cadre}</td>
+
+                    </tr>)}
+
+                </tbody>
 
             </table>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <div className='flex items-center justify-center mt-4'>
+                <div className="flex items-center cursor-pointer gap-3">
+                    <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
+                    <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
+                    <div className=" text-center">2</div>
+                    <div className=" text-center">3</div>
+                    <div className=" text-center">4</div>
+                    <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
+                </div>
+            </div>
+        </div>
     )
 }
 
