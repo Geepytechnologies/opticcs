@@ -21,7 +21,6 @@ const DashboardHome = () => {
     const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
     const { stateAuth } = useAuth()
-    console.log(stateAuth)
 
     const getAllHealthWorkers = async () => {
         try {

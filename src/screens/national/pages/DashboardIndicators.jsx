@@ -10,6 +10,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const DashboardIndicators = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
+    const [selectedDateTo, setSelectedDateTo] = useState(new Date());
+    const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
 
     let componentToRender;
 
