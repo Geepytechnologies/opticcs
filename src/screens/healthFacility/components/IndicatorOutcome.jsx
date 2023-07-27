@@ -42,7 +42,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>{patients4visits}</h2>
+                            <h2 className='text-[32px] font-[600]'>{patients4visits || 0}</h2>
                             <h2 className='text-[14px] font-[400]'>Number of women of reproductive age who received at least 4 ANC visits at intervention facility</h2>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-dark50' />
                         </div>
                         <div className='flex flex-col text-dark50'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>0</h2>
                             <h2 className='text-[14px] font-[400]'>Total number of women who visit intervention facilities for ANC</h2>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>{(patients4visits / 2390).toFixed(2)}</h2>
+                            <h2 className='text-[32px] font-[600]'>{(patients4visits / 2390).toFixed(2) || 0}</h2>
                             <h2 className='text-[14px] font-[400]'>Numerator/Denominator</h2>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>0</h2>
                             <h2 className='text-[14px] font-[400]'>Difference in the baseline and endline ANC coverage of intervention facilities </h2>
                         </div>
                     </div>

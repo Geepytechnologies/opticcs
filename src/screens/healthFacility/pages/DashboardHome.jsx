@@ -21,7 +21,7 @@ const DashboardHome = () => {
     const getAllHealthWorkers = async () => {
         try {
             const res = await axiosInstance.get('/users/find');
-            setHealthWorkers(res.data.length)
+            setHealthWorkers(res.data.result.length)
         } catch (err) {
 
         }
@@ -29,7 +29,7 @@ const DashboardHome = () => {
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/find');
-            setPatients(res.data.length)
+            setPatients(res.data.result.length)
         } catch (err) {
 
         }

@@ -81,7 +81,7 @@ const DashboardMenu = () => {
                 {/* Patients Schedule */}
                 <Link
                     to="/healthfacility/patients-schedule"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/patients-schedule"
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
