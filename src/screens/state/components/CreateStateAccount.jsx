@@ -10,6 +10,7 @@ const CreateStateAccount = () => {
     const { stateAuth } = useAuth()
     const state = stateAuth.others.state;
     const [isLoading, setIsLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const [toastmessage, setToastmessage] = useState("")
     const [toastStatus, setToastStatus] = useState("")
@@ -92,9 +93,7 @@ const CreateStateAccount = () => {
             setPasswordError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        if (!valuesofficeaddressmatch) {
-            noErrors = false;
-        }
+
 
 
         return noErrors;
@@ -139,32 +138,32 @@ const CreateStateAccount = () => {
             setPasswordError({ status: true, message: 'This field is required' });
         }
     };
-    const createAccount = async (e) => {
-        e.preventDefault()
-        setIsLoading(true)
-        try {
-            const res = await axiosInstance.post("/admin/lga", {
-                lga: values.lga,
-                boardname: values.lgaboard,
-                lgaID: values.lgaid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
-            })
-            if (res.data) {
-                setIsLoading(false)
-                console.log({ res: res.data });
-                loadToast("LGA Account created", "success")
-
-            }
-        } catch (err) {
-            setIsLoading(false)
-            loadToast("Something went wrong", "error")
-        }
-    }
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     };
     useEffect(() => {
         setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
     }, [])
+    const createAccount = async (e) => {
+        e.preventDefault()
+        validateValues()
+        try {
+            setLoading(true)
+            const res = await axiosInstance.post("/admin/lga", {
+                lga: values.lga,
+                boardname: values.lgaboard,
+                lgaID: values.lgaid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
+            })
+            if (res.data) {
+                alert("LGA Account has been created")
+                setValues({ state: "Abia", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" })
+            }
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
+    }
     return (
         <>
             {showToast && (

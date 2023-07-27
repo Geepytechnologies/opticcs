@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import stateLocalGovts from '../../../utils/stateandlgas';
 import { useAuth } from '../hooks/useAuth';
+import axiosInstance from '../../../utils/axios';
 
 const CreateStateUserAccount = () => {
     const [localGovts, setLocalGovts] = useState([]);
     const { stateAuth } = useAuth()
     const state = stateAuth.others.state;
+    const [loading, setLoading] = useState()
 
 
     const [values, setValues] = useState({ lga: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
@@ -33,7 +35,6 @@ const CreateStateUserAccount = () => {
         name == "accountType" && setAccountTypeError({ status: false, message: "" })
         setValues({ ...values, [name]: value });
     };
-    console.log(values)
     const validateValues = () => {
         let noErrors = true;
 
@@ -76,9 +77,6 @@ const CreateStateUserAccount = () => {
         }
         if (values.accountType === "") {
             setAccountTypeError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (!valuesgendermatch) {
             noErrors = false;
         }
 
@@ -135,8 +133,31 @@ const CreateStateUserAccount = () => {
             setAccountTypeError({ status: true, message: 'This field is required' });
         }
     };
-    const createAccount = () => {
+    const createAccount = async (e) => {
+        e.preventDefault()
+        validateValues()
+        try {
+            setLoading(true)
+            const res = await axiosInstance.post("/admin/lga/users", {
+                lga: values.lga,
+                staffname: values.staffname,
+                staffid: values.staffid,
+                gender: values.gender,
+                cadre: values.cadre,
+                phone: values.phone,
+                email: values.email,
+                accountType: values.accountType,
+                userid: values.userid,
+                password: values.password
+            })
+            if (res.data) {
+                alert("LGA User account has been created")
+            }
+        } catch (error) {
 
+        } finally {
+            setLoading(false)
+        }
     }
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
@@ -293,9 +314,11 @@ const CreateStateUserAccount = () => {
 
                     </div>
                     <div className='flex items-center justify-center mt-8 w-full '>
-                        <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
+                        {!loading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                             Create
-                        </button>
+                        </button> : <button disabled type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 opacity-30 createbtn">
+                            Create
+                        </button>}
 
                     </div>
                 </div>

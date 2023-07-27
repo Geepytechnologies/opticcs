@@ -91,7 +91,7 @@ const HealthFacility = () => {
                                 <th>Date Created</th>
                                 <th>Actions</th>
                             </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                            {/* {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
                                 <td>01</td>
                                 <td>Bagiwa Clinic</td>
                                 <td>26223</td>
@@ -100,7 +100,7 @@ const HealthFacility = () => {
                                 <td className='text-primary90'>Message</td>
                                 <td className='text-[#B02A37]'>Deactivate</td>
 
-                            </tr>)}
+                            </tr>)} */}
 
                         </table>
                         {/* pagination */}

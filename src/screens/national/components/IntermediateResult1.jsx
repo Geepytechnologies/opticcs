@@ -29,7 +29,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of women aged 15-49, receiving antenatal care and reported to have received two or more doses of IPTp</h2>
                             </div>
                         </div>
@@ -50,7 +50,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -75,7 +75,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of intervention sites</h2>
                             </div>
                         </div>
@@ -87,7 +87,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who are tested for malaria</h2>
                             </div>
                         </div>
@@ -112,7 +112,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who attended antenatal clinic</h2>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women are commneced on HAART after testing positive for HIV</h2>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Total number of HIV-positive women attending ANC</h2>
                             </div>
                         </div>
@@ -161,7 +161,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who having tested positive malaria receive treatment for malaria. </h2>
                             </div>
                         </div>
@@ -186,7 +186,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women test positive for malaria</h2>
                             </div>
                         </div>
@@ -198,7 +198,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who having tested positive malaria receive treatment for malaria. </h2>
                             </div>
                         </div>
@@ -223,7 +223,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women test positive for malaria</h2>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -251,7 +251,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of women age 15-49 who attended ANC clinic and was counseled and tested for HIV</h2>
                             </div>
                         </div>
@@ -260,7 +260,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women aged 15-49 who attended antenatal clinic</h2>
                             </div>
                         </div>
@@ -272,7 +272,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -288,7 +288,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women screened for TB during their ANC.</h2>
                             </div>
                         </div>
@@ -297,7 +297,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who attended antenatal clinic.</h2>
                             </div>
                         </div>
@@ -309,7 +309,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -325,7 +325,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of  pregnant women referred to specialized care for TB and HIV.</h2>
                             </div>
                         </div>
@@ -334,7 +334,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women with diagnosed TB and HIV</h2>
                             </div>
                         </div>
@@ -346,7 +346,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -362,7 +362,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who having tested positive malaria receive treatment for COVID-19 and refered</h2>
                             </div>
                         </div>
@@ -371,7 +371,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women test positive for COVID-19</h2>
                             </div>
                         </div>
@@ -383,7 +383,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -399,7 +399,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who receive preventive treatment for tuberculosis if they have latent tuberculosis infection</h2>
                             </div>
                         </div>
@@ -408,7 +408,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of pregnant women with latent TB infection</h2>
                             </div>
                         </div>
@@ -420,7 +420,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -436,7 +436,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of health facilities with the necessary equipment and supplies to provide integrated antenatal care and COVID-19 prevention and control measures.</h2>
                             </div>
                         </div>
@@ -445,7 +445,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of intervention sites.</h2>
                             </div>
                         </div>
@@ -457,7 +457,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -473,7 +473,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women screened for COVID-19</h2>
                             </div>
                         </div>
@@ -482,7 +482,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of pregnant women who present with symptoms of COVID-19 (cough, fever, sore throat, weakness)</h2>
                             </div>
                         </div>
@@ -494,7 +494,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>

@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import axiosInstance from '../../../utils/axios'
+import moment from 'moment'
 
 const UsersList = () => {
-    const array = [1, 2, 3, 4]
-
+    const [lgaUsers, setlgaUsers] = useState()
+    const getlgausers = async () => {
+        const res = await axiosInstance.get("/admin/lga/users")
+        setlgaUsers(res.data)
+    }
+    useEffect(() => {
+        getlgausers()
+    }, [])
     return (
         <div className='min-w-[1000px]'>
             <div className='flex gap-2 my-8 justify-start'>
@@ -20,14 +28,14 @@ const UsersList = () => {
                     <th>Phone Number</th>
                     <th>Cadre</th>
                 </tr>
-                {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                    <td>01</td>
-                    <td>Bagiwa Clinic</td>
-                    <td>26223</td>
-                    <td>Giwa</td>
-                    <td>21.03.2021</td>
-                    <td className=''>08052672772</td>
-                    <td className=''>PSI</td>
+                {lgaUsers?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                    <td>{item.id}</td>
+                    <td>{item.staffname}</td>
+                    <td>{item.staffid}</td>
+                    <td>{item.ward}</td>
+                    <td>{moment(item.createdat).fromNow()}</td>
+                    <td className=''>{item.phone}</td>
+                    <td className=''>{item.cadre}</td>
 
                 </tr>)}
 

@@ -92,7 +92,7 @@ const HealthWorker = () => {
                                 <th>Phone Number</th>
                                 <th>Email Address</th>
                             </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                            {/* {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
                                 <td>01</td>
                                 <td>Godspower</td>
                                 <td>26223</td>
@@ -102,7 +102,7 @@ const HealthWorker = () => {
                                 <td>2600</td>
                                 <td>me@gmail.com</td>
 
-                            </tr>)}
+                            </tr>)} */}
 
                         </table>
                         {/* pagination */}

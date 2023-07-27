@@ -29,7 +29,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of women who received at least the minimum acceptable level of quality ANC services .</h2>
                             </div>
                         </div>
@@ -38,7 +38,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who received ANC services from intervention facilities </h2>
                             </div>
                         </div>
@@ -55,7 +55,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -71,7 +71,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Number of women who received an FP method prior to discharge</h2>
                             </div>
                         </div>
@@ -80,7 +80,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Number of women who received an FP method prior to discharge</h2>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Number of intervention sites with 90% of women receiving quality ANC services</h2>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of intervention facilities that provided service within the reporting period</h2>
                             </div>
                         </div>
@@ -129,7 +129,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -145,7 +145,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of women who received counseling on FP prior to discharge</h2>
                             </div>
                         </div>
@@ -154,7 +154,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who delivered in the intervention facility</h2>
                             </div>
                         </div>
@@ -166,7 +166,7 @@ const IntermediateResult2 = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>

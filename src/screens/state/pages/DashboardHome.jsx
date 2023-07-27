@@ -25,7 +25,7 @@ const DashboardHome = () => {
     const getAllHealthWorkers = async () => {
         try {
             const res = await axiosInstance.get('/users/find');
-            setHealthWorkers(res.data.length)
+            setHealthWorkers(res.data.result.length)
         } catch (err) {
 
         }
@@ -50,7 +50,6 @@ const DashboardHome = () => {
     const getHealthfacilities = async () => {
         try {
             const res = await axiosInstance.get('/admin/healthfacility/find');
-            console.log({ state: res.data })
             setHfnumbers(res.data.length)
         } catch (err) {
 
@@ -150,7 +149,7 @@ const DashboardHome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>0</h2>
                             <h2 className='text-[14px] font-[400]'>State</h2>
                         </div>
                     </div>
@@ -160,7 +159,7 @@ const DashboardHome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>2390</h2>
+                            <h2 className='text-[32px] font-[600]'>{hfnumbers}</h2>
                             <h2 className='text-[14px] font-[400]'>Health Facility</h2>
                         </div>
                     </div>
@@ -183,19 +182,6 @@ const DashboardHome = () => {
                                 <option value="state">State</option>
                                 <option value="lga">LGA</option>
                                 <option value="healthFacility">Health Facility</option>
-                            </select>
-
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
                             </select>
 
                         </div>

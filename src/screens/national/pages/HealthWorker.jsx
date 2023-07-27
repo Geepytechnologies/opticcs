@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import { MdOutlineGroup } from 'react-icons/md'
+import axiosInstance from '../../../utils/axios'
 
 const HealthWorker = () => {
-    const array = [1, 2, 3, 4]
+    const [workers, setWorkers] = useState()
+    const getworkers = async () => {
+        try {
+            const res = await axiosInstance.get("/users/find")
+            setWorkers(res.data.result)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getworkers()
+    }, [])
     return (
         <div>
             <div className='bg-primary10'>
@@ -26,19 +38,6 @@ const HealthWorker = () => {
                         {/* 1 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
                             <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
                                 <option value="" disabled >
                                     General
@@ -92,15 +91,15 @@ const HealthWorker = () => {
                                 <th>Phone Number</th>
                                 <th>Email Address</th>
                             </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>01</td>
-                                <td>Godspower</td>
-                                <td>26223</td>
-                                <td>Midwife</td>
-                                <td>Lagos</td>
-                                <td>Ikeja</td>
-                                <td>2600</td>
-                                <td>me@gmail.com</td>
+                            {workers?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                <td>{item.id}</td>
+                                <td>{item.healthWorker}</td>
+                                <td>{item.id}</td>
+                                <td>{item.cadre}</td>
+                                <td>{item.state}</td>
+                                <td>{item.healthFacility}</td>
+                                <td>{item.phone}</td>
+                                <td>{item.email}</td>
 
                             </tr>)}
 

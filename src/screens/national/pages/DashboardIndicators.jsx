@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RiArrowUpDownLine } from 'react-icons/ri'
 import IndicatorNavigatorScreen1 from '../components/IndicatorNavigatorScreen1'
 import IndicatorNavigatorScreen2 from '../components/IndicatorNavigatorScreen2'
@@ -7,11 +7,14 @@ import IndicatorNavigatorScreen4 from '../components/IndicatorNavigatorScreen4'
 import IndicatorNavigatorScreen5 from '../components/IndicatorNavigatorScreen5'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axiosInstance from '../../../utils/axios'
 
 const DashboardIndicators = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [selectedDateTo, setSelectedDateTo] = useState(new Date());
     const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
+    const [patients, setPatients] = useState(0)
+
 
     let componentToRender;
 
@@ -35,7 +38,17 @@ const DashboardIndicators = () => {
             componentToRender = null;
             break;
     }
+    const getAllPatients = async () => {
+        try {
+            const res = await axiosInstance.get('/patients/find');
+            setPatients(res.data.result.length)
+        } catch (err) {
 
+        }
+    }
+    useEffect(() => {
+        getAllPatients()
+    }, [])
     return (
         <div>
             {/* content */}
@@ -104,7 +117,7 @@ const DashboardIndicators = () => {
                             <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Every Visit</div>
                             <div onClick={() => setNavigatorSlide(4)} className={`cursor-pointer text-center ${navigatorSlide === 4 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Test Result</div>
                             <div onClick={() => setNavigatorSlide(5)} className={`cursor-pointer ${navigatorSlide === 5 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Antenatal Schedule</div>
-                            <div className='ml-auto font-[500]'><span className='text-primary70'>2000 </span>Patient Generated</div>
+                            <div className='ml-auto font-[500]'><span className='text-primary70'>{patients} </span>Patient Generated</div>
                         </div>
                         {/* navigator screen slides */}
                         {componentToRender}

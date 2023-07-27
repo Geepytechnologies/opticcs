@@ -1,11 +1,24 @@
-import React from 'react'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import { IoBagAddOutline } from 'react-icons/io5'
 import { LuCalendarDays } from 'react-icons/lu'
+import axiosInstance from '../../../utils/axios'
 
 const HealthFacility = () => {
-    const array = [1, 2, 3, 4]
+    const [healthFacilities, setHealthfacilities] = useState()
+    const getHealthfacilities = async () => {
+        try {
+            const res = await axiosInstance.get('/admin/healthfacility/find');
+            setHealthfacilities(res.data)
+        } catch (err) {
+
+        }
+    }
+    useEffect(() => {
+        getHealthfacilities()
+    }, [])
     return (
         <div>
             <div className='bg-primary10'>
@@ -27,19 +40,6 @@ const HealthFacility = () => {
                         {/* 1 */}
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
                             <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
                                 <option value="" disabled >
                                     General
@@ -86,17 +86,17 @@ const HealthFacility = () => {
                             <tr>
                                 <th>SN</th>
                                 <th>Health facility Name</th>
-                                <th>LGA ID</th>
+                                <th>Healthfacility ID</th>
                                 <th>Ward</th>
                                 <th>Date Created</th>
                                 <th>Actions</th>
                             </tr>
-                            {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>01</td>
-                                <td>Bagiwa Clinic</td>
-                                <td>26223</td>
-                                <td>Giwa</td>
-                                <td>21.03.2021</td>
+                            {healthFacilities?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                <td>{item.id}</td>
+                                <td>{item.healthfacilityname}</td>
+                                <td>{item.healthfacilityID}</td>
+                                <td>{item.ward}</td>
+                                <td>{moment(item.createdat).fromNow()}</td>
                                 <td className='text-primary90'>Message</td>
                                 <td className='text-[#B02A37]'>Deactivate</td>
 

@@ -3,6 +3,7 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import moment from 'moment'
 
 const LgaList = () => {
     const array = [1, 2, 3, 4]
@@ -40,7 +41,7 @@ const LgaList = () => {
                         <td>{item.lga}</td>
                         <td>{item.lgaid}</td>
                         <td>{item.officeaddress}</td>
-                        <td>21.03.2021</td>
+                        <td>{moment(item.createdat).fromNow()}</td>
                         <td className=''>{item.phone}</td>
                         <td className=''>{item.email}</td>
 
