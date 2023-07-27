@@ -8,7 +8,7 @@ import { axiosPrivate } from '../../../utils/axios';
 
 
 const HealthfacilityLogin = () => {
-    const { StateAuth, setStateAuth } = useAuth();
+    const { healthfacilityAuth, setHealthfacilityAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false)
@@ -54,7 +54,7 @@ const HealthfacilityLogin = () => {
                 console.log({ res: res.data });
                 loadToast("Login Successful", "success")
                 navigate('/healthfacility')
-                setStateAuth((prevAuth) => {
+                setHealthfacilityAuth((prevAuth) => {
                     // This function receives the previous state as its argument
                     // and returns the updated state
 
