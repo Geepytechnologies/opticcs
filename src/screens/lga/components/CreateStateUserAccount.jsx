@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CustomToast from '../../../components/CustomToast';
 import axiosInstance from '../../../utils/axios';
+import LoaderSmall from '../../../components/LoaderSmall';
 
 const CreateStateUserAccount = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -306,7 +307,7 @@ const CreateStateUserAccount = () => {
                                     </label>
                                     {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
                                 </div>
-                                <input type="number" onChange={handleChange2}
+                                <input type="text" onChange={handleChange2}
                                     name="userid" onBlur={handleUseridBlur}
                                     className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
                                     placeholder="Enter your phone number"
@@ -328,9 +329,9 @@ const CreateStateUserAccount = () => {
 
                         </div>
                         <div className='flex items-center justify-center mt-8 w-full '>
-                            <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
+                            {!isLoading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                                 Create
-                            </button>
+                            </button> : <LoaderSmall />}
 
                         </div>
                     </div>

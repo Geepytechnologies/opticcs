@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axiosInstance from '../../../utils/axios';
+import LoaderSmall from '../../../components/LoaderSmall';
 
 const CreateStateAccount = () => {
     const [loading, setLoading] = useState(false)
@@ -225,9 +226,9 @@ const CreateStateAccount = () => {
                 </div>
                 <div className='flex flex-col'>
                     <div className='flex items-center justify-center mt-8 w-full '>
-                        <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
+                        {!loading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                             Create
-                        </button>
+                        </button> : <LoaderSmall />}
 
                     </div>
                 </div>
