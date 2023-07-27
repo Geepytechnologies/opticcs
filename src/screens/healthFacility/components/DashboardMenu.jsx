@@ -70,7 +70,7 @@ const DashboardMenu = () => {
                 {/* Manage users */}
                 <Link
                     to="/healthfacility/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/healthfacility/patients"
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -81,7 +81,7 @@ const DashboardMenu = () => {
                 {/* Patients Schedule */}
                 <Link
                     to="/healthfacility/patients-schedule"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/patients-schedule"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
