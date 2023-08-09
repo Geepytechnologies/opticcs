@@ -136,6 +136,7 @@ const CreateStateAccount = () => {
                             <option value="Edo">Edo</option>
                             <option value="Ekiti">Ekiti</option>
                             <option value="Enugu">Enugu</option>
+                            <option value="FCT">FCT</option>
                             <option value="Gombe">Gombe</option>
                             <option value="Imo">Imo</option>
                             <option value="Jigawa">Jigawa</option>

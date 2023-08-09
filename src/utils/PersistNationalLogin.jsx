@@ -16,7 +16,8 @@ const PersistNationalLogin = () => {
             try {
                 await refresh();
             } catch (err) {
-                console.error(err);
+                return null
+                // console.error(err);
             } finally {
                 if (isMounted) {
                     setIsLoading(false);

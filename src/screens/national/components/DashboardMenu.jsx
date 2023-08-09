@@ -35,7 +35,6 @@ const DashboardMenu = () => {
     }, [location]);
     const logout = () => {
         logoutUser();
-        console.log({ authLogout: auth })
     }
     return (
         <div className="text-[#5a5b5c]  h-auto px-2">

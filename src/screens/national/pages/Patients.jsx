@@ -2,15 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import axiosInstance from '../../../utils/axios'
+import Filterbox from '../../../components/Filterbox'
+import Pagination from '../../../components/Pagination'
+import moment from 'moment'
 
 const Patients = () => {
+    //filter
+    const [selectedDateTo, setSelectedDateTo] = useState();
+    const [selectedDateFrom, setSelectedDateFrom] = useState();
+    const filterdata = ["firstname", "state", "lga", "HealthFacility"]
+    const [filter, setFilter] = useState(filterdata[0]);
+    const [searchitem, setSearchitem] = useState()
+    const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD")
+    const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD")
+    //
     const [patients, setPatients] = useState()
     const [isActive, setIsActive] = useState(1)
+    const [currentpage, setCurrentpage] = useState(1)
 
+
+    if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
+        console.log("greater")
+    } else {
+        console.log("less than")
+    }
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/findwithworkers');
-            setPatients(res.data)
+            setPatients(res.data.result)
         } catch (err) {
 
         }
@@ -18,6 +37,32 @@ const Patients = () => {
     useEffect(() => {
         getAllPatients()
     }, [])
+    const filterPatients = (patients, searchitem, filter) => {
+        if (!patients) return []; // Return an empty array if patients is falsy
+
+        if (searchitem && selectedDateFrom && selectedDateTo) {
+            return patients.filter(item =>
+                item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
+                (new Date(item.createdat).getTime() >= new Date(selectedDateFrom).getTime() &&
+                    new Date(item.createdat).getTime() <= new Date(selectedDateTo).getTime())
+            );
+        } else if (searchitem) {
+            return patients.filter(item =>
+                item[filter].toLowerCase().includes(searchitem.toLowerCase())
+            );
+        } else if (selectedDateFrom && selectedDateTo) {
+            return patients.filter(item =>
+            (new Date(item.createdat).getTime() >= new Date(selectedDateFrom).getTime() &&
+                new Date(item.createdat).getTime() <= new Date(selectedDateTo).getTime())
+            );
+        } else {
+            return patients;
+        }
+
+
+
+    }
+    const filteredPatients = filterPatients(patients, searchitem, filter);
     return (
         <div>
             <div className='bg-primary10'>
@@ -34,49 +79,8 @@ const Patients = () => {
                 </div>
 
                 {/* selectbox1 */}
-                <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white w-auto m-3 min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
-                        {/* 1 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
+                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
 
-                        </div>
-                        {/* 3 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date From</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date From
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 4 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date To</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date To
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
                 {/* patients table */}
                 <div className='w-full flex items-center justify-center font-inter my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
@@ -91,29 +95,30 @@ const Patients = () => {
                                 <th>Health Facility</th>
                                 <th>Last Visit</th>
                             </tr>
-                            {patients?.map((item, index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>{index}</td>
-                                <td>{item.firstname}</td>
-                                <td>{item.id}</td>
-                                <td>{item.state}</td>
-                                <td>{item.lga}</td>
-                                <td>{item.healthFacility}</td>
-                                <td></td>
+                            {patients
+                                ? (searchitem || (selectedDateTo && selectedDateFrom)
+                                    ? filteredPatients
+                                    : patients
+                                ).map((item, index) => (
 
-                            </tr>)}
+                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                        <td>{index + 1}</td>
+                                        <td>{item.firstname}</td>
+                                        <td>{item.id}</td>
+                                        <td>{item.state}</td>
+                                        <td>{item.lga}</td>
+                                        <td>{item.healthFacility}</td>
+                                        <td>{moment(item.last_visit).fromNow()}</td>
+                                    </tr>
+                                ))
+                                : null
+                            }
+
 
                         </table>
                         {/* pagination */}
-                        <div className='flex items-center justify-center mt-4'>
-                            <div className="flex items-center cursor-pointer gap-3">
-                                <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
-                                <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
-                                <div className=" text-center">2</div>
-                                <div className=" text-center">3</div>
-                                <div className=" text-center">4</div>
-                                <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
-                            </div>
-                        </div>
+                        <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={patients?.length / 10} />
+
                     </div>
                 </div>
 

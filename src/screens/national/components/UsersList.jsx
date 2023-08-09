@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
 import moment from 'moment'
+import Pagination from '../../../components/Pagination'
 
 const UsersList = () => {
     const [stateusers, setStateusers] = useState()
     const [isActive, setIsActive] = useState(1)
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
 
     const getStateUsers = async () => {
         try {
@@ -21,11 +24,11 @@ const UsersList = () => {
     }, [])
     return (
         <div className='min-w-[1000px]'>
-            <div className='flex gap-2 my-8 justify-start'>
+            {/* <div className='flex gap-2 my-8 justify-start'>
                 <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
                 <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
-            </div>
-            <table className="cursor-default w-full">
+            </div> */}
+            <table className="cursor-default mt-7 w-full">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -54,16 +57,7 @@ const UsersList = () => {
 
             </table>
             {/* pagination */}
-            <div className='flex items-center justify-center mt-4'>
-                <div className="flex items-center cursor-pointer gap-3">
-                    <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
-                    <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
-                    <div className=" text-center">2</div>
-                    <div className=" text-center">3</div>
-                    <div className=" text-center">4</div>
-                    <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
-                </div>
-            </div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={stateusers?.length / 10} />
         </div>
     )
 }

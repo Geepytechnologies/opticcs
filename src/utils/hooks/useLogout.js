@@ -1,18 +1,19 @@
 import React from "react";
 import axiosInstance from "../axios";
 import { useAuth } from "./useAuth";
+import { useNavigate } from "react-router-dom";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const logout = async () => {
     setAuth({});
     try {
-      const response = await axiosInstance.get("/auth/signout", {
+      navigate("/national/login");
+      const response = await axiosInstance.get("/admin/national/signout", {
         withCredentials: true,
       });
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
   return logout;
 };

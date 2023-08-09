@@ -1,7 +1,9 @@
 import React from 'react'
 import { FaRegUser } from 'react-icons/fa'
+import { useAuth } from '../../../utils/hooks/useAuth'
 
 const Profile = () => {
+    const { nationalAuth } = useAuth()
     return (
         <div><div className='bg-primary10 min-w-[800px]'>
             {/* dashboard */}
@@ -20,55 +22,37 @@ const Profile = () => {
                                 <label className="text-[16px] font-[500] text-dark50">
                                     First Name<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your first name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.staffname}</div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-[16px] font-[500] text-dark50">
-                                    Last Name<span className="ml-2 text-red-500">*</span>
+                                    Cadre<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your last name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.cadre}</div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-[16px] font-[500] text-dark50">
-                                    Last Name<span className="ml-2 text-red-500">*</span>
+                                    User ID<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your last name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.userid}</div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-[16px] font-[500] text-dark50">
-                                    Last Name<span className="ml-2 text-red-500">*</span>
+                                    Phone<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your last name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.phone}</div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-[16px] font-[500] text-dark50">
-                                    Last Name<span className="ml-2 text-red-500">*</span>
+                                    Staff ID<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your last name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.staffid}</div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-[16px] font-[500] text-dark50">
-                                    Last Name<span className="ml-2 text-red-500">*</span>
+                                    Account Type<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                <input
-                                    className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]"
-                                    placeholder="Enter your last name"
-                                />
+                                <div className="p-[16px] text-[#959596] bg-transparent outline-none rounded-[8px] border border-[#959596]">{nationalAuth?.others.accounttype}</div>
                             </div>
 
                         </div>

@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import axiosInstance from '../../../utils/axios';
+import LoaderSmall from '../../../components/LoaderSmall';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const CreateStateUserAccount = () => {
+    const [generatedusername, setGeneratedusername] = useState("")
+    const [generatedpassword, setGeneratedPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const [values, setValues] = useState({ state: "Abia", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
+    const [values, setValues] = useState({ state: "Abia", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: generatedusername, password: generatedpassword, cadre: "", accountType: "National" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
     const [stateError, setstateError] = useState({ status: false, message: "" })
@@ -14,6 +18,31 @@ const CreateStateUserAccount = () => {
     const [passwordError, setPasswordError] = useState({ status: false, message: "" })
     const [cadreError, setCadreError] = useState({ status: false, message: "" })
     const [accountTypeError, setAccountTypeError] = useState({ status: false, message: "" })
+    const [showpassword, setShowpassword] = useState(false)
+
+    const handleshowpassword = () => {
+        setShowpassword(!showpassword)
+    }
+
+    console.log(values)
+
+
+    const generatedetails = async (e) => {
+        setLoading(true)
+        try {
+            const res = await axiosInstance.get("/admin/state/generateuser")
+            setValues({ ...values, userid: res.data.username, password: res.data.password });
+            console.log(res.data)
+            if (res.data) {
+                setLoading(false)
+            }
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
+    }
     const handleChange2 = (event) => {
         const { name, value } = event.target;
         name == "gender" && setgenderError({ status: false, message: "" })
@@ -126,6 +155,7 @@ const CreateStateUserAccount = () => {
             setAccountTypeError({ status: true, message: 'This field is required' });
         }
     };
+
     const createAccount = async (e) => {
         e.preventDefault()
         validateValues()
@@ -182,6 +212,7 @@ const CreateStateUserAccount = () => {
                             <option value="Edo">Edo</option>
                             <option value="Ekiti">Ekiti</option>
                             <option value="Enugu">Enugu</option>
+                            <option value="FCT">FCT</option>
                             <option value="Gombe">Gombe</option>
                             <option value="Imo">Imo</option>
                             <option value="Jigawa">Jigawa</option>
@@ -304,7 +335,7 @@ const CreateStateUserAccount = () => {
                 </div>
                 <div className='flex flex-col'>
 
-                    <div className='text-primary90 cursor-pointer font-[500] text-[16px]'>Click to Generate User ID and Password</div>
+                    <div onClick={generatedetails} className='text-primary90 cursor-pointer font-[500] text-[16px]'>{!loading ? <p>Click to Generate User ID and Password</p> : <span>Generating...</span>}</div>
                     <div className='flex items-center gap-5 my-4'>
                         <div className="flex flex-col">
                             <div className='flex gap-3 items-center'>
@@ -313,10 +344,10 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
                             </div>
-                            <input type="text" onChange={handleChange2}
-                                name="userid" onBlur={handleUseridBlur}
+                            <input type="text"
+                                name="userid" value={values.userid} onBlur={handleUseridBlur}
                                 className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="Enter your phone number"
+                                placeholder="userID"
                             />
                         </div>
                         <div className="flex flex-col">
@@ -326,11 +357,18 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
                             </div>
-                            <input type="password" onChange={handleChange2}
-                                name="password" onBlur={handlePasswordBlur}
-                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="XXXX XXXX X4380"
-                            />
+                            <div className="p-[16px] flex items-center justify-center bg-transparent text-secondary30 rounded-[8px] border border-[#C6C7C8]">
+                                <input type={`${showpassword ? "text" : "password"}`} readonly value={values.password}
+                                    name="password" onBlur={handlePasswordBlur}
+                                    className=" outline-none"
+                                    placeholder="Password"
+                                />
+                                <div className='flex text-[20px]'>
+                                    {showpassword && <AiFillEye onClick={handleshowpassword} />}
+                                    {!showpassword && <AiFillEyeInvisible onClick={handleshowpassword} />}
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>

@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
 import moment from "moment"
+import Pagination from '../../../components/Pagination'
 
 const StateList = () => {
     const [states, setStates] = useState()
     const [isActive, setIsActive] = useState(1)
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
 
 
     const getAllStates = async () => {
         try {
             const res = await axiosInstance.get("/admin/state/find")
             setStates(res.data.result)
-            console.log(states)
         } catch (error) {
 
         }
@@ -53,16 +55,7 @@ const StateList = () => {
 
             </div>
             {/* pagination */}
-            <div className='flex items-center justify-center mt-4'>
-                <div className="flex items-center cursor-pointer gap-3">
-                    <AiOutlineArrowLeft className='bg-primary90 text-white rounded-lg font-[600]' />
-                    <div className={`text-center ${isActive && 'text-red-600'}`}>1</div>
-                    <div className=" text-center">2</div>
-                    <div className=" text-center">3</div>
-                    <div className=" text-center">4</div>
-                    <AiOutlineArrowRight className='bg-primary90 text-white rounded-lg font-[600]' />
-                </div>
-            </div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={states?.length / 10} />
         </div>
     )
 }

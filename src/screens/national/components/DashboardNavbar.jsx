@@ -34,8 +34,10 @@ const DashboardNavbar = () => {
                 <div className='rounded-full flex items-center text-[16px] font-[500] justify-center bg-primary50 text-light10 w-[40px] h-[40px]'>
                     <span>{staffname.charAt(0).toUpperCase()}</span>
                 </div>
-                <h2 className='text-[12px] font-[500] text-[#000]'>{capitalizeFirstLetter(staffname)}</h2>
-                <FiChevronDown />
+                <Link to={"/national/profile"} className='flex gap-1'>
+                    <h2 className='text-[12px] font-[500] text-[#000]'>{capitalizeFirstLetter(staffname)}</h2>
+                    <FiChevronDown />
+                </Link>
             </div>
         </div>
     )

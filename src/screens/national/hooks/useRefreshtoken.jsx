@@ -5,20 +5,24 @@ import axiosInstance from "../../../utils/axios";
 
 const useRefreshtoken = () => {
   const { setNationalAuth } = useAuth();
-
   const refresh = async () => {
-    const response = await axiosInstance.get("/admin/national/refresh", {
-      withCredentials: true,
-    });
-    setNationalAuth((prev) => {
-      return {
-        ...prev,
-        accessToken: response.data.accessToken,
-        others: response.data.others,
-      };
-    });
-    return response.data.accessToken;
-  };
+    try {
+      const response = await axiosInstance.get("/admin/national/refresh", {
+        withCredentials: true,
+      });
+      if (response.data) {
+        setNationalAuth((prev) => {
+          return {
+            ...prev,
+            accessToken: response.data.accessToken,
+            others: response.data.others,
+          };
+        });
+        return response?.data?.accessToken;
+      }
+    } catch (error) {
+    }
+  }
   return refresh;
 };
 

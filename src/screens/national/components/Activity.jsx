@@ -30,7 +30,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>This is the total number of women who had missed their ANC appointments but later visited the health facility after a follow-up call or visit from the CHIPS/WDCs agents</h2>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Number of women who attended ANC and reported being satified with ANC services received</h2>
                             </div>
                         </div>
@@ -55,7 +55,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who attended antenatal care and were interviewed</h2>
                             </div>
                         </div>
@@ -67,7 +67,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>This is the number of antenatal care providers who received training on malaria during pregnancy in the past 12 months</h2>
                             </div>
                         </div>
@@ -106,7 +106,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>This is the number of antenatal care providers who received training on PMTCT services provision in the past 12 months</h2>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>This is the number of antenatal care providers who received training on COVID-19 in pregnancy in the past 12 months</h2>
                             </div>
                         </div>
@@ -136,7 +136,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>This is the number of antenatal care providers who received training on TB/HIV services provision in the past 12 months</h2>
                             </div>
                         </div>
@@ -160,7 +160,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of intervention facilities with complete, accurate and timely data reporting</h2>
                             </div>
                         </div>
@@ -169,7 +169,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of intervention facilities</h2>
                             </div>
                         </div>
@@ -181,7 +181,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>
@@ -197,7 +197,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'> Number of women who attended ANC and reported being satified with ANC services received</h2>
                             </div>
                         </div>
@@ -206,7 +206,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who attended antenatal care and were interviewed</h2>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ const Activity = () => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>2390</h2>
+                                <h2 className='text-[20px] font-[600]'>0</h2>
                                 <h2 className='text-[10px] font-[400]'>Numerator/Denominator</h2>
                             </div>
                         </div>

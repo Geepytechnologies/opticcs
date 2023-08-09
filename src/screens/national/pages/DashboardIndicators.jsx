@@ -8,11 +8,17 @@ import IndicatorNavigatorScreen5 from '../components/IndicatorNavigatorScreen5'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axiosInstance from '../../../utils/axios'
+import Filterbox from '../../../components/Filterbox'
 
 const DashboardIndicators = () => {
+    //filter
+    const [selectedDateTo, setSelectedDateTo] = useState();
+    const [selectedDateFrom, setSelectedDateFrom] = useState();
+    const filterdata = ["national", "state", "lga", "healthFacility"]
+    const [filter, setFilter] = useState(filterdata[0]);
+    const [searchitem, setSearchitem] = useState()
+    //navigation
     const [navigatorSlide, setNavigatorSlide] = useState(1);
-    const [selectedDateTo, setSelectedDateTo] = useState(new Date());
-    const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
     const [patients, setPatients] = useState(0)
 
 
@@ -66,55 +72,16 @@ const DashboardIndicators = () => {
                 </div>
 
                 {/* selectbox1 */}
-                <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white m-3 w-auto min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
-                        {/* 1 */}
-                        <div className='flex flex-col '>
-                            <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
+                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
 
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date From</label>
-                            <DatePicker
-                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
-                                selected={selectedDateFrom}
-                                onChange={(date) => handleDateFromChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                                defaultValue={selectedDateFrom}
-                            />
-
-                        </div>
-                        {/* 4 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date To</label>
-                            <DatePicker
-                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
-                                selected={selectedDateTo}
-                                onChange={(date) => handleDateToChange(date)}
-                                dateFormat="yyyy-MM-dd"
-                                defaultValue={selectedDateTo}
-                            />
-
-                        </div>
-                    </div>
-                </div>
                 {/* indicator outcome */}
                 <div className='w-full flex items-center justify-center my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
                         {/* navigator */}
-                        <div className='flex px-3 w-full items-center gap-4'>
+                        <div className='flex px-3 w-full items-center gap-6'>
                             <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>General</div>
                             <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div>
-                            <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Every Visit</div>
+                            <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Return Visit</div>
                             <div onClick={() => setNavigatorSlide(4)} className={`cursor-pointer text-center ${navigatorSlide === 4 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Test Result</div>
                             <div onClick={() => setNavigatorSlide(5)} className={`cursor-pointer ${navigatorSlide === 5 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Antenatal Schedule</div>
                             <div className='ml-auto font-[500]'><span className='text-primary70'>{patients} </span>Patient Generated</div>

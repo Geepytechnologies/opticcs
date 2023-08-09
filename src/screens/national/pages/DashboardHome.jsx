@@ -15,7 +15,7 @@ import Filterbox from '../../../components/Filterbox'
 const DashboardHome = () => {
     const [selectedDateTo, setSelectedDateTo] = useState(new Date());
     const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
-    const [filter, setFilter] = useState("general");
+    const [filter, setFilter] = useState("national");
 
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [healthWorkers, setHealthWorkers] = useState(0)
@@ -61,7 +61,7 @@ const DashboardHome = () => {
         getAllPatients()
         getAllstates()
         getHealthfacilities()
-    })
+    }, [])
     function downloadTable() {
         const table = tableRef.current;
 
