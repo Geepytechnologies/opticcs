@@ -21,22 +21,21 @@ const Patients = () => {
     const [currentpage, setCurrentpage] = useState(1)
 
 
-    if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
-        console.log("greater")
-    } else {
-        console.log("less than")
-    }
+    // if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
+    //     console.log("greater")
+    // } else {
+    //     console.log("less than")
+    // }
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/findwithworkers');
-            console.log(res.data.result)
             setPatients(res.data.result)
         } catch (err) {
 
         }
     }
     useEffect(() => {
-        // getAllPatients()
+        getAllPatients()
     }, [])
     const filterPatients = (patients, searchitem, filter) => {
         if (!patients) return []; // Return an empty array if patients is falsy
