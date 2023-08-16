@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
+import Pagination from '../../../components/Pagination'
+import moment from 'moment'
 
 const StateList = () => {
-    const array = [1, 2, 3, 4]
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
     const [facilitylist, setFacilityList] = useState()
     const getHealthfacilities = async () => {
         try {
@@ -39,7 +42,7 @@ const StateList = () => {
                         <td>{item.healthfacilityname}</td>
                         <td>{item.healthfacilityID}</td>
                         <td>{item.officeaddress}</td>
-                        <td>{item.createdAt}</td>
+                        <td>{moment(item.createdat).format('yyyy-MM-DD')}</td>
                         <td className=''>{item.phone}</td>
                         <td className=''>{item.email}</td>
 
@@ -49,14 +52,9 @@ const StateList = () => {
 
             </div>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={facilitylist?.length / 10} />
+
+        </div>
     )
 }
 

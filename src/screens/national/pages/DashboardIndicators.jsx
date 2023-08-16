@@ -19,6 +19,7 @@ const DashboardIndicators = () => {
     const [searchitem, setSearchitem] = useState()
     //navigation
     const [navigatorSlide, setNavigatorSlide] = useState(1);
+    //data
     const [patients, setPatients] = useState(0)
 
 
@@ -92,10 +93,6 @@ const DashboardIndicators = () => {
 
                     </div>
                 </div>
-                {/* intermediate Result1 analysis */}
-                {/* <IntermediateResult1 /> */}
-                {/* activity analysis */}
-                {/* <Activity /> */}
             </div>
         </div>
     )

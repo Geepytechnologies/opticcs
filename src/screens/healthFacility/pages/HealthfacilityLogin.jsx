@@ -42,7 +42,6 @@ const HealthfacilityLogin = () => {
         setValues({ ...values, [name]: value });
     };
     const loginUser = async () => {
-        console.log({ myValues: values })
         setIsLoading(true);
         try {
             const res = await axiosPrivate.post("/admin/healthfacility/signin", {
@@ -51,7 +50,6 @@ const HealthfacilityLogin = () => {
             });
             if (res.data) {
                 setIsLoading(false)
-                console.log({ res: res.data });
                 loadToast("Login Successful", "success")
                 navigate('/healthfacility')
                 setHealthfacilityAuth((prevAuth) => {
@@ -67,11 +65,10 @@ const HealthfacilityLogin = () => {
 
         } catch (err) {
             setIsLoading(false)
-            console.log(err.response.data)
-            if (err?.response?.data == "User not found") {
+            if (err?.response?.data.message == "User not found") {
                 loadToast("User not found", "error")
             }
-            else if (err?.response?.data == "Wrong credentials") {
+            else if (err?.response?.data.message == "Wrong credentials") {
                 loadToast("Wrong credentials", "error")
             } else {
                 loadToast("Something Went wrong", "error")

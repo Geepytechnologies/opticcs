@@ -23,7 +23,8 @@ import { CgNotes } from "react-icons/cg"
 import { FiSettings } from "react-icons/fi"
 import { useAuth } from '../../../utils/hooks/useAuth';
 import PartnerLogo from '../../../components/PartnerLogo';
-import useLogout from '../../../utils/hooks/useLogout';
+import useLogout from '../hooks/useLogout';
+
 
 const DashboardMenu = () => {
     const [currentPage, setCurrentPage] = useState("");
@@ -70,7 +71,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/patients"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/national/patients"
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -81,7 +82,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/patients-schedule"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -92,7 +93,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/health-worker"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-worker")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -122,7 +123,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/lga"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("lga")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -133,7 +134,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/accounts"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("accounts")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -144,7 +145,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -155,7 +156,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/settings"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("settings")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -166,7 +167,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/national/profile"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("profile")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -176,7 +177,7 @@ const DashboardMenu = () => {
                 {/* Logout */}
                 <div onClick={logout}
                     className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
-                        ? "bg-primary90 text-white drop-shadow-2xl"
+                        ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >

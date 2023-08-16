@@ -23,7 +23,7 @@ import { CgNotes } from "react-icons/cg"
 import { FiSettings } from "react-icons/fi"
 import { useAuth } from '../../../utils/hooks/useAuth';
 import PartnerLogo from '../../../components/PartnerLogo';
-import useLogout from '../../../utils/hooks/useLogout';
+import useLogout from '../hooks/useLogout';
 
 const DashboardMenu = () => {
     const [currentPage, setCurrentPage] = useState("");
@@ -35,7 +35,6 @@ const DashboardMenu = () => {
     }, [location]);
     const logout = () => {
         logoutUser();
-        console.log({ authLogout: auth })
     }
     return (
         <div className="text-[#5a5b5c]  h-auto px-2">
@@ -71,7 +70,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/patients"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/state/patients"
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -82,7 +81,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/patients-schedule"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -93,7 +92,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/health-worker"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("health-worker")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -114,7 +113,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/lga"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("lga")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -125,7 +124,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/accounts"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("accounts")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -136,7 +135,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -147,7 +146,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/settings"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("settings")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -158,7 +157,7 @@ const DashboardMenu = () => {
                 <Link
                     to="/state/profile"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("profile")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >
@@ -168,7 +167,7 @@ const DashboardMenu = () => {
                 {/* Logout */}
                 <div onClick={logout}
                     className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
-                        ? "bg-[#141619] text-white drop-shadow-2xl"
+                        ? "bg-[#141619] text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
                 >

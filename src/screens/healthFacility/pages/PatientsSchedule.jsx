@@ -1,10 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import { LuCalendarDays } from 'react-icons/lu'
+import Filterbox from '../../../components/Filterbox'
+import Pagination from '../../../components/Pagination'
+import axiosInstance from '../../../utils/axios'
+import moment from 'moment'
+import { useAuth } from '../hooks/useAuth'
 
 const PatientsSchedule = () => {
+    const { healthfacilityAuth } = useAuth()
+    const { healthfacilityid } = healthfacilityAuth.others;
+    //filter
+    const [selectedDateTo, setSelectedDateTo] = useState(new Date());
+    const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
+    const filterdata = ["firstname", "state", "lga", "healthFacility"]
+    const [filter, setFilter] = useState(filterdata[0]);
+    const [searchitem, setSearchitem] = useState()
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
+    const [patientsSchedule, setPatientsSchedule] = useState()
     const array = [1, 2, 3, 4]
+    const getAllPatientschedule = async () => {
+        try {
+            const result = await axiosInstance.get("/users/schedule/find/all");
+            const filteredschedule = result.data.result.filter((item) => item.healthfacility == healthfacilityid)
+            setPatientsSchedule(filteredschedule)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getAllPatientschedule()
+    }, [])
     return (
         <div>
             <div className='bg-primary10'>
@@ -21,62 +49,7 @@ const PatientsSchedule = () => {
                 </div>
 
                 {/* selectbox1 */}
-                <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white w-auto m-3 min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
-                        {/* 1 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 2 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Type</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    General
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 3 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date From</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date From
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                        {/* 4 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date To</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date To
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
+                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
                 {/* patients table */}
                 <div className='w-full flex items-center justify-center font-inter my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
@@ -88,30 +61,31 @@ const PatientsSchedule = () => {
                                 <th>Patient ID</th>
                                 <th>Health Facility</th>
                                 <th>Scheduled Date</th>
-                                <th>Actions</th>
+                                <th>Status</th>
                             </tr>
-                            {/* {array.map((index) => <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                <td>01</td>
-                                <td>Godspower</td>
-                                <td>26223</td>
-                                <td>Lagos</td>
-                                <td>Ikeja</td>
-                                <td className='text-primary70'>View Profile</td>
-                                <td className='text-primary90'>View Record</td>
-                                <td className='text-[#CC9A06]'>check sc</td>
+                            {patientsSchedule
+                                ? (searchitem
+                                    ? patientsSchedule.filter(item => item[filter]?.toLowerCase().includes(searchitem?.toLowerCase()))
+                                    : patientsSchedule
+                                ).map((item, index) => (
+                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                        <td>{index + 1}</td>
+                                        <td>{item.firstname}</td>
+                                        <td>{item.patient_id}</td>
+                                        <td>{item.healthFacility}</td>
+                                        <td>{`from ${moment(item.datefrom).format("yyyy-MM-DD")} to ${moment(item.dateto).format("yyyy-MM-DD")}`}</td>
+                                        {item.completed == 1 ? <td className='text-primary70'>{`Completed`}</td> :
+                                            <td className='text-[#CC9A06]'>{` Not Completed`}</td>}
 
-                            </tr>)} */}
+                                    </tr>
+                                ))
+                                : null
+                            }
+
 
                         </table>
                         {/* pagination */}
-                        <div className="flex items-center mt-4">
-                            <AiOutlineArrowLeft />
-                            <div className=" text-center">1</div>
-                            <div className=" text-center">2</div>
-                            <div className=" text-center">3</div>
-                            <div className=" text-center">4</div>
-                            <AiOutlineArrowRight />
-                        </div>
+                        <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={0} />
                     </div>
                 </div>
 

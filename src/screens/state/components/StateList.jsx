@@ -4,9 +4,11 @@ import axiosInstance from '../../../utils/axios'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import moment from 'moment'
+import Pagination from '../../../components/Pagination'
 
 const LgaList = () => {
-    const array = [1, 2, 3, 4]
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
     const [lgalist, setLgalist] = useState()
     const getLgas = async () => {
         try {
@@ -51,14 +53,9 @@ const LgaList = () => {
 
             </div>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={lgalist?.length / 10} />
+
+        </div>
     )
 }
 

@@ -150,13 +150,14 @@ const CreateStateAccount = () => {
         try {
             setLoading(true)
             const res = await axiosInstance.post("/admin/lga", {
+                state: state,
                 lga: values.lga,
                 boardname: values.lgaboard,
                 lgaID: values.lgaid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
             })
             if (res.data) {
                 alert("LGA Account has been created")
-                setValues({ state: "Abia", stateboard: "", stateid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" })
+                setValues({ lga: "", lgaboard: "", lgaid: "", officeaddress: "", phone: "", email: "", userid: "", password: "" })
             }
         } catch (error) {
 

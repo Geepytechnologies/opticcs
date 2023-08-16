@@ -6,7 +6,7 @@ import LoaderSmall from '../../../components/LoaderSmall';
 
 const CreateStateAccount = () => {
     const { lgaAuth } = useAuth()
-    const lga = lgaAuth.others.lga;
+    const { lga, state } = lgaAuth.others;
     const [isLoading, setIsLoading] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const [toastmessage, setToastmessage] = useState("")
@@ -74,21 +74,21 @@ const CreateStateAccount = () => {
             setPhoneError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        if (values.email === "") {
-            setEmailError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (values.userid === "") {
-            setUseridError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (values.password === "") {
-            setPasswordError({ status: true, message: "This field is required" });
-            noErrors = false;
-        }
-        if (!valuesofficeaddressmatch) {
-            noErrors = false;
-        }
+        // if (values.email === "") {
+        //     setEmailError({ status: true, message: "This field is required" });
+        //     noErrors = false;
+        // }
+        // if (values.userid === "") {
+        //     setUseridError({ status: true, message: "This field is required" });
+        //     noErrors = false;
+        // }
+        // if (values.password === "") {
+        //     setPasswordError({ status: true, message: "This field is required" });
+        //     noErrors = false;
+        // }
+        // if (!valuesofficeaddressmatch) {
+        //     noErrors = false;
+        // }
 
 
         return noErrors;
@@ -135,9 +135,12 @@ const CreateStateAccount = () => {
     };
     const createAccount = async (e) => {
         e.preventDefault()
+        validateValues()
         setIsLoading(true)
         try {
             const res = await axiosInstance.post("/admin/healthfacility", {
+                state: state,
+                lga: lga,
                 ward: values.ward,
                 healthfacilityname: values.healthfacilityname,
                 healthfacilityID: values.healthfacilityid, officeaddress: values.officeaddress, phone: values.phone, email: values.email
@@ -171,11 +174,12 @@ const CreateStateAccount = () => {
                                 </label>
                                 {wardError.status && <span className='text-[12px] font-[500] italic text-red-500'>{wardError.message}</span>}
                             </div>
-                            <select name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                            <select value={values.ward} name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
                                 <option value="" disabled >
                                     Choose a value
                                 </option>
                                 <option value="ward2">ward2</option>
+                                <option value="ward3">ward3</option>
                             </select>
                         </div>
                         <div className="flex flex-col">

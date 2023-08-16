@@ -79,36 +79,42 @@ const HealthWorker = () => {
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
 
                         <table className="cursor-default w-full">
-                            <tr>
-                                <th>SN</th>
-                                <th>Name</th>
-                                <th>Client ID</th>
-                                <th>Carde</th>
-                                <th>State</th>
-                                <th>LGA</th>
-                                <th>Health Facility</th>
-                                <th>Phone Number</th>
-                            </tr>
-                            {workers
-                                ? (searchitem || (selectedDateTo && selectedDateFrom)
-                                    ? filteredworkers
-                                    : workers
-                                ).map((item, index) => (
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Name</th>
+                                    <th>Client ID</th>
+                                    <th>Carde</th>
+                                    <th>State</th>
+                                    <th>LGA</th>
+                                    <th>Health Facility</th>
+                                    <th>Phone Number</th>
+                                </tr>
 
-                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                        <td>{item.id}</td>
-                                        <td>{item.healthWorker}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.cadre}</td>
-                                        <td>{item.state}</td>
-                                        <td>{item.lga}</td>
-                                        <td>{item.healthFacility}</td>
-                                        <td>{item.phone}</td>
+                            </thead>
+                            <tbody>
 
-                                    </tr>
-                                ))
-                                : null
-                            }
+                                {workers
+                                    ? (searchitem || (selectedDateTo && selectedDateFrom)
+                                        ? filteredworkers
+                                        : workers
+                                    ).map((item, index) => (
+
+                                        <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                            <td>{item.id}</td>
+                                            <td>{item.healthworker}</td>
+                                            <td>{item.id}</td>
+                                            <td>{item.cadre}</td>
+                                            <td>{item.state}</td>
+                                            <td>{item.lga}</td>
+                                            <td>{item.healthfacility}</td>
+                                            <td>{item.phone}</td>
+
+                                        </tr>
+                                    ))
+                                    : null
+                                }
+                            </tbody>
 
                         </table>
                         {/* pagination */}

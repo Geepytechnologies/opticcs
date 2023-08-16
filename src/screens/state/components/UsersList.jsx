@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
 import moment from 'moment'
+import Pagination from '../../../components/Pagination'
 
 const UsersList = () => {
     const [lgaUsers, setlgaUsers] = useState()
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
     const getlgausers = async () => {
         const res = await axiosInstance.get("/admin/lga/users")
         setlgaUsers(res.data)
@@ -41,15 +44,12 @@ const UsersList = () => {
 
             </table>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={lgaUsers?.length / 10} />
+
+
+        </div>
     )
 }
 
 export default UsersList
+

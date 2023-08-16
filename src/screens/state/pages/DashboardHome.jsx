@@ -10,22 +10,31 @@ import { useRef } from 'react'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useAuth } from '../hooks/useAuth'
+import Filterbox from '../../../components/Filterbox'
 
 
 
 const DashboardHome = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    //filter
+    const [selectedDateTo, setSelectedDateTo] = useState();
+    const [selectedDateFrom, setSelectedDateFrom] = useState();
+    const filterdata = ["firstname", "state", "lga", "HealthFacility"]
+    const [filter, setFilter] = useState(filterdata[0]);
+    const [searchitem, setSearchitem] = useState()
+    //pagination
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [healthWorkers, setHealthWorkers] = useState(0)
     const [patients, setPatients] = useState(0)
     const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
     const { stateAuth } = useAuth()
+    const { state } = stateAuth.others;
 
     const getAllHealthWorkers = async () => {
         try {
             const res = await axiosInstance.get('/users/find');
-            setHealthWorkers(res.data.result.length)
+            const stateworkers = res.data.result.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setHealthWorkers(stateworkers.length)
         } catch (err) {
 
         }
@@ -33,16 +42,17 @@ const DashboardHome = () => {
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/findwithworkers');
-            const statepatients = res.data.filter((obj) => obj.state == stateAuth.others.state)
+            const statepatients = res.data.result.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
             setPatients(statepatients.length)
         } catch (err) {
 
         }
     }
-    const getAllstates = async () => {
+    const getAllLGAs = async () => {
         try {
-            const res = await axiosInstance.get('/admin/state/find');
-            setStatenumbers(res.data.result.length)
+            const res = await axiosInstance.get('/admin/lga/find');
+            const statelgas = res.data.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setStatenumbers(statelgas.length)
         } catch (err) {
 
         }
@@ -50,7 +60,8 @@ const DashboardHome = () => {
     const getHealthfacilities = async () => {
         try {
             const res = await axiosInstance.get('/admin/healthfacility/find');
-            setHfnumbers(res.data.length)
+            const statehealthfacilities = res.data.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setHfnumbers(statehealthfacilities.length)
         } catch (err) {
 
         }
@@ -58,7 +69,7 @@ const DashboardHome = () => {
     useEffect(() => {
         getAllHealthWorkers()
         getAllPatients()
-        getAllstates()
+        getAllLGAs()
         getHealthfacilities()
     })
     function downloadTable() {
@@ -149,8 +160,8 @@ const DashboardHome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>0</h2>
-                            <h2 className='text-[14px] font-[400]'>State</h2>
+                            <h2 className='text-[32px] font-[600]'>{statenumbers}</h2>
+                            <h2 className='text-[14px] font-[400]'>LGA</h2>
                         </div>
                     </div>
                     {/* indicator4 */}
@@ -169,57 +180,8 @@ const DashboardHome = () => {
                     <button onClick={downloadTable} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
                 </div>
                 {/* selectbox1 */}
-                <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white min-w-[95%] py-2 flex flex-row items-center justify-around gap-3'>
-                        {/* 1 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Filter</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                                <option value="">
-                                    General
-                                </option>
-                                <option value="national">National</option>
-                                <option value="state">State</option>
-                                <option value="lga">LGA</option>
-                                <option value="healthFacility">Health Facility</option>
-                            </select>
+                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
 
-                        </div>
-                        {/* 3 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date From</label>
-                            {/* <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date From
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select> */}
-                            <DatePicker
-                                className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
-                                selected={selectedDate}
-                                onChange={(date) => setSelectedDate(date)}
-                                dateFormat="yyyy-MM-dd"
-                                defaultValue={selectedDate}
-                            />
-
-                        </div>
-                        {/* 4 */}
-                        <div className='flex flex-col'>
-                            <label className='text-primary90 font-[400]'>Date To</label>
-                            <select defaultValue="" className="p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]">
-                                <option value="" disabled >
-                                    Date To
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
                 {/* indicator outcome */}
                 <div className='w-full flex items-center justify-center my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>

@@ -1,15 +1,18 @@
 import React from "react";
-import axiosInstance from "../axios";
 import { useAuth } from "./useAuth";
+import axiosInstance from "../../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const useLogout = () => {
-  const { setAuth } = useAuth();
+  const { setLgaAuth } = useAuth();
+  const navigate = useNavigate();
   const logout = async () => {
-    setAuth({});
+    setLgaAuth({});
     try {
-      const response = await axiosInstance.get("/auth/signout", {
+      const response = await axiosInstance.get("/admin/lga/signout", {
         withCredentials: true,
       });
+      navigate("/lga/login");
     } catch (err) {
       console.error(err);
     }

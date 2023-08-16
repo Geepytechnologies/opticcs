@@ -24,15 +24,12 @@ const CreateStateUserAccount = () => {
         setShowpassword(!showpassword)
     }
 
-    console.log(values)
-
 
     const generatedetails = async (e) => {
         setLoading(true)
         try {
             const res = await axiosInstance.get("/admin/state/generateuser")
             setValues({ ...values, userid: res.data.username, password: res.data.password });
-            console.log(res.data)
             if (res.data) {
                 setLoading(false)
             }
@@ -326,9 +323,7 @@ const CreateStateUserAccount = () => {
                                 Choose a value
                             </option>
                             <option className='' value="national">National</option>
-                            <option value="state">State</option>
-                            <option value="lga">LGA</option>
-                            <option value="health Facility">Health Facility</option>
+
                         </select>
                     </div>
 

@@ -8,15 +8,19 @@ import IntermediateResult2 from '../components/IntermediateResult2'
 import axiosInstance from '../../../utils/axios'
 import { useRef } from 'react'
 import Filterbox from '../../../components/Filterbox'
+import axios from 'axios'
 
 
 
 
 const DashboardHome = () => {
-    const [selectedDateTo, setSelectedDateTo] = useState(new Date());
-    const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
-    const [filter, setFilter] = useState("national");
-
+    //filter
+    const [selectedDateTo, setSelectedDateTo] = useState();
+    const [selectedDateFrom, setSelectedDateFrom] = useState();
+    const filterdata = ["firstname", "state", "lga", "HealthFacility"]
+    const [filter, setFilter] = useState(filterdata[0]);
+    const [searchitem, setSearchitem] = useState()
+    //pagination
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [healthWorkers, setHealthWorkers] = useState(0)
     const [patients, setPatients] = useState(0)
@@ -56,6 +60,19 @@ const DashboardHome = () => {
         }
     }
 
+    useEffect(() => {
+        // Load MathJax when the component mounts
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML';
+        script.async = true;
+        document.head.appendChild(script);
+
+        return () => {
+            // Remove the MathJax script when the component unmounts
+            document.head.removeChild(script);
+        };
+    }, []);
     useEffect(() => {
         getAllHealthWorkers()
         getAllPatients()
@@ -170,7 +187,7 @@ const DashboardHome = () => {
                     <button onClick={downloadTable} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
                 </div>
                 {/* selectbox1 */}
-                <Filterbox selectedDateTo={selectedDateTo} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
+                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
                 {/* indicator outcome */}
                 <div className='w-full flex items-center justify-center my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>

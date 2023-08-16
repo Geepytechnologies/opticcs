@@ -23,7 +23,7 @@ import { CgNotes } from "react-icons/cg"
 import { FiSettings } from "react-icons/fi"
 import { useAuth } from '../../../utils/hooks/useAuth';
 import PartnerLogo from '../../../components/PartnerLogo';
-import useLogout from '../../../utils/hooks/useLogout';
+import useLogout from '../hooks/useLogout';
 
 const DashboardMenu = () => {
     const [currentPage, setCurrentPage] = useState("");
@@ -35,10 +35,9 @@ const DashboardMenu = () => {
     }, [location]);
     const logout = () => {
         logoutUser();
-        console.log({ authLogout: auth })
     }
     return (
-        <div className="text-[#5a5b5c]  h-auto px-2">
+        <div className="text-[#5a5b5c]  h-auto min-h-screen px-2">
             <div className="flex w-full items-center justify-center">
                 <Link to="/" className="w-[80px] h-[80px] flex items-center justify-center">
                     <img src="/images/Logo.png" alt="logo" className="max-w-full max-h-full" />

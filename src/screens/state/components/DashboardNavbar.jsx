@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
 
 const DashboardNavbar = () => {
     const { stateAuth, setStateAuth } = useAuth();
-    console.log({ mystateauth: stateAuth })
     const { staffname } = stateAuth?.others;
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);

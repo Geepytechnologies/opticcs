@@ -7,7 +7,7 @@ import ReactApexChart from "react-apexcharts";
 const ExpectedDelivery = ({ title, series, colors, data }) => {
     const ExpectedDeliveryOptions = {
         series: [{
-            data: [400, 430, 448, 470]
+            data: series
         }],
         chart: {
             type: 'bar',
@@ -23,9 +23,9 @@ const ExpectedDelivery = ({ title, series, colors, data }) => {
             enabled: false
         },
         xaxis: {
-            categories: ['First quarter of the year', 'Second quarter of the year', 'Third quarter of the year', 'Fourth quarter of the year'],
+            categories: ['Q1', 'Q2', 'Q3', 'Q4'],
         },
-        // colors: ["#1A73E8"],
+        colors
 
     };
     return (

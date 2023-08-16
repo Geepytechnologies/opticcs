@@ -68,10 +68,10 @@ const StateLogin = () => {
         } catch (err) {
             setIsLoading(false)
             console.log(err.response.data)
-            if (err?.response?.data == "User not found") {
+            if (err?.response?.data.message == "User not found") {
                 loadToast("User not found", "error")
             }
-            else if (err?.response?.data == "Wrong credentials") {
+            else if (err?.response?.data.message == "Wrong credentials") {
                 loadToast("Wrong credentials", "error")
             } else {
                 loadToast("Something Went wrong", "error")

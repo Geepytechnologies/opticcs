@@ -4,7 +4,6 @@ import { useAuth } from "./hooks/useAuth";
 const RequireLgaAuth = () => {
     const { lgaAuth } = useAuth();
     const location = useLocation();
-    console.log({ lgaAuth: lgaAuth })
     // Check if the user is coming from the signin page
     const isComingFromSignin = location.state?.from?.pathname === "/lga/login";
     // console.log({ access: nationalAuth?.accessToken })

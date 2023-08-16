@@ -2,15 +2,38 @@ import React, { useEffect, useState } from 'react'
 import stateLocalGovts from '../../../utils/stateandlgas';
 import { useAuth } from '../hooks/useAuth';
 import axiosInstance from '../../../utils/axios';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const CreateStateUserAccount = () => {
     const [localGovts, setLocalGovts] = useState([]);
     const { stateAuth } = useAuth()
     const state = stateAuth.others.state;
     const [loading, setLoading] = useState()
+    const [showpassword, setShowpassword] = useState(false)
+
+    const handleshowpassword = () => {
+        setShowpassword(!showpassword)
+    }
 
 
-    const [values, setValues] = useState({ lga: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
+    const generatedetails = async (e) => {
+        setLoading(true)
+        try {
+            const res = await axiosInstance.get("/admin/lga/generateuser")
+            setValues({ ...values, userid: res.data.username, password: res.data.password });
+            if (res.data) {
+                setLoading(false)
+            }
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+
+    const [values, setValues] = useState({ lga: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "LGA" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
     const [lgaError, setlgaError] = useState({ status: false, message: "" })
@@ -140,6 +163,7 @@ const CreateStateUserAccount = () => {
             setLoading(true)
             const res = await axiosInstance.post("/admin/lga/users", {
                 lga: values.lga,
+                state: state,
                 staffname: values.staffname,
                 staffid: values.staffid,
                 gender: values.gender,
@@ -153,6 +177,7 @@ const CreateStateUserAccount = () => {
             if (res.data) {
                 alert("LGA User account has been created")
             }
+            setValues({ lga: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "LGA" })
         } catch (error) {
 
         } finally {
@@ -283,7 +308,7 @@ const CreateStateUserAccount = () => {
                 </div>
                 <div className='flex flex-col'>
 
-                    <div className='text-primary90 cursor-pointer font-[500] text-[16px]'>Click to Generate User ID and Password</div>
+                    <div onClick={generatedetails} className='text-primary90 cursor-pointer font-[500] text-[16px]'>{!loading ? <p>Click to Generate User ID and Password</p> : <span>Generating...</span>}</div>
                     <div className='flex items-center gap-5 my-4'>
                         <div className="flex flex-col">
                             <div className='flex gap-3 items-center'>
@@ -292,10 +317,10 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
                             </div>
-                            <input type="text" onChange={handleChange2}
+                            <input type="text" value={values.userid} readOnly
                                 name="userid" onBlur={handleUseridBlur}
                                 className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="Enter your phone number"
+                                placeholder="userID"
                             />
                         </div>
                         <div className="flex flex-col">
@@ -305,18 +330,27 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
                             </div>
-                            <input type="password" onChange={handleChange2}
-                                name="password" onBlur={handlePasswordBlur}
-                                className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="XXXX XXXX X4380"
-                            />
+                            <div className="p-[16px] flex items-center justify-center bg-transparent text-secondary30 rounded-[8px] border border-[#C6C7C8]">
+                                <input type={`${showpassword ? "text" : "password"}`} readOnly value={values.password}
+                                    name="password" onBlur={handlePasswordBlur}
+                                    className=" outline-none"
+                                    placeholder="Password"
+                                />
+                                <div className='flex text-[20px]'>
+                                    {showpassword && <AiFillEye onClick={handleshowpassword} />}
+                                    {!showpassword && <AiFillEyeInvisible onClick={handleshowpassword} />}
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
                     <div className='flex items-center justify-center mt-8 w-full '>
                         {!loading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                             Create
-                        </button> : <LoaderSmall />}
+                        </button> : <button disabled type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 opacity-30 createbtn">
+                            Create
+                        </button>}
 
                     </div>
                 </div>

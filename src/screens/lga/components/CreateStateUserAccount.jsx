@@ -1,13 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomToast from '../../../components/CustomToast';
 import axiosInstance from '../../../utils/axios';
 import LoaderSmall from '../../../components/LoaderSmall';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { useAuth } from '../hooks/useAuth';
 
 const CreateStateUserAccount = () => {
+    const { lgaAuth } = useAuth()
+    const { lga, state } = lgaAuth.others;
     const [isLoading, setIsLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [healthfacilities, setHealthfacilities] = useState()
+
     const [showToast, setShowToast] = useState(false)
     const [toastmessage, setToastmessage] = useState("")
     const [toastStatus, setToastStatus] = useState("")
+    const [showpassword, setShowpassword] = useState(false)
+
+    const handleshowpassword = () => {
+        setShowpassword(!showpassword)
+    }
+
+
+    const generatedetails = async (e) => {
+        setLoading(true)
+        try {
+            const res = await axiosInstance.get("/admin/healthfacility/generateuser")
+            setValues({ ...values, userid: res.data.username, password: res.data.password });
+            if (res.data) {
+                setLoading(false)
+            }
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     function scrollToTop() {
         window.scrollTo({
@@ -16,7 +45,17 @@ const CreateStateUserAccount = () => {
         });
     }
 
+    const gethealthfacilities = async () => {
+        try {
+            const result = await axiosInstance.get("/admin/healthfacility/find")
+            setHealthfacilities(result.data)
+        } catch (error) {
 
+        }
+    }
+    useEffect(() => {
+        gethealthfacilities()
+    }, [])
     const loadToast = (myMessage, status) => {
         scrollToTop();
         setToastmessage(myMessage)
@@ -26,7 +65,7 @@ const CreateStateUserAccount = () => {
     const handleToastClose = () => {
         setShowToast(false);
     };
-    const [values, setValues] = useState({ ward: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" });
+    const [values, setValues] = useState({ ward: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", healthfacilityid: "" });
     const [phoneError, setPhoneError] = useState({ status: false, message: "" })
     const [emailError, setEmailError] = useState({ status: false, message: "" })
     const [wardError, setwardError] = useState({ status: false, message: "" })
@@ -36,7 +75,7 @@ const CreateStateUserAccount = () => {
     const [useridError, setUseridError] = useState({ status: false, message: "" })
     const [passwordError, setPasswordError] = useState({ status: false, message: "" })
     const [cadreError, setCadreError] = useState({ status: false, message: "" })
-    const [accountTypeError, setAccountTypeError] = useState({ status: false, message: "" })
+    const [healthfacilityidError, sethealthfacilityidError] = useState({ status: false, message: "" })
     const handleChange2 = (event) => {
         const { name, value } = event.target;
         name == "gender" && setgenderError({ status: false, message: "" })
@@ -48,10 +87,9 @@ const CreateStateUserAccount = () => {
         name == "email" && setEmailError({ status: false, message: "" })
         name == "password" && setPasswordError({ status: false, message: "" })
         name == "cadre" && setCadreError({ status: false, message: "" })
-        name == "accountType" && setAccountTypeError({ status: false, message: "" })
+        name == "healthfacilityid" && sethealthfacilityidError({ status: false, message: "" })
         setValues({ ...values, [name]: value });
     };
-    console.log(values)
     const validateValues = () => {
         let noErrors = true;
 
@@ -59,7 +97,6 @@ const CreateStateUserAccount = () => {
             setwardError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-
         if (values.staffname === "") {
             setstaffnameError({ status: true, message: "This field is required" });
             noErrors = false;
@@ -92,13 +129,10 @@ const CreateStateUserAccount = () => {
             setCadreError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        if (values.accountType === "") {
-            setAccountTypeError({ status: true, message: "This field is required" });
+        if (values.healthfacilityid === "") {
+            sethealthfacilityidError({ status: true, message: "This field is required" });
             noErrors = false;
         }
-        // if (!valuesgendermatch) {
-        //     noErrors = false;
-        // }
 
 
         return noErrors;
@@ -148,9 +182,9 @@ const CreateStateUserAccount = () => {
             setCadreError({ status: true, message: 'This field is required' });
         }
     };
-    const handleAccountTypeBlur = () => {
-        if (values.accountType === '') {
-            setAccountTypeError({ status: true, message: 'This field is required' });
+    const handlehealthfacilityidBlur = () => {
+        if (values.healthfacilityid === '') {
+            sethealthfacilityidError({ status: true, message: 'This field is required' });
         }
     };
     const createAccount = async (e) => {
@@ -159,19 +193,21 @@ const CreateStateUserAccount = () => {
         try {
             if (validationStatus) {
                 const res = await axiosInstance.post("/admin/healthfacility/users", {
-                    ward: values.userid,
+                    lga: lga,
+                    state: state,
+                    ward: values.ward,
                     staffname: values.staffname,
                     staffid: values.staffid,
                     gender: values.gender,
                     cadre: values.cadre,
                     phone: values.phone,
                     email: values.email,
-                    accountType: values.accountType,
+                    healthfacilityid: values.healthfacilityid,
                     userid: values.userid,
                     password: values.password
                 })
-                res.data && loadToast("Health Facility created", "success")
-                setValues({ ward: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", accountType: "National" })
+                res.data && loadToast("Health Facility User created", "success")
+                setValues({ ward: "", staffname: "", staffid: "", gender: "male", phone: "", email: "", userid: "", password: "", cadre: "", healthfacilityid: "National" })
 
             }
         } catch (error) {
@@ -193,7 +229,7 @@ const CreateStateUserAccount = () => {
                                 </label>
                                 {wardError.status && <span className='text-[12px] font-[500] italic text-red-500'>{wardError.message}</span>}
                             </div>
-                            <select name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                            <select value={values.ward} name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
                                 <option value="" >
                                     Choose a value
                                 </option>
@@ -235,7 +271,7 @@ const CreateStateUserAccount = () => {
                                 <option value="" disabled >
                                     Choose a value
                                 </option>
-                                <option className=' ' value="male">Male</option>
+                                <option className='' value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </div>
@@ -280,25 +316,25 @@ const CreateStateUserAccount = () => {
                         <div className="flex flex-col">
                             <div className='flex gap-3 items-center'>
                                 <label className="text-[16px] font-[500] text-dark90">
-                                    Account Type<span className="ml-2 text-red-500">*</span>
+                                    Health Facility ID<span className="ml-2 text-red-500">*</span>
                                 </label>
-                                {accountTypeError.status && <span className='text-[12px] font-[500] italic text-red-500'>{accountTypeError.message}</span>}
+                                {healthfacilityidError.status && <span className='text-[12px] font-[500] italic text-red-500'>{healthfacilityidError.message}</span>}
                             </div>
-                            <select name="accountType" value={values.accountType} onChange={handleChange2} onBlur={handleAccountTypeBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                            <select name="healthfacilityid" value={values.healthfacilityid} onChange={handleChange2} onBlur={handlehealthfacilityidBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
                                 <option value="" disabled >
                                     Choose a value
                                 </option>
-                                <option className='' value="national">National</option>
-                                <option value="ward">State</option>
-                                <option value="lga">LGA</option>
-                                <option value="health Facility">Health Facility</option>
+                                {healthfacilities?.map((item, index) => (
+                                    <option key={index} value={item.healthfacilityID}>{item.healthfacilityID}</option>
+                                ))
+                                }
                             </select>
                         </div>
 
                     </div>
                     <div className='flex flex-col'>
 
-                        <div className='text-primary90 cursor-pointer font-[500] text-[16px]'>Click to Generate User ID and Password</div>
+                        <div onClick={generatedetails} className='text-primary90 cursor-pointer font-[500] text-[16px]'>{!loading ? <p>Click to Generate User ID and Password</p> : <span>Generating...</span>}</div>
                         <div className='flex items-center gap-5 my-4'>
                             <div className="flex flex-col">
                                 <div className='flex gap-3 items-center'>
@@ -309,8 +345,9 @@ const CreateStateUserAccount = () => {
                                 </div>
                                 <input type="text" onChange={handleChange2}
                                     name="userid" onBlur={handleUseridBlur}
+                                    value={values.userid}
                                     className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                    placeholder="Enter your phone number"
+                                    placeholder="userID"
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -320,18 +357,27 @@ const CreateStateUserAccount = () => {
                                     </label>
                                     {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
                                 </div>
-                                <input type="password" onChange={handleChange2}
-                                    name="password" onBlur={handlePasswordBlur}
-                                    className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
-                                    placeholder="XXXX XXXX X4380"
-                                />
+                                <div className="p-[16px] flex items-center justify-center bg-transparent text-secondary30 rounded-[8px] border border-[#C6C7C8]">
+                                    <input type={`${showpassword ? "text" : "password"}`} readOnly value={values.password}
+                                        name="password" onBlur={handlePasswordBlur}
+                                        className=" outline-none"
+                                        placeholder="Password"
+                                    />
+                                    <div className='flex text-[20px]'>
+                                        {showpassword && <AiFillEye onClick={handleshowpassword} />}
+                                        {!showpassword && <AiFillEyeInvisible onClick={handleshowpassword} />}
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
                         <div className='flex items-center justify-center mt-8 w-full '>
                             {!isLoading ? <button type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 createbtn">
                                 Create
-                            </button> : <LoaderSmall />}
+                            </button> : <button disabled type="submit" className="text-[#fff] w-[300px] font-[500] font-popp text-[16px] flex items-center justify-center min-w-[200px] bg-primary90 opacity-30 createbtn">
+                                Create
+                            </button>}
 
                         </div>
                     </div>

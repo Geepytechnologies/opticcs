@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import axiosInstance from '../../../utils/axios'
+import Pagination from '../../../components/Pagination'
+import moment from 'moment'
+import { useAuth } from '../hooks/useAuth'
 
 const UsersList = () => {
-    const array = [1, 2, 3, 4]
+    const { lgaAuth } = useAuth()
+    const { lga } = lgaAuth.others;
+    //pagination
+    const [currentpage, setCurrentpage] = useState(1)
     const [healthfacilityusers, setHealthfacilityusers] = useState()
     const getHealthfacilityusers = async () => {
         try {
             const res = await axiosInstance.get("/admin/healthfacility/find/users")
-            setHealthfacilityusers(res.data)
+            const filtered = res.data.filter((item) => item.lga == lga)
+            setHealthfacilityusers(filtered)
         } catch (error) {
 
         }
@@ -38,7 +45,7 @@ const UsersList = () => {
                     <td>{item.staffname}</td>
                     <td>{item.staffid}</td>
                     <td>{item.ward}</td>
-                    <td>{item.createdAt}</td>
+                    <td>{moment(item.createdat).format("yyyy-MM-DD")}</td>
                     <td className=''>{item.phone}</td>
                     <td className=''>{item.cadre}</td>
 
@@ -46,14 +53,9 @@ const UsersList = () => {
 
             </table>
             {/* pagination */}
-            <div className="flex items-center mt-4">
-                <AiOutlineArrowLeft />
-                <div className=" text-center">1</div>
-                <div className=" text-center">2</div>
-                <div className=" text-center">3</div>
-                <div className=" text-center">4</div>
-                <AiOutlineArrowRight />
-            </div></div>
+            <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={healthfacilityusers?.length / 10} />
+
+        </div>
     )
 }
 

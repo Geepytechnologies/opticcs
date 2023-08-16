@@ -60,7 +60,6 @@ const IndicatorNavigatorScreen1 = () => {
         try {
             const res = await axiosInstance.get("/admin/national/data/getbabysmovement/find")
             setBabysmovement(res.data)
-            console.log(res.data)
         } catch (error) {
 
         }

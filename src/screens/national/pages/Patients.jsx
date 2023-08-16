@@ -29,13 +29,14 @@ const Patients = () => {
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/findwithworkers');
+            console.log(res.data.result)
             setPatients(res.data.result)
         } catch (err) {
 
         }
     }
     useEffect(() => {
-        getAllPatients()
+        // getAllPatients()
     }, [])
     const filterPatients = (patients, searchitem, filter) => {
         if (!patients) return []; // Return an empty array if patients is falsy
