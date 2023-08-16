@@ -25,7 +25,23 @@ const Patients = () => {
     //     console.log("greater")
     // } else {
     //     console.log("less than")
+
     // }
+    const [data, setData] = useState()
+
+
+    const getIndicatordata = async () => {
+        try {
+            const res = await axiosInstance.get("/admin/national/data/general")
+            setData(res.data)
+            console.log(res.data.graviditylessthan8result)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getIndicatordata()
+    }, [])
     const getAllPatients = async () => {
         try {
             const res = await axiosInstance.get('/patients/findwithworkers');

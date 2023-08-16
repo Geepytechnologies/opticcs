@@ -5,6 +5,7 @@ import { LuCalendarDays } from 'react-icons/lu'
 import Filterbox from '../../../components/Filterbox'
 import Pagination from '../../../components/Pagination'
 import axiosInstance from '../../../utils/axios'
+import moment from 'moment'
 
 const PatientsSchedule = () => {
     //filter
@@ -68,7 +69,7 @@ const PatientsSchedule = () => {
                                         <td>{item.firstname}</td>
                                         <td>{item.patient_id}</td>
                                         <td>{item.healthFacility}</td>
-                                        <td>{`from ${item.datefrom} to ${item.dateto}`}</td>
+                                        <td>{`from ${moment(item.datefrom).format("yyyy-MM-DD")} to ${moment(item.dateto).format('yyyy-MM-DD')}`}</td>
                                         {item.completed == 1 ? <td className='text-primary70'>{`Completed`}</td> :
                                             <td className='text-[#CC9A06]'>{` Not Completed`}</td>}
 
