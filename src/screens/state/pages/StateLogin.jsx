@@ -77,7 +77,6 @@ const StateLogin = () => {
                 loadToast("Something Went wrong", "error")
 
             }
-            console.log({ loginError: err })
         }
 
 

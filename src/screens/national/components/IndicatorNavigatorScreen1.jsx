@@ -60,7 +60,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* Gravidity diagram */}
-                            <Gravidity colors={["#14A673", "#D1FF60"]} series={[datainfo.graviditylessthan8result, datainfo.graviditygreaterthan8result]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.graviditylessthan8result, datainfo.graviditygreaterthan8result]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -125,7 +125,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <BabysMovement
+                            <GenericPie
                                 colors={["#027D52", "#14A673", "#2FCF97", "#52F7BE"]}
                                 series={datainfo?.babysmovement ? [datainfo.babysmovement.yes, datainfo.babysmovement.no, datainfo.babysmovement.dontknow, datainfo.babysmovement.notapplicable] : [1, 1, 1, 1]}
                             />
@@ -161,7 +161,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <FirstBabyMovement
+                            <GenericPie
                                 colors={["#14A673", "#D1FF60"]} series={[70, 30]}
                             />
                             {/* info about chart */}
@@ -183,20 +183,20 @@ const IndicatorNavigatorScreen1 = () => {
                     <p className='text-primary90 font-[500] my-5'>Daily Habits and Lifestyle </p>
                     {/* chart 1 */}
                     <div className='grid grid-cols-2 gap-5'>
-                        {/* Pie chart (work outside home) */}
+                        {/* Pie chart (smoke) */}
                         <div className=' min-w-[250px] shadow-xl'>
                             <div className='flex items-center justify-between px-2 py-4'>
                                 <div className='flex flex-col'>
-                                    <p className='font-[500] text-black'>Work outside the home</p>
-                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you work outside the home?</p>
+                                    <p className='font-[500] text-black'>Smoke</p>
+                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you smoke?</p>
                                 </div>
                                 <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <WorkOutsideHome
-                                colors={["#14A673", "#D1FF60"]} series={[60, 40]}
+                            <GenericPie
+                                colors={["#14A673", "#D1FF60"]} series={[datainfo.doyousmoke.yes, datainfo.doyousmoke.no]}
                             />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
@@ -210,19 +210,19 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* Pie chart (long distances) */}
+                        {/* Pie chart (Drink Alcohol) */}
                         <div className=' min-w-[250px] shadow-xl'>
                             <div className='flex items-center justify-between px-2 py-4'>
                                 <div className='flex flex-col'>
-                                    <p className='font-[500] text-black'>Walk long distances</p>
-                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you walk long distances?</p>
+                                    <p className='font-[500] text-black'>Drink Alcohol</p>
+                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you drink alcohol?</p>
                                 </div>
                                 <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <WalkLong colors={["#14A673", "#D1FF60"]} series={[60, 40]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.alcohol.yes, datainfo.alcohol.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -235,55 +235,7 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* Pie chart (heavy loads) */}
-                        <div className=' min-w-[250px] shadow-xl'>
-                            <div className='flex items-center justify-between px-2 py-4'>
-                                <div className='flex flex-col'>
-                                    <p className='font-[500] text-black'>Heavy loads</p>
-                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you carry heavy loads or do heavy physical labour</p>
-                                </div>
-                                <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
-
-                            </div>
-                            <hr />
-                            {/* The pie chart diagram */}
-                            <HeavyLoads colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                            {/* info about chart */}
-                            <div className='flex gap-7 px-2 py-4'>
-                                <div className='flex gap-2 items-center'>
-                                    <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                    <span>yes</span>
-                                </div>
-                                <div className='flex gap-2 items-center'>
-                                    <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                    <span>No</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=' min-w-[250px] shadow-xl'>
-                            <div className='flex items-center justify-between px-2 py-4'>
-                                <div className='flex flex-col'>
-                                    <p className='font-[500] text-black'>Baby less than 1yr</p>
-                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you have a baby that is currently less than one year old?</p>
-                                </div>
-                                <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
-
-                            </div>
-                            <hr />
-                            {/* The pie chart diagram */}
-                            <BabyLessAYear colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                            {/* info about chart */}
-                            <div className='flex gap-7 px-2 py-4'>
-                                <div className='flex gap-2 items-center'>
-                                    <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                    <span>yes</span>
-                                </div>
-                                <div className='flex gap-2 items-center'>
-                                    <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                    <span>No</span>
-                                </div>
-                            </div>
-                        </div>
+                        {/* live with */}
                         <div className=' min-w-[250px] shadow-xl'>
                             <div className='flex items-center justify-between px-2 py-4'>
                                 <div className='flex flex-col'>
@@ -295,7 +247,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <Livewith colors={["#F94144", "#F3722C", "#F8961E", "#F9C74F", "#90BE6D"]} series={[20, 10, 20, 25, 25]} />
+                            <GenericPie colors={["#F94144", "#F3722C", "#F8961E", "#F9C74F", "#90BE6D"]} series={[datainfo.livewith.partner, datainfo.livewith.relative, datainfo.livewith.alone, datainfo.livewith.friend, datainfo.livewith.others]} />
                             {/* info about chart */}
                             <div className='flex flex-wrap gap-7 w-full px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -323,15 +275,15 @@ const IndicatorNavigatorScreen1 = () => {
                         <div className=' min-w-[250px] shadow-xl'>
                             <div className='flex items-center justify-between px-2 py-4'>
                                 <div className='flex flex-col'>
-                                    <p className='font-[500] text-black'>Frightened by anyone</p>
-                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you feel frightened by anyone?</p>
+                                    <p className='font-[500] text-black'>Threatened by anyone</p>
+                                    <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you feel Threatened by anyone?</p>
                                 </div>
                                 <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <Frightened colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.threatened.yes, datainfo.threatened.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -365,7 +317,7 @@ const IndicatorNavigatorScreen1 = () => {
                             <hr />
                             {/* The chart diagram */}
                             <GenericPie
-                                colors={["#14A673", "#D1FF60"]} series={[60, 40]}
+                                colors={["#14A673", "#D1FF60"]} series={[datainfo.convulsionsduringpregnancy.yes, datainfo.convulsionsduringpregnancy.no]}
                             />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
@@ -391,7 +343,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[60, 40]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.caesarean.yes, datainfo.caesarean.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -416,7 +368,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <HeavyLoads colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <HeavyLoads colors={["#14A673", "#D1FF60"]} series={[datainfo.tearsthroughsphincter.yes, datainfo.tearsthroughsphincter.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -441,7 +393,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.postpartiumhaemorrghage.yes, datainfo.postpartiumhaemorrghage.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -466,7 +418,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.stillbirths.yes, datainfo.stillbirths.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -491,7 +443,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.prematuredeliveries.yes, datainfo.prematuredeliveries.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -516,7 +468,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.lowbirthbabies.yes, datainfo.lowbirthbabies.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -541,7 +493,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.babieswhodied.yes, datainfo.babieswhodied.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -566,7 +518,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.miscarriages.yes, datainfo.miscarriages.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -679,7 +631,7 @@ const IndicatorNavigatorScreen1 = () => {
                             <hr />
                             {/* The chart diagram */}
                             <GenericPie
-                                colors={["#14A673", "#D1FF60"]} series={[60, 40]}
+                                colors={["#14A673", "#D1FF60"]} series={[datainfo.cough.yes, datainfo.cough.no]}
                             />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
@@ -705,7 +657,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[60, 40]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.difficultybreathing.yes, datainfo.difficultybreathing.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -730,7 +682,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.palpitations.yes, datainfo.palpitations.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -755,7 +707,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.swellingfeet.yes, datainfo.swellingfeet.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -780,7 +732,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The pie chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.chestpain.yes, datainfo.chestpain.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -805,7 +757,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.epigastricpain.yes, datainfo.epigastricpain.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -830,7 +782,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.severetiredness.yes, datainfo.severetiredness.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -955,7 +907,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.severeabdominalpain.yes, datainfo.severeabdominalpain.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -980,7 +932,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.persistentvomiting.yes, datainfo.persistentvomiting.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1005,7 +957,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.severediarrhoea.yes, datainfo.severediarrhoea.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1030,7 +982,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.painwithurination.yes, datainfo.painwithurination.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1055,7 +1007,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.severeflankpain.yes, datainfo.severeflankpain.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1080,7 +1032,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.bloodinurine.yes, datainfo.bloodinurine.yes]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1130,7 +1082,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.vaginaldischarge.yes, datainfo.vaginaldischarge.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1155,7 +1107,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.deeppelvicpain.yes, datainfo.deeppelvicpain.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1180,7 +1132,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.syphilis.yes, datainfo.syphilis.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1205,7 +1157,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.persistentdrycough.yes, datainfo.persistentdrycough.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1230,7 +1182,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.progressiveweightloss.yes, datainfo.progressiveweightloss.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1255,7 +1207,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.nightsweats.yes, datainfo.nightsweats.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1280,7 +1232,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.diagnosedwithtuberculosis.yes, datainfo.diagnosedwithtuberculosis.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1305,7 +1257,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.treatedTBpreviously.yes, datainfo.treatedTBpreviously.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1330,7 +1282,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.heartdisease.yes, datainfo.heartdisease.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1355,7 +1307,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.anaemia.yes, datainfo.anaemia.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1380,7 +1332,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.kidneydisease.yes, datainfo.kidneydisease.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1405,7 +1357,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.sicklecell.yes, datainfo.sicklecell.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1430,7 +1382,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.diabetes.yes, datainfo.diabetes.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1455,7 +1407,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.goitre.yes, datainfo.goitre.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1480,7 +1432,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.hivaids.yes, datainfo.hivaids.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1505,7 +1457,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.otherseriouschronicillnesses.yes, datainfo.otherseriouschronicillnesses.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1555,7 +1507,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.hadsurgery.yes, datainfo.hadsurgery.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1605,7 +1557,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.herbalremedies.yes, datainfo.herbalremedies.yes]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1630,7 +1582,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.otcdrugs.yes, datainfo.otcdrugs.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1680,7 +1632,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.dietarysupplements.yes, datainfo.dietarysupplements.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
@@ -1705,7 +1657,7 @@ const IndicatorNavigatorScreen1 = () => {
                             </div>
                             <hr />
                             {/* The chart diagram */}
-                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                            <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.tetanus.yes, datainfo.tetanus.no]} />
                             {/* info about chart */}
                             <div className='flex gap-7 px-2 py-4'>
                                 <div className='flex gap-2 items-center'>
