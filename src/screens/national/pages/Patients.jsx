@@ -13,8 +13,7 @@ const Patients = () => {
     const filterdata = ["firstname", "state", "lga", "HealthFacility"]
     const [filter, setFilter] = useState(filterdata[0]);
     const [searchitem, setSearchitem] = useState()
-    const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD")
-    const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD")
+
     //
     const [patients, setPatients] = useState()
     const [isActive, setIsActive] = useState(1)
@@ -27,14 +26,12 @@ const Patients = () => {
     //     console.log("less than")
 
     // }
-    const [data, setData] = useState()
 
 
     const getIndicatordata = async () => {
         try {
             const res = await axiosInstance.get("/admin/national/data/general")
             setData(res.data)
-            console.log(res.data.graviditylessthan8result)
         } catch (error) {
 
         }
@@ -55,33 +52,40 @@ const Patients = () => {
     }, [])
     const filterPatients = (patients, searchitem, filter) => {
         if (!patients) return []; // Return an empty array if patients is falsy
-
+        let filteredpage;
         if (searchitem && selectedDateFrom && selectedDateTo) {
-            return patients.filter(item =>
+            filteredpage = patients.filter(item =>
                 item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
                 (new Date(item.createdat).getTime() >= new Date(selectedDateFrom).getTime() &&
                     new Date(item.createdat).getTime() <= new Date(selectedDateTo).getTime())
             );
+            return filteredpage
         } else if (searchitem) {
-            return patients.filter(item =>
+            filteredpage = patients.filter(item =>
                 item[filter].toLowerCase().includes(searchitem.toLowerCase())
             );
+            return filteredpage
         } else if (selectedDateFrom && selectedDateTo) {
-            return patients.filter(item =>
+            filteredpage = patients.filter(item =>
             (new Date(item.createdat).getTime() >= new Date(selectedDateFrom).getTime() &&
                 new Date(item.createdat).getTime() <= new Date(selectedDateTo).getTime())
             );
+            return filteredpage
         } else {
             return patients;
         }
 
 
 
+
     }
     const filteredPatients = filterPatients(patients, searchitem, filter);
+    useEffect(() => {
+        setCurrentpage(1)
+    }, [filteredPatients])
     return (
         <div>
-            <div className='bg-primary10'>
+            <div className='bg-primary10 flex flex-col min-h-screen'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>
@@ -98,8 +102,8 @@ const Patients = () => {
                 <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
 
                 {/* patients table */}
-                <div className='w-full flex items-center justify-center font-inter my-5'>
-                    <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
+                <div className='w-full flex-1 flex items-center justify-center font-inter my-5'>
+                    <div className='bg-white min-h-[500px] w-[95%] flex flex-col items-center justify-between pl-6 py-4'>
 
                         <table className="cursor-default w-full">
                             <tr>
@@ -115,10 +119,9 @@ const Patients = () => {
                                 ? (searchitem || (selectedDateTo && selectedDateFrom)
                                     ? filteredPatients
                                     : patients
-                                ).map((item, index) => (
-
+                                ).slice((10 * currentpage) - 10, (10 * currentpage)).map((item, index) => (
                                     <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                        <td>{index + 1}</td>
+                                        <td>{currentpage == 1 ? index + 1 : ((10 * currentpage) + (index + 1)) - 10}</td>
                                         <td>{item.firstname}</td>
                                         <td>{item.id}</td>
                                         <td>{item.state}</td>
@@ -133,7 +136,7 @@ const Patients = () => {
 
                         </table>
                         {/* pagination */}
-                        <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={patients?.length / 10} />
+                        <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={filteredPatients ? filteredPatients.length / 10 : patients?.length / 10} />
 
                     </div>
                 </div>

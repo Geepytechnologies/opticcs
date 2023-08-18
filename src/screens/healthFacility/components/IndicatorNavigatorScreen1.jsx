@@ -22,6 +22,7 @@ const IndicatorNavigatorScreen1 = () => {
     const { healthfacilityAuth } = useAuth()
     const { healthfacility } = healthfacilityAuth.others;
     const [datainfo, setDatainfo] = useState()
+    console.log(healthfacility)
 
 
     const getIndicatordata = async () => {

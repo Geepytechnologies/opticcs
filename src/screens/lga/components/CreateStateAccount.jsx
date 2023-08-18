@@ -170,11 +170,11 @@ const CreateStateAccount = () => {
                         <div className="flex flex-col">
                             <div className='flex gap-3 items-center'>
                                 <label className="text-[16px] font-[500] text-dark90">
-                                    Select Ward<span className="ml-2 text-red-500">*</span>
+                                    Ward<span className="ml-2 text-red-500">*</span>
                                 </label>
                                 {wardError.status && <span className='text-[12px] font-[500] italic text-red-500'>{wardError.message}</span>}
                             </div>
-                            <input type='text' name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]" />
+                            <input placeholder='Enter ward' type='text' name="ward" onChange={handleChange2} onBlur={handleStateBlur} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]" />
 
                         </div>
                         <div className="flex flex-col">
@@ -186,7 +186,7 @@ const CreateStateAccount = () => {
                             </div>
                             <input type='text' name="healthfacilityname" onBlur={handlehealthfacilitynameBlur} onChange={handleChange2}
                                 className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-                                placeholder="Enter ward health board name"
+                                placeholder="Enter state health board name"
                             />
                         </div>
                         <div className="flex flex-col">

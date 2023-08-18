@@ -175,7 +175,7 @@ const DashboardHome = () => {
                         </div>
                         <div className='flex flex-col items-center text-white'>
                             <h2 className='text-[32px] font-[600]'>{statenumbers}</h2>
-                            <h2 className='text-[14px] font-[400]'>State</h2>
+                            <h2 className='text-[14px] font-[400]'>Ward</h2>
                         </div>
                     </div>
                     {/* indicator4 */}
