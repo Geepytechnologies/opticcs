@@ -150,33 +150,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* first baby movement */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>first baby movement</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you know the date of the first baby movement?</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The pie chart diagram */}
-                                <GenericPie
-                                    colors={["#14A673", "#D1FF60"]} series={[70, 30]}
-                                />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>24 weeks</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>Above 24 weeks</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     {/* daily habits and lifestyle */}
@@ -544,7 +518,7 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                                 <hr />
                                 {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.breastfedbefore.yes, datainfo.breastfedbefore.no]} />
                                 {/* info about chart */}
                                 <div className='flex gap-7 px-2 py-4'>
                                     <div className='flex gap-2 items-center'>
@@ -569,7 +543,7 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                                 <hr />
                                 {/* The chart diagram */}
-                                <BreastfeedindDuration colors={["#027D52", "#14A673", "#D1FF60"]} series={[40, 30, 30]} />
+                                <BreastfeedindDuration colors={["#027D52", "#14A673", "#D1FF60"]} series={[datainfo.breastfeedingduration.less, datainfo.breastfeedingduration.equal, datainfo.breastfeedingduration.greater]} />
                                 {/* info about chart */}
                                 <div className='flex gap-7 px-2 py-4'>
                                     <div className='flex gap-2 items-center'>
@@ -598,7 +572,7 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                                 <hr />
                                 {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.breastfeedingproblems.yes, datainfo.breastfeedingproblems.no]} />
                                 {/* info about chart */}
                                 <div className='flex gap-7 px-2 py-4'>
                                     <div className='flex gap-2 items-center'>
@@ -796,56 +770,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* Cardiovascular  */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Cardiovascular </p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you find it difficult to sleep lying down flat?</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Neurologic */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Neurologic</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Severe epigastric pain</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
-
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Neurologic */}
                             <div className=' min-w-[250px] shadow-xl'>
                                 <div className='flex items-center justify-between px-2 py-4'>
@@ -858,32 +783,7 @@ const IndicatorNavigatorScreen1 = () => {
                                 </div>
                                 <hr />
                                 {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Neurologic */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Neurologic</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Convulsions</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
-
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
+                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[datainfo.dizziness.yes, datainfo.dizziness.no]} />
                                 {/* info about chart */}
                                 <div className='flex gap-7 px-2 py-4'>
                                     <div className='flex gap-2 items-center'>
@@ -1046,31 +946,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* Urinary */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Urinary</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Do you notice swelling on your face especially when you wake up in the morning?</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Gynaecological */}
                             <div className=' min-w-[250px] shadow-xl'>
                                 <div className='flex items-center justify-between px-2 py-4'>
@@ -1471,31 +1347,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* Admitted */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Admitted</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Have you ever been admitted in the hospital?</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Surgery */}
                             <div className=' min-w-[250px] shadow-xl'>
                                 <div className='flex items-center justify-between px-2 py-4'>
@@ -1521,31 +1373,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* Traditional */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Traditional</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Traditional/local preparations</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Herbal remedies */}
                             <div className=' min-w-[250px] shadow-xl'>
                                 <div className='flex items-center justify-between px-2 py-4'>
@@ -1596,31 +1424,7 @@ const IndicatorNavigatorScreen1 = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* Vitamins */}
-                            <div className=' min-w-[250px] shadow-xl'>
-                                <div className='flex items-center justify-between px-2 py-4'>
-                                    <div className='flex flex-col'>
-                                        <p className='font-[500] text-black'>Vitamins</p>
-                                        <p className='font-[400] text-[#4F4F4F] text-[14px]'>Vitamins</p>
-                                    </div>
-                                    <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
-                                </div>
-                                <hr />
-                                {/* The chart diagram */}
-                                <GenericPie colors={["#14A673", "#D1FF60"]} series={[70, 30]} />
-                                {/* info about chart */}
-                                <div className='flex gap-7 px-2 py-4'>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                                        <span>yes</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center'>
-                                        <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                                        <span>No</span>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Dietary supplements */}
                             <div className=' min-w-[250px] shadow-xl'>
                                 <div className='flex items-center justify-between px-2 py-4'>

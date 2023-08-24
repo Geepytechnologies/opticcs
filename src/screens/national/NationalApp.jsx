@@ -16,6 +16,8 @@ import Profile from "./pages/Profile";
 import LoadPage from "../LoadPage";
 import Accounts from "./pages/Accounts";
 import Notifications from "./components/Notifications";
+import Patientview from "./components/Patientview";
+import { BsFillArrowUpCircleFill } from "react-icons/bs";
 
 
 const NationalApp = () => {
@@ -26,7 +28,10 @@ const NationalApp = () => {
     return (
         <>
             {!loaderFinished ? <LoadPage loaderFinished={finished} /> :
-                <div className="flex w-full">
+                <div className="flex w-full relative">
+                    <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-3 bottom-3 cursor-pointer animate-bounce">
+                        <BsFillArrowUpCircleFill className="text-primary90 text-[30px]" />
+                    </div>
                     <div id="menu" className="flex-1 min-w-[250px] custom-scrollbar adminmenu overflow-y-scroll">
                         <DashboardMenu />
                     </div>
@@ -37,6 +42,7 @@ const NationalApp = () => {
                                 <Route index path="/" element={<DashboardHome />}></Route>
                                 <Route index path="/indicators" element={<DashboardIndicators />}></Route>
                                 <Route index path="/patients" element={<Patients />}></Route>
+                                <Route index path="/patients/:id/*" element={<Patientview />}></Route>
                                 <Route index path="/patients-schedule" element={<PatientsSchedule />}></Route>
                                 <Route index path="/health-worker" element={<HealthWorker />}></Route>
                                 <Route index path="/health-facility" element={<HealthFacility />}></Route>

@@ -70,7 +70,7 @@ const DashboardMenu = () => {
                 {/* Manage users */}
                 <Link
                     to="/national/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/national/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("/national/patients")
                         ? "bg-primary90 text-white drop-shadow-xl"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}

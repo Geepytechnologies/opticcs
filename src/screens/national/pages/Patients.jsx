@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
+import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineFileSearch } from 'react-icons/ai'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import axiosInstance from '../../../utils/axios'
 import Filterbox from '../../../components/Filterbox'
 import Pagination from '../../../components/Pagination'
 import moment from 'moment'
+import Notfound from '../../../components/Notfound'
+import Patientview from '../components/Patientview'
+import { useNavigate } from 'react-router-dom'
 
 const Patients = () => {
     //filter
@@ -83,6 +86,11 @@ const Patients = () => {
     useEffect(() => {
         setCurrentpage(1)
     }, [filteredPatients])
+    const navigate = useNavigate();
+
+    const handleItemClick = (itemId) => {
+        navigate(`/national/patients/${itemId}`);
+    };
     return (
         <div>
             <div className='bg-primary10 flex flex-col min-h-screen'>
@@ -120,21 +128,26 @@ const Patients = () => {
                                     ? filteredPatients
                                     : patients
                                 ).slice((10 * currentpage) - 10, (10 * currentpage)).map((item, index) => (
-                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                        <td>{currentpage == 1 ? index + 1 : ((10 * currentpage) + (index + 1)) - 10}</td>
-                                        <td>{item.firstname}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.state}</td>
-                                        <td>{item.lga}</td>
-                                        <td>{item.healthFacility}</td>
-                                        <td>{moment(item.last_visit).fromNow()}</td>
-                                    </tr>
+                                    <>
+                                        <tr onClick={() => handleItemClick(item.id)} key={item.id} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                            <td>{currentpage == 1 ? index + 1 : ((10 * currentpage) + (index + 1)) - 10}</td>
+                                            <td>{item.firstname}</td>
+                                            <td>{item.id}</td>
+                                            <td>{item.state}</td>
+                                            <td>{item.lga}</td>
+                                            <td>{item.healthFacility}</td>
+                                            <td>{moment(item.last_visit).fromNow()}</td>
+                                        </tr>
+                                    </>
                                 ))
                                 : null
                             }
 
 
                         </table>
+                        {!filteredPatients.length &&
+                            <Notfound />
+                        }
                         {/* pagination */}
                         <Pagination currentpage={currentpage} setCurrentpage={setCurrentpage} pages={filteredPatients ? filteredPatients.length / 10 : patients?.length / 10} />
 
