@@ -30,16 +30,19 @@ const NationalApp = () => {
         <>
             {!loaderFinished ? <LoadPage loaderFinished={finished} /> :
                 <div className="flex w-full relative">
-                    <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-8 bottom-8 cursor-pointer animate-bounce">
-                        <BsFillArrowUpCircleFill className="text-primary90 text-[30px]" />
+                    <div className="absolute w-screen z-50">
+                        <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-8 bottom-8 cursor-pointer animate-bounce">
+                            <BsFillArrowUpCircleFill className="text-primary90 text-[30px]" />
+                        </div>
                     </div>
-                    <div id="menu" className={`${showmenu ? "w-[250px] min-w-[250px]" : "w-0"} transition-all ease-in-out  custom-scrollbar adminmenu overflow-y-scroll`}>
+
+                    <div id="menu" className={`${showmenu ? "w-[250px] min-w-[250px]" : "w-0"} transition-all ease-in-out custom-scrollbar adminmenu overflow-y-scroll`}>
                         <DashboardMenu />
                     </div>
                     <div id="page" className="flex-[4] bg-[#f8f9fa]">
                         <DashboardNavbar />
                         <div className="relative">
-                            <div className="absolute top-[10%] left-0">
+                            <div className="absolute z-50 top-0 left-0">
                                 {showmenu ? <BsFillArrowLeftSquareFill onClick={() => setShowmenu(false)} className="text-primary90 cursor-pointer text-[20px] " /> :
                                     <BsFillArrowRightSquareFill onClick={() => setShowmenu(true)} className="text-primary90 cursor-pointer text-[20px]" />}
                             </div>

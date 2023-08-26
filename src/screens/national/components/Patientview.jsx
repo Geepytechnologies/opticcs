@@ -133,7 +133,7 @@ const Patientview = () => {
                     <Routes>
                         <Route index path="/" element={<Patientdetailshome />} />
                         <Route index path="/personalinformation" element={<Patientdetailspersonal data={data} />} />
-                        <Route index path="/schedule" element={<Patientdetailschedule />} />
+                        <Route index path="/schedule" element={<Patientdetailschedule id={id} />} />
                         <Route index path="/firstvisit" element={<Patientdetailfirst firstvisit={firstvisit} />} />
                         <Route index path="/returnvisit" element={<Patientdetailreturn returnvisit={returnvisit2} />} />
                     </Routes>

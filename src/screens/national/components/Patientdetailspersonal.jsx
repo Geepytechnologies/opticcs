@@ -9,7 +9,7 @@ const Patientdetailspersonal = ({ data }) => {
     return (
         <div className='p-3'>
             <div className='flex gap-2 items-center justify-between px-2'>
-                <div className='flex gap-2 items-center justify-center'>
+                <div onClick={() => window.print()} className='flex gap-2 cursor-pointer items-center justify-center'>
                     <AiOutlinePrinter />
                     <span>Print Page</span>
                 </div>
@@ -17,7 +17,7 @@ const Patientdetailspersonal = ({ data }) => {
             </div>
             <div onClick={() => navigate(-1)} className='flex cursor-pointer flex-1 items-center gap-2 my-8 font-[600] text-[24px] text-primary90'>
                 <IoReturnUpBackOutline />
-                <p>Patient View</p>
+                <p>Personal Information</p>
 
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-8'>

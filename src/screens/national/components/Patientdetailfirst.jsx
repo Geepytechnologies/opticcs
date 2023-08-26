@@ -14,7 +14,7 @@ const Patientdetailfirst = ({ firstvisit }) => {
         <div className='p-3'>
             <div className='flex gap-2 items-center justify-between px-2'>
                 <p className='font-[600] text-[20px]'>{`Records for ${day}-${month}-${year}`}</p>
-                <div className='flex gap-2 items-center justify-center'>
+                <div onClick={() => window.print()} className='flex gap-2 cursor-pointer items-center justify-center'>
                     <AiOutlinePrinter />
                     <span>Print Page</span>
                 </div>
