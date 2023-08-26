@@ -18,7 +18,6 @@ const Patientview = () => {
     const [firstvisit, setFirstvisit] = useState()
     const [returnvisit, setReturnvisit] = useState()
     const [returnvisit2, setReturnvisit2] = useState()
-    console.log(returnvisit2)
     const [returnvisitparam, setReturnvisitparam] = useState({ id: "", date: "" })
     const [lastvisit, setLastvisit] = useState()
     const navigate = useNavigate()
@@ -37,7 +36,6 @@ const Patientview = () => {
     const getpatientdetails = async () => {
         try {
             const res = await axiosInstance.get(`/patients/find/${id}`)
-            console.log(res.data.result)
             setData(res.data.result.data)
             setFirstvisit(res.data.result.firstvisit)
             setReturnvisit(res.data.result.returnvisit)
@@ -100,7 +98,7 @@ const Patientview = () => {
                 </div>}
             </div>
             <div className='w-full flex justify-between gap-3 mx-3'>
-                <div className='bg-white flex items-start justify-center flex-1 p-3'>
+                <div className='bg-white flex items-start justify-center min-w-[250px] flex-1 p-3'>
                     {
                         (currentpage == "firstvisit") ?
                             <div className='flex flex-col gap-2 mt-6'>
@@ -131,7 +129,7 @@ const Patientview = () => {
                                 </div>
                     }
                 </div>
-                <div className='bg-white flex-[3] p-3'>
+                <div className='bg-white flex-[3] min-w-[600px] p-3'>
                     <Routes>
                         <Route index path="/" element={<Patientdetailshome />} />
                         <Route index path="/personalinformation" element={<Patientdetailspersonal data={data} />} />

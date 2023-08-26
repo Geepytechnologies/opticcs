@@ -29,7 +29,7 @@ const NationalApp = () => {
         <>
             {!loaderFinished ? <LoadPage loaderFinished={finished} /> :
                 <div className="flex w-full relative">
-                    <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-3 bottom-3 cursor-pointer animate-bounce">
+                    <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-8 bottom-8 cursor-pointer animate-bounce">
                         <BsFillArrowUpCircleFill className="text-primary90 text-[30px]" />
                     </div>
                     <div id="menu" className="flex-1 min-w-[250px] custom-scrollbar adminmenu overflow-y-scroll">
@@ -43,7 +43,7 @@ const NationalApp = () => {
                                 <Route index path="/indicators" element={<DashboardIndicators />}></Route>
                                 <Route index path="/patients" element={<Patients />}></Route>
                                 <Route index path="/patients/:id/*" element={<Patientview />}></Route>
-                                <Route index path="/patients-schedule" element={<PatientsSchedule />}></Route>
+                                <Route index path="/schedule" element={<PatientsSchedule />}></Route>
                                 <Route index path="/health-worker" element={<HealthWorker />}></Route>
                                 <Route index path="/health-facility" element={<HealthFacility />}></Route>
                                 <Route index path="/state" element={<State />}></Route>

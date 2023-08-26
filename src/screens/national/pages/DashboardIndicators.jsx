@@ -16,6 +16,7 @@ const DashboardIndicators = () => {
     const [statesearch, setStatesearch] = useState("all")
     const [lgasearch, setLgasearch] = useState("all")
     const [ward, setWard] = useState("all")
+    const [indicatorsearchparam, setindicatorsearchparam] = useState({ query: "", state: "", lga: "" })
 
     //navigation
     const [navigatorSlide, setNavigatorSlide] = useState(1);
@@ -27,19 +28,19 @@ const DashboardIndicators = () => {
 
     switch (navigatorSlide) {
         case 1:
-            componentToRender = <IndicatorNavigatorScreen1 />;
+            componentToRender = <IndicatorNavigatorScreen1 param={indicatorsearchparam} />;
             break;
         case 2:
             componentToRender = <IndicatorNavigatorScreen2 />;
             break;
         case 3:
-            componentToRender = <IndicatorNavigatorScreen3 />;
+            componentToRender = <IndicatorNavigatorScreen3 param={indicatorsearchparam} />;
             break;
         case 4:
-            componentToRender = <IndicatorNavigatorScreen4 />;
+            componentToRender = <IndicatorNavigatorScreen4 param={indicatorsearchparam} />;
             break;
         case 5:
-            componentToRender = <IndicatorNavigatorScreen5 />;
+            componentToRender = <IndicatorNavigatorScreen5 param={indicatorsearchparam} />;
             break;
         default:
             componentToRender = null;
@@ -53,6 +54,22 @@ const DashboardIndicators = () => {
 
         }
     }
+    const getAllStatePatients = async () => {
+        try {
+            const res = await axiosInstance.get(`/patients/state/find?state=${statesearch}`);
+            setPatients(res.data.result.length)
+        } catch (err) {
+
+        }
+    }
+    const getAllLgaPatients = async () => {
+        try {
+            const res = await axiosInstance.get(`/patients/lga/find?lga=${lgasearch}`);
+            setPatients(res.data.result.length)
+        } catch (err) {
+
+        }
+    }
     const handlestate = (e) => {
         setStatesearch(e.target.value)
     }
@@ -60,15 +77,32 @@ const DashboardIndicators = () => {
         setLgasearch(e.target.value)
     }
     const handlesearchsubmit = async () => {
-        // try {
-        //     if(statesearch == "all")
-        // } catch (error) {
+        let searchquery;
+        try {
+            if (statesearch == "all") {
+                searchquery = "national"
+                setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+                getAllPatients()
+            }
+            if (statesearch !== "all" && lgasearch == "all") {
+                searchquery = "state"
+                setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+                getAllStatePatients()
+            }
+            if (statesearch !== "all" && lgasearch !== "all") {
+                searchquery = "lga"
+                setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+                getAllLgaPatients()
+            }
+            // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+        } catch (error) {
 
-        // }
+        }
     }
     useEffect(() => {
         getAllPatients()
     }, [])
+
     const capitalizeFirstLetter = (word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     };
@@ -86,11 +120,7 @@ const DashboardIndicators = () => {
                     <div className='flex flex-col'>
                         <label className='text-primary90 font-[400]'>Filter</label>
                         <select defaultValue="" onChange={(e) => setFilter(e.target.value)} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-
                             <option>{"state"}</option>
-                            <option>{"lga"}</option>
-
-
                         </select>
 
                     </div>
@@ -144,7 +174,7 @@ const DashboardIndicators = () => {
                     {statesearch !== 'all' &&
                         <div className='flex flex-col'>
                             <label className='text-primary90 font-[400]'>LGA</label>
-                            <select name="lga" onChange={handlelgasearch} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                            <select name="lga" onChange={handlelgasearch} value={lgasearch} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
                                 <option value="all" >
                                     All LGA
                                 </option>
@@ -167,7 +197,7 @@ const DashboardIndicators = () => {
                     </div>
                     }
                     <div className='flex gap-2 justify-end ml-6'>
-                        <button className="bg-primary90 p-[16px] text-light10 rounded-[8px]">Search</button>
+                        <button onClick={handlesearchsubmit} className="bg-primary90 p-[16px] text-light10 rounded-[8px]">Search</button>
                     </div>
                 </div>
             </div>
@@ -176,7 +206,7 @@ const DashboardIndicators = () => {
     return (
         <div>
             {/* content */}
-            <div className='bg-primary10'>
+            <div className='bg-primary10 w-full'>
                 {/* dashboard */}
                 <div className='flex w-full items-center justify-between px-3 py-3'>
                     <div className='flex gap-2 items-center p-2'>
@@ -191,15 +221,17 @@ const DashboardIndicators = () => {
 
                 {/* indicator outcome */}
                 <div className='w-full flex items-center justify-center my-5'>
-                    <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
+                    <div className='bg-white min-w-[1000px] w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
                         {/* navigator */}
-                        <div className='flex px-3 w-full items-center gap-6'>
-                            <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>General</div>
-                            <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div>
-                            <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Return Visit</div>
-                            <div onClick={() => setNavigatorSlide(4)} className={`cursor-pointer text-center ${navigatorSlide === 4 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Test Result</div>
-                            <div onClick={() => setNavigatorSlide(5)} className={`cursor-pointer ${navigatorSlide === 5 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Antenatal Schedule</div>
-                            <div className='ml-auto font-[500]'><span className='text-primary70'>{patients} </span>Patient Generated</div>
+                        <div className='flex px-3 w-full items-center justify-between gap-6'>
+                            <div className='flex items-center flex-[3] justify-between '>
+                                <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div>
+                                {/* <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div> */}
+                                <div onClick={() => setNavigatorSlide(3)} className={`cursor-pointer text-center ${navigatorSlide === 3 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Return Visit</div>
+                                <div onClick={() => setNavigatorSlide(4)} className={`cursor-pointer text-center ${navigatorSlide === 4 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Test Result</div>
+                                <div onClick={() => setNavigatorSlide(5)} className={`cursor-pointer ${navigatorSlide === 5 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Antenatal Schedule</div>
+                            </div>
+                            <div className='font-[500] flex-1 text-center'><span className='text-primary70'>{patients} </span>Patient {patients > 1 ? 'Records' : 'Record'}</div>
                         </div>
                         {/* navigator screen slides */}
                         {componentToRender}

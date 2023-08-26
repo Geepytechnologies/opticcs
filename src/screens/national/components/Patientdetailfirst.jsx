@@ -1,15 +1,19 @@
+import moment from 'moment'
 import React from 'react'
 import { AiOutlinePrinter } from 'react-icons/ai'
 import { IoReturnUpBackOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 
 const Patientdetailfirst = ({ firstvisit }) => {
-    console.log(firstvisit)
+    // console.log(firstvisit)
+    const year = moment(firstvisit && firstvisit[0]?.firstvisit_date).format('YYYY');
+    const month = moment(firstvisit && firstvisit[0]?.firstvisit_date).format('MM');
+    const day = moment(firstvisit && firstvisit[0]?.firstvisit_date).format('DD');
     const navigate = useNavigate()
     return (
         <div className='p-3'>
             <div className='flex gap-2 items-center justify-between px-2'>
-                <p className='font-[600] text-[20px]'>Records for 27th May 2023 9:45am</p>
+                <p className='font-[600] text-[20px]'>{`Records for ${day}-${month}-${year}`}</p>
                 <div className='flex gap-2 items-center justify-center'>
                     <AiOutlinePrinter />
                     <span>Print Page</span>
