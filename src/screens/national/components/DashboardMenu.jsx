@@ -142,7 +142,7 @@ const DashboardMenu = () => {
                     <p>Accounts</p>
                 </Link>
                 {/* Message */}
-                <Link
+                {/* <Link
                     to="/national/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
                         ? "bg-primary90 text-white drop-shadow-xl"
@@ -151,7 +151,7 @@ const DashboardMenu = () => {
                 >
                     <HiOutlineChatBubbleOvalLeftEllipsis />
                     <p>Message</p>
-                </Link>
+                </Link> */}
                 {/* Settings */}
                 <Link
                     to="/national/settings"

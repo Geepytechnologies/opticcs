@@ -17,11 +17,12 @@ import LoadPage from "../LoadPage";
 import Accounts from "./pages/Accounts";
 import Notifications from "./components/Notifications";
 import Patientview from "./components/Patientview";
-import { BsFillArrowUpCircleFill } from "react-icons/bs";
+import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCircleFill } from "react-icons/bs";
 
 
 const NationalApp = () => {
     const [loaderFinished, setLoaderFinished] = useState(false);
+    const [showmenu, setShowmenu] = useState(true)
     const finished = () => {
         setLoaderFinished(true);
     }
@@ -32,12 +33,16 @@ const NationalApp = () => {
                     <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed right-8 bottom-8 cursor-pointer animate-bounce">
                         <BsFillArrowUpCircleFill className="text-primary90 text-[30px]" />
                     </div>
-                    <div id="menu" className="flex-1 min-w-[250px] custom-scrollbar adminmenu overflow-y-scroll">
+                    <div id="menu" className={`${showmenu ? "w-[250px] min-w-[250px]" : "w-0"} transition-all ease-in-out  custom-scrollbar adminmenu overflow-y-scroll`}>
                         <DashboardMenu />
                     </div>
                     <div id="page" className="flex-[4] bg-[#f8f9fa]">
                         <DashboardNavbar />
-                        <div className="">
+                        <div className="relative">
+                            <div className="absolute top-[10%] left-0">
+                                {showmenu ? <BsFillArrowLeftSquareFill onClick={() => setShowmenu(false)} className="text-primary90 cursor-pointer text-[20px] " /> :
+                                    <BsFillArrowRightSquareFill onClick={() => setShowmenu(true)} className="text-primary90 cursor-pointer text-[20px]" />}
+                            </div>
                             <Routes>
                                 <Route index path="/" element={<DashboardHome />}></Route>
                                 <Route index path="/indicators" element={<DashboardIndicators />}></Route>
@@ -49,7 +54,7 @@ const NationalApp = () => {
                                 <Route index path="/state" element={<State />}></Route>
                                 <Route index path="/lga" element={<LGA />}></Route>
                                 <Route index path="/accounts" element={<Accounts />}></Route>
-                                <Route index path="/message" element={<Messages />}></Route>
+                                {/* <Route index path="/message" element={<Messages />}></Route> */}
                                 <Route index path="/settings" element={<Settings />}></Route>
                                 <Route index path="/profile" element={<Profile />}></Route>
                                 <Route index path="/notifications" element={<Notifications />}></Route>
