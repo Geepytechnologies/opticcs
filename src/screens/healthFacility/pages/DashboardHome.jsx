@@ -142,7 +142,7 @@ const DashboardHome = () => {
             {/* content */}
             <div ref={tableRef} className='bg-primary10'>
                 {/* dashboard */}
-                <div className='flex gap-2 items-center p-2'>
+                <div className='flex gap-2 py-5 items-center p-2'>
                     <RxDashboard />
                     <p className='text-secondary400 text-[18px] font-[600]'>Dashboard</p>
                 </div>

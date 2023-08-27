@@ -100,10 +100,10 @@ const Patients = () => {
                         <HiOutlineUserGroup />
                         <p className='text-secondary400 text-[18px] font-[600]'>Patients</p>
                     </div>
-                    <div className='flex gap-2 justify-end'>
+                    {/* <div className='flex gap-2 justify-end'>
                         <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
                         <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* selectbox1 */}
@@ -128,17 +128,15 @@ const Patients = () => {
                                     ? filteredPatients
                                     : patients
                                 ).slice((10 * currentpage) - 10, (10 * currentpage)).map((item, index) => (
-                                    <>
-                                        <tr onClick={() => handleItemClick(item.id)} key={item.id} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                            <td>{currentpage == 1 ? index + 1 : ((10 * currentpage) + (index + 1)) - 10}</td>
-                                            <td>{item.firstname}</td>
-                                            <td>{item.id}</td>
-                                            <td>{item.state}</td>
-                                            <td>{item.lga}</td>
-                                            <td>{item.healthFacility}</td>
-                                            <td>{moment(item.last_visit).fromNow()}</td>
-                                        </tr>
-                                    </>
+                                    <tr onClick={() => handleItemClick(item.id)} key={item.id} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                        <td>{currentpage == 1 ? index + 1 : ((10 * currentpage) + (index + 1)) - 10}</td>
+                                        <td>{item.firstname}</td>
+                                        <td>{item.id}</td>
+                                        <td>{item.state}</td>
+                                        <td>{item.lga}</td>
+                                        <td>{item.healthFacility}</td>
+                                        <td>{moment(item.last_visit).fromNow()}</td>
+                                    </tr>
                                 ))
                                 : null
                             }

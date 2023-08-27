@@ -62,6 +62,9 @@ const HealthFacility = () => {
 
     }
     const filteredHealthfacilities = filterhealthfacility(healthFacilities, searchitem, filter);
+    const capitalizeFirstLetter = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    };
     return (
         <div>
             <div className='bg-primary10'>
@@ -71,10 +74,10 @@ const HealthFacility = () => {
                         <IoBagAddOutline />
                         <p className='text-secondary400 text-[18px] font-[600]'>Health Facility</p>
                     </div>
-                    <div className='flex gap-2 justify-end'>
+                    {/* <div className='flex gap-2 justify-end'>
                         <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
                         <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* selectbox1 */}
@@ -100,7 +103,7 @@ const HealthFacility = () => {
 
                                     <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
                                         <td>{item.id}</td>
-                                        <td>{item.healthfacilityname}</td>
+                                        <td>{capitalizeFirstLetter(item.healthfacilityname)}</td>
                                         <td>{item.healthfacilityID}</td>
                                         <td>{item.ward}</td>
                                         <td>{moment(item.createdat).fromNow()}</td>

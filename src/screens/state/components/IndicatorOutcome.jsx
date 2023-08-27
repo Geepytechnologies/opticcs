@@ -16,7 +16,7 @@ const IndicatorOutcome = () => {
     }
     useEffect(() => {
         getPatientswith4visits()
-    })
+    }, [])
     return (
         <motion.div initial={{
             opacity: 0,

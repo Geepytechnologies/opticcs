@@ -316,6 +316,8 @@ const stateLocalGovts = {
     "Udi",
     "Uzo Uwani",
   ],
+  //FCT
+  FCT: ["Abaji", "Bwari", "Gwagwalada", "Kuje", "Kwali"],
   // Gombe State
   Gombe: [
     "Akko",

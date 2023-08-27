@@ -25,17 +25,14 @@ import { useAuth } from '../../../utils/hooks/useAuth';
 import PartnerLogo from '../../../components/PartnerLogo';
 import useLogout from '../hooks/useLogout';
 
-const DashboardMenu = () => {
+const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
     const [currentPage, setCurrentPage] = useState("");
     const { auth, setAuth } = useAuth()
-    const logoutUser = useLogout()
     const location = useLocation();
     useEffect(() => {
         setCurrentPage(location.pathname);
     }, [location]);
-    const logout = () => {
-        logoutUser();
-    }
+
     return (
         <div className="text-[#842029]  h-auto px-2">
             <div className="flex w-full items-center justify-center">
@@ -69,7 +66,7 @@ const DashboardMenu = () => {
                 {/* Manage users */}
                 <Link
                     to="/lga/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/lga/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("/lga/patients")
                         ? "bg-[#842029] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -79,8 +76,8 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Patients Schedule */}
                 <Link
-                    to="/lga/patients-schedule"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
+                    to="/lga/schedule"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage == ("/lga/schedule")
                         ? "bg-[#842029] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -154,7 +151,7 @@ const DashboardMenu = () => {
                     <p>My Profile</p>
                 </Link>
                 {/* Logout */}
-                <div onClick={logout}
+                <div onClick={() => setconfirmlogout(true)}
                     className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
                         ? "bg-[#842029] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"

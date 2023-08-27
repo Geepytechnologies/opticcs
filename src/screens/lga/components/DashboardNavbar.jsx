@@ -22,15 +22,15 @@ const DashboardNavbar = () => {
             </div>
             <img src="/images/3in1logo.svg" />
             <div className='flex flex-row gap-2 items-center'>
-                <Link to="/admin/message" className='relative'>
+                {/* <Link to="/admin/message" className='relative'>
                     <HiOutlineChatBubbleOvalLeftEllipsis className='text-[20px]' />
                     <div className='bg-[red] w-2 h-2 rounded-full absolute -top-[2px] right-[1px]'></div>
                 </Link>
                 <Link to="/admin/notifications" className='relative'>
                     <IoMdNotificationsOutline className='text-[20px]' />
                     <div className='bg-[red] w-2 h-2 rounded-full absolute -top-[2px] right-[1px]'></div>
-                </Link>
-                <div className='rounded-full flex items-center text-[16px] font-[500] justify-center bg-primary50 text-light10 w-[40px] h-[40px]'>
+                </Link> */}
+                <div className='rounded-full flex items-center text-[16px] font-[500] justify-center bg-[#842029] text-light10 w-[40px] h-[40px]'>
                     <span>{staffname.charAt(0).toUpperCase()}</span>
                 </div>
                 <h2 className='text-[12px] font-[500] text-[#000]'>{capitalizeFirstLetter(staffname)}</h2>

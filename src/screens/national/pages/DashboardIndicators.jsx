@@ -120,7 +120,7 @@ const DashboardIndicators = () => {
                     <div className='flex flex-col'>
                         <label className='text-primary90 font-[400]'>Filter</label>
                         <select defaultValue="" onChange={(e) => setFilter(e.target.value)} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
-                            <option>{"state"}</option>
+                            <option>{"State"}</option>
                         </select>
 
                     </div>

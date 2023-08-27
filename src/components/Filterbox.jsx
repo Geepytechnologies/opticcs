@@ -13,6 +13,9 @@ const Filterbox = ({ selectedDateTo, filterdata, setSelectedDateTo, selectedDate
             setSelectedDateFrom(date);
         }
     };
+    const capitalizeFirstLetter = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    };
     return (
         <div className='w-full flex items-center justify-center my-5'>
             <div className='bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3'>
@@ -22,7 +25,7 @@ const Filterbox = ({ selectedDateTo, filterdata, setSelectedDateTo, selectedDate
                     <select defaultValue="" onChange={(e) => setFilter(e.target.value)} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
                         {
                             filterdata?.map((item, index) => (
-                                <option key={index} value={item}>{item}</option>
+                                <option key={index} value={item}>{capitalizeFirstLetter(item)}</option>
 
                             ))
                         }

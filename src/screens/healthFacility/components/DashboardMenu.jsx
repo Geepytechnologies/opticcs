@@ -69,7 +69,7 @@ const DashboardMenu = () => {
                 {/* Manage users */}
                 <Link
                     to="/healthfacility/patients"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage === "/healthfacility/patients"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("/healthfacility/patients")
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -79,8 +79,8 @@ const DashboardMenu = () => {
                 </Link>
                 {/* Patients Schedule */}
                 <Link
-                    to="/healthfacility/patients-schedule"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("patients-schedule")
+                    to="/healthfacility/schedule"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2   ${currentPage == ("/healthfacility/schedule")
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
                         }`}
@@ -112,7 +112,7 @@ const DashboardMenu = () => {
                     <p>Accounts</p>
                 </Link>
                 {/* Message */}
-                <Link
+                {/* <Link
                     to="/healthfacility/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
@@ -121,7 +121,7 @@ const DashboardMenu = () => {
                 >
                     <HiOutlineChatBubbleOvalLeftEllipsis />
                     <p>Message</p>
-                </Link>
+                </Link> */}
                 {/* Settings */}
                 <Link
                     to="/healthfacility/settings"
@@ -145,7 +145,7 @@ const DashboardMenu = () => {
                     <p>My Profile</p>
                 </Link>
                 {/* Logout */}
-                <div onClick={logout}
+                <div onClick={() => setconfirmlogout(true)}
                     className={`flex gap-2 my-2 items-center rounded-md cursor-pointer  p-2  ${currentPage.includes("logout")
                         ? "bg-[#F3722C] text-white drop-shadow-lg"
                         : " hover:text-[black] hover:bg-gray-200"
