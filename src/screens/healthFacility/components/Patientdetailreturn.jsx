@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import Notfound from '../../../components/Notfound'
 
 const patientdetailreturn = ({ returnvisit }) => {
-    const data = returnvisit
+    const data = returnvisit[0]
     // const { returnvisit_date } = returnvisit[0]
     const year = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('YYYY');
     const month = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('MM');
