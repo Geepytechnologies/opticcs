@@ -12,7 +12,7 @@ const Activity = () => {
             }}
             transition={{
                 duration: 1.5,
-            }} className='grid grid-cols-1 lg:grid-cols-2 gap-5 overflow-x-scroll mt-7'>
+            }} className='grid grid-cols-1 lg:grid-cols-2 gap-5 min-w-[1000px] overflow-x-scroll mt-7'>
             {/* Activity 1 */}
             <div className=' flex flex-col gap-5 min-w-[500px] '>
                 <p className='text-primary90 text-[24px] font-[600]'>Activity 1</p>

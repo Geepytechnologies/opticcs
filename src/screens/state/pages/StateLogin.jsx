@@ -42,7 +42,6 @@ const StateLogin = () => {
         setValues({ ...values, [name]: value });
     };
     const loginUser = async () => {
-        console.log({ myValues: values })
         setIsLoading(true);
         try {
             const res = await axiosPrivate.post("/admin/state/signin", {
@@ -51,7 +50,6 @@ const StateLogin = () => {
             });
             if (res.data) {
                 setIsLoading(false)
-                console.log({ res: res.data });
                 loadToast("Login Successful", "success")
                 navigate('/state')
                 setStateAuth((prevAuth) => {
@@ -67,7 +65,6 @@ const StateLogin = () => {
 
         } catch (err) {
             setIsLoading(false)
-            console.log(err.response.data)
             if (err?.response?.data.message == "User not found") {
                 loadToast("User not found", "error")
             }

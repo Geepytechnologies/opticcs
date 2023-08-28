@@ -83,8 +83,8 @@ const DashboardHome = () => {
     useEffect(() => {
         getAllHealthWorkers()
         getAllPatients()
-        getAllstates()
-        getHealthfacilities()
+        // getAllstates()
+        // getHealthfacilities()
     }, [])
     function downloadTable() {
         const table = tableRef.current;
@@ -168,33 +168,12 @@ const DashboardHome = () => {
                             <h2 className='text-[14px] text-center font-[400]'>Health Workers</h2>
                         </div>
                     </div>
-                    {/* indicator3 */}
-                    <div className='flex items-center px-4 bg-[#FFA901] gap-8 h-[100px] w-[200px] rounded-[20px]'>
-                        <div className="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-[#ffffff7c]">
-                            <LuCalendarDays className='text-white' />
-                        </div>
-                        <div className='flex flex-col items-center text-white'>
-                            <h2 className='text-[32px] font-[600]'>{statenumbers}</h2>
-                            <h2 className='text-[14px] font-[400]'>Ward</h2>
-                        </div>
-                    </div>
-                    {/* indicator4 */}
-                    <div className='flex items-center px-4 bg-[#22A9FA] gap-8 h-[100px] w-[200px] rounded-[20px]'>
-                        <div className="w-[38px] h-[38px] flex items-center justify-center rounded-full bg-[#ffffff7c]">
-                            <LuCalendarDays className='text-white' />
-                        </div>
-                        <div className='flex flex-col items-center text-white'>
-                            <h2 className='text-[32px] font-[600]'>{hfnumbers}</h2>
-                            <h2 className='text-[14px] font-[400]'>Health Facility</h2>
-                        </div>
-                    </div>
                 </div>
                 {/* download csv */}
                 <div className='flex items-center justify-end mt-[40px] pr-4'>
                     <button onClick={downloadTable} className='bg-primary90 rounded-[8px] text-light10 text-[14px] p-2'>Download CSV</button>
                 </div>
                 {/* selectbox1 */}
-                <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} />
                 {/* indicator outcome */}
                 <div className='w-full flex items-center justify-center my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>

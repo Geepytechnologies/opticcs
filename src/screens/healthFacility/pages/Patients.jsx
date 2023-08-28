@@ -6,6 +6,7 @@ import Filterbox from '../../../components/Filterbox'
 import Pagination from '../../../components/Pagination'
 import moment from 'moment'
 import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const Patients = () => {
     const { healthfacilityAuth } = useAuth()
@@ -68,6 +69,10 @@ const Patients = () => {
 
     }
     const filteredPatients = filterPatients(patients, searchitem, filter);
+    const navigate = useNavigate()
+    const handleItemClick = (itemId) => {
+        navigate(`/healthfacility/patients/${itemId}`);
+    };
     return (
         <div>
             <div className='bg-primary10'>
@@ -77,10 +82,6 @@ const Patients = () => {
                         <HiOutlineUserGroup />
                         <p className='text-secondary400 text-[18px] font-[600]'>Patients</p>
                     </div>
-                    {/* <div className='flex gap-2 justify-end'>
-                        <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
-                        <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
-                    </div> */}
                 </div>
 
                 {/* selectbox1 */}
@@ -106,7 +107,7 @@ const Patients = () => {
                                     : patients
                                 ).map((item, index) => (
 
-                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                    <tr key={index} onClick={() => handleItemClick(item.id)} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
                                         <td>{index + 1}</td>
                                         <td>{item.firstname}</td>
                                         <td>{item.id}</td>

@@ -18,7 +18,7 @@ const DashboardHome = () => {
     //filter
     const [selectedDateTo, setSelectedDateTo] = useState();
     const [selectedDateFrom, setSelectedDateFrom] = useState();
-    const filterdata = ["firstname", "state", "lga", "HealthFacility"]
+    const filterdata = ["state", "lga", "HealthFacility"]
     const [filter, setFilter] = useState(filterdata[0]);
     const [searchitem, setSearchitem] = useState()
     //pagination

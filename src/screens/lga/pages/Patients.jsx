@@ -6,6 +6,7 @@ import Filterbox from '../../../components/Filterbox'
 import Pagination from '../../../components/Pagination'
 import moment from 'moment'
 import { useAuth } from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const Patients = () => {
     const { lgaAuth } = useAuth()
@@ -67,6 +68,10 @@ const Patients = () => {
 
     }
     const filteredPatients = filterPatients(patients, searchitem, filter);
+    const navigate = useNavigate()
+    const handleItemClick = (itemId) => {
+        navigate(`/lga/patients/${itemId}`);
+    };
     return (
         <div>
             <div className='bg-primary10'>
@@ -90,33 +95,39 @@ const Patients = () => {
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
 
                         <table className="cursor-default w-full">
-                            <tr>
-                                <th>SN</th>
-                                <th>Patient Name</th>
-                                <th>Patient ID</th>
-                                <th>State</th>
-                                <th>LGA</th>
-                                <th>Health Facility</th>
-                                <th>Last Visit</th>
-                            </tr>
-                            {patients
-                                ? (searchitem || (selectedDateTo && selectedDateFrom)
-                                    ? filteredPatients
-                                    : patients
-                                ).map((item, index) => (
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Patient Name</th>
+                                    <th>Patient ID</th>
+                                    <th>State</th>
+                                    <th>LGA</th>
+                                    <th>Health Facility</th>
+                                    <th>Last Visit</th>
+                                </tr>
 
-                                    <tr key={index} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
-                                        <td>{index + 1}</td>
-                                        <td>{item.firstname}</td>
-                                        <td>{item.id}</td>
-                                        <td>{item.state}</td>
-                                        <td>{item.lga}</td>
-                                        <td>{item.healthFacility}</td>
-                                        <td>{moment(item.last_visit).fromNow()}</td>
-                                    </tr>
-                                ))
-                                : null
-                            }
+                            </thead>
+                            <tbody>
+                                {patients
+                                    ? (searchitem || (selectedDateTo && selectedDateFrom)
+                                        ? filteredPatients
+                                        : patients
+                                    ).map((item, index) => (
+
+                                        <tr key={index} onClick={() => handleItemClick(item.id)} className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]">
+                                            <td>{index + 1}</td>
+                                            <td>{item.firstname}</td>
+                                            <td>{item.id}</td>
+                                            <td>{item.state}</td>
+                                            <td>{item.lga}</td>
+                                            <td>{item.healthFacility}</td>
+                                            <td>{moment(item.last_visit).fromNow()}</td>
+                                        </tr>
+                                    ))
+                                    : null
+                                }
+
+                            </tbody>
 
 
                         </table>

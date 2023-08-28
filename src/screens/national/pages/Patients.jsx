@@ -23,13 +23,6 @@ const Patients = () => {
     const [currentpage, setCurrentpage] = useState(1)
 
 
-    // if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
-    //     console.log("greater")
-    // } else {
-    //     console.log("less than")
-
-    // }
-
 
     const getIndicatordata = async () => {
         try {

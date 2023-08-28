@@ -19,6 +19,8 @@ import Notifications from "./components/Notifications";
 import useLogout from "./hooks/useLogout";
 import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion"
+import Patientview from "./components/Patientview";
+
 
 
 const LgaApp = () => {
@@ -80,6 +82,7 @@ const LgaApp = () => {
                                 <Route index path="/" element={<DashboardHome />}></Route>
                                 <Route index path="/indicators" element={<DashboardIndicators />}></Route>
                                 <Route index path="/patients" element={<Patients />}></Route>
+                                <Route index path="/patients/:id/*" element={<Patientview />}></Route>
                                 <Route index path="/schedule" element={<PatientsSchedule />}></Route>
                                 <Route index path="/health-worker" element={<HealthWorker />}></Route>
                                 <Route index path="/health-facility" element={<HealthFacility />}></Route>

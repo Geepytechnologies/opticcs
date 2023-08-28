@@ -42,7 +42,6 @@ const LgaLogin = () => {
         setValues({ ...values, [name]: value });
     };
     const loginUser = async () => {
-        console.log({ myValues: values })
         setIsLoading(true);
         try {
             const res = await axiosPrivate.post("/admin/lga/signin", {
@@ -51,7 +50,6 @@ const LgaLogin = () => {
             });
             if (res.data) {
                 setIsLoading(false)
-                console.log({ res: res.data });
                 loadToast("Login Successful", "success")
                 navigate('/lga')
                 setLgaAuth((prevAuth) => {

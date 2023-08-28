@@ -50,7 +50,6 @@ const NationalLogin = () => {
             });
             if (res.data) {
                 setIsLoading(false)
-                console.log({ res: res });
                 loadToast("Login Successful", "success")
                 navigate('/national')
                 setNationalAuth((prevAuth) => {

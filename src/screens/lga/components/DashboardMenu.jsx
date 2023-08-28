@@ -118,7 +118,7 @@ const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
                     <p>Accounts</p>
                 </Link>
                 {/* Message */}
-                <Link
+                {/* <Link
                     to="/lga/message"
                     className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
                         ? "bg-[#842029] text-white drop-shadow-lg"
@@ -127,7 +127,7 @@ const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
                 >
                     <HiOutlineChatBubbleOvalLeftEllipsis />
                     <p>Message</p>
-                </Link>
+                </Link> */}
                 {/* Settings */}
                 <Link
                     to="/lga/settings"

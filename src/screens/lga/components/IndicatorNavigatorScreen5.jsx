@@ -1,63 +1,55 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdInformationCircle } from 'react-icons/io'
-import PieChart from '../charts/Piechart'
-import ExpectedDelivery from '../charts/ExpectedDelivery'
+import axiosInstance from '../../../utils/axios'
+import { useAuth } from '../hooks/useAuth'
+import GenericPie from '../charts/GenericPie'
 
 const IndicatorNavigatorScreen5 = () => {
+    const [schedule, setschedule] = useState()
+    const { lgaAuth } = useAuth()
+    const { lga, state } = lgaAuth.others;
+
+    const getallschedule = async () => {
+        try {
+            const res = await axiosInstance.get(`/admin/lga/data/schedule?lga=${lga}`)
+            setschedule(res.data)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        getallschedule()
+    }, [])
     return (
         <div>
-            <p className='text-primary90 font-[500] my-5'>Personal Information</p>
+            <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${lga} Local Government Area in ${state} state...`}</p>
             {/* chart 1 */}
-            <div className='grid grid-cols-2 gap-5'>
+            <div className='grid mt-9'>
                 {/* Pie chart (Gravidity) */}
                 <div className=' min-w-[250px] shadow-xl'>
                     <div className='flex items-center justify-between px-2 py-4'>
                         <div className='flex flex-col'>
-                            <p className='font-[500] text-black'>Gravidity</p>
-                            <p className='font-[400] text-[#4F4F4F] text-[14px]'>Rate</p>
+                            <p className='font-[500] text-black'>Antenatal Schdules</p>
+                            <p className='font-[500] text-[#4F4F4F] text-[14px]'>{schedule?.number}</p>
                         </div>
                         <IoMdInformationCircle className='text-[#BDBDBD] text-[25px]' />
 
                     </div>
                     <hr />
                     {/* The pie chart diagram */}
-                    <PieChart
-                        title="Win Probability"
-                        colors={["#14A673", "#D1FF60"]}
+                    <GenericPie
+                        series={[schedule?.completed, schedule?.missed]}
+                        colors={["#14A673", "#F3722C"]}
                     />
                     {/* info about chart */}
                     <div className='flex gap-7 px-2 py-4'>
                         <div className='flex gap-2 items-center'>
                             <div className='w-[7px] h-[7px] rounded-full bg-primary70'></div>
-                            <span>1 - 7</span>
+                            <span>Attended</span>
                         </div>
                         <div className='flex gap-2 items-center'>
-                            <div className='w-[7px] h-[7px] rounded-full bg-[#D1FF60]'></div>
-                            <span>Above 8</span>
-                        </div>
-                    </div>
-                </div>
-                {/* barchart graph */}
-                <div className=' min-w-[250px] shadow-xl'>
-                    <div className='flex items-center justify-between px-2'>
-                        <div className='flex flex-col'>
-                            <p className='font-[500] text-black'>Expected  Delivery </p>
-                            <p className='font-[400] text-[#4F4F4F] text-[14px]'>Number of EDD</p>
-                        </div>
-                        <IoMdInformationCircle className='text-[#BDBDBD]' />
-
-                    </div>
-                    {/* The bar chart diagram */}
-                    <ExpectedDelivery />
-                    {/* info about chart */}
-                    <div className='flex gap-7 px-2'>
-                        <div className='flex gap-2 items-center'>
-                            <div className='w-[5px] h-[5px] rounded-full bg-primary70'></div>
-                            <span>Product 1</span>
-                        </div>
-                        <div className='flex gap-2 items-center'>
-                            <div className='w-[5px] h-[5px] rounded-full bg-[#D1FF60]'></div>
-                            <span>Product 2</span>
+                            <div className='w-[7px] h-[7px] rounded-full bg-[#F3722C]'></div>
+                            <span>Miss Appointment</span>
                         </div>
                     </div>
                 </div>
