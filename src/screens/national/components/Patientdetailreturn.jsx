@@ -6,18 +6,18 @@ import { useNavigate } from 'react-router-dom'
 import Notfound from '../../../components/Notfound'
 
 const patientdetailreturn = ({ returnvisit }) => {
-    const data = returnvisit[0]
+    const data = returnvisit
     // const { returnvisit_date } = returnvisit[0]
-    const year = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('YYYY');
-    const month = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('MM');
-    const day = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('DD');
-    const time = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('HH:mm:ss a');
+    // const year = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('YYYY');
+    // const month = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('MM');
+    // const day = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('DD');
+    // const time = returnvisit && moment(returnvisit[0]?.returnvisit_date).format('HH:mm:ss a');
     const navigate = useNavigate()
     return (
         <>
             {returnvisit && returnvisit.length ? <div className='p-3'>
                 <div className='flex gap-2 items-center justify-between px-2'>
-                    <p className='font-[600] text-[20px]'>{`Records for ${day}-${month}-${year}`}</p>
+                    {/* <p className='font-[600] text-[20px]'>{`Records for ${day}-${month}-${year}`}</p> */}
                     <div onClick={() => window.print()} className='flex gap-2 cursor-pointer items-center justify-center'>
                         <AiOutlinePrinter />
                         <span>Print Page</span>

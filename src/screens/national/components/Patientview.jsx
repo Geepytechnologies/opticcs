@@ -24,6 +24,8 @@ const Patientview = () => {
     const location = useLocation()
     const id = location.pathname.split("/")[3]
     const currentpage = location.pathname.split("/")[4]
+
+
     const getvisitdates = async () => {
         try {
             const res = await axiosInstance.get(`/admin/national/data/visitdates/${id}`)
@@ -46,7 +48,7 @@ const Patientview = () => {
     }
     const returnvisitforadate = () => {
         const res = returnvisit?.filter((date) => date.returnvisit_date == returnvisitparam.date && date.id == returnvisitparam.id)
-        setReturnvisit2(res)
+        setReturnvisit2(res[0])
     }
 
     const handlereturnvisit = (item, index) => {
