@@ -61,7 +61,10 @@ const Patientview = () => {
     }, [id])
 
     useEffect(() => {
-        returnvisitforadate()
+        if (returnvisit) {
+
+            returnvisitforadate()
+        }
     }, [returnvisitparam])
 
     let DOB;
