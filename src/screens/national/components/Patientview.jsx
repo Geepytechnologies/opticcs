@@ -73,6 +73,7 @@ const Patientview = () => {
     } else {
         DOB = moment().diff(data?.dateofbirth, 'years') + ' years';
     }
+    console.log(dates?.returnvisit)
     return (
         <div className='bg-primary10 min-h-screen'>
             <div className='flex items-center justify-between  py-[40px] mx-4'>
@@ -116,8 +117,8 @@ const Patientview = () => {
                             : (currentpage == "returnvisit") ?
                                 <div className='flex flex-col gap-2 mt-6'>
                                     <p className=' text-primary90'>Return Visits</p>
-                                    {dates?.returnvisit.map((item, index) => (
-                                        <p onClick={() => handlereturnvisit(item, index)} key={index} className={`rounded-[10px] cursor-pointer ${returnvisit2[0].id == item.id ? "bg-primary90 p-2 text-center text-white" : "border-[1.2px] border-primary70 p-2 text-primary70 text-center "}`}>{moment(item.returnvisit_date).format('yyyy-MM-DD')}</p>
+                                    {dates && dates.returnvisit.length && dates.returnvisit.map((item, index) => (
+                                        <p onClick={() => handlereturnvisit(item, index)} key={index} className={`rounded-[10px] cursor-pointer ${returnvisit2 && returnvisit2.id == item.id ? "bg-primary90 p-2 text-center text-white" : "border-[1.2px] border-primary70 p-2 text-primary70 text-center "}`}>{moment(item.returnvisit_date).format('yyyy-MM-DD')}</p>
                                     ))}
                                 </div>
                                 :
