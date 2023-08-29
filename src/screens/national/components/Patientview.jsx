@@ -17,7 +17,7 @@ const Patientview = () => {
     const [data, setData] = useState()
     const [firstvisit, setFirstvisit] = useState()
     const [returnvisit, setReturnvisit] = useState()
-    const [returnvisit2, setReturnvisit2] = useState()
+    const [returnvisit2, setReturnvisit2] = useState(null)
     const [returnvisitparam, setReturnvisitparam] = useState({ id: "", date: "" })
     const [lastvisit, setLastvisit] = useState()
     const navigate = useNavigate()
@@ -73,7 +73,6 @@ const Patientview = () => {
     } else {
         DOB = moment().diff(data?.dateofbirth, 'years') + ' years';
     }
-    console.log(dates?.returnvisit)
     return (
         <div className='bg-primary10 min-h-screen'>
             <div className='flex items-center justify-between  py-[40px] mx-4'>

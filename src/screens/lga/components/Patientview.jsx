@@ -17,7 +17,7 @@ const Patientview = () => {
     const [data, setData] = useState()
     const [firstvisit, setFirstvisit] = useState()
     const [returnvisit, setReturnvisit] = useState()
-    const [returnvisit2, setReturnvisit2] = useState()
+    const [returnvisit2, setReturnvisit2] = useState(null)
     const [returnvisitparam, setReturnvisitparam] = useState({ id: "", date: "" })
     const [lastvisit, setLastvisit] = useState()
     const navigate = useNavigate()
@@ -46,7 +46,7 @@ const Patientview = () => {
     }
     const returnvisitforadate = () => {
         const res = returnvisit?.filter((date) => date.returnvisit_date == returnvisitparam.date && date.id == returnvisitparam.id)
-        setReturnvisit2(res)
+        setReturnvisit2(res[0])
     }
 
     const handlereturnvisit = (item, index) => {
