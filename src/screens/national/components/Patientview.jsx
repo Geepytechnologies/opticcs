@@ -41,6 +41,7 @@ const Patientview = () => {
             setData(res.data.result.data)
             setFirstvisit(res.data.result.firstvisit)
             setReturnvisit(res.data.result.returnvisit)
+            setReturnvisit2(res.data.result.returnvisit[0])
             setLastvisit(res.data.result.lastvisit[0])
         } catch (error) {
 
