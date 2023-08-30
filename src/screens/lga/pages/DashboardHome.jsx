@@ -137,7 +137,7 @@ const DashboardHome = () => {
     }
     const tableRef = useRef()
     return (
-        <div>
+        <div className='min-w-[1000px]'>
             {/* content */}
             <div ref={tableRef} className='bg-primary10'>
                 {/* dashboard */}

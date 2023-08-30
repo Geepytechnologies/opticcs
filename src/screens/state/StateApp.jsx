@@ -70,7 +70,7 @@ const StateApp = () => {
                     <div id="menu" className={`${showmenu ? "w-[250px] min-w-[250px]" : "w-0"} transition-all ease-in-out custom-scrollbar adminmenu overflow-y-scroll`}>
                         <DashboardMenu confirmlogout={confirmlogout} setconfirmlogout={setconfirmlogout} />
                     </div>
-                    <div id="page" className="flex-[4] min-w-[1000px] bg-[#f8f9fa]">
+                    <div id="page" className="flex-[4] bg-[#f8f9fa]">
                         <DashboardNavbar />
                         <div className="relative">
                             <div className="absolute z-50 top-0 left-0">

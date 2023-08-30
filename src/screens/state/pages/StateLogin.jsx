@@ -92,7 +92,7 @@ const StateLogin = () => {
             <div className="flex flex-col h-screen font-popp">
 
                 {/* Navbar */}
-                <div className="flex flex-row w-full justify-center px-3 py-[28px]">
+                <div className="flex flex-row w-full justify-start px-3 py-[28px]">
                     <Link to="/" className="flex flex-row items-center justify-center gap-[21px]">
                         <img src="/images/ED-(1).png" className="h-[30px] md:h-[40px]" />
                         <span className="text-[#027D52] font-popp text-[25px] md:text-[43.441px] font-[700]">
@@ -100,10 +100,10 @@ const StateLogin = () => {
                         </span>
                     </Link>
                     {/* login button */}
-                    <Link to="/user/register" className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
+                    {/* <Link to="/user/register" className="px-[20px] py-[10px] md:px-[26px] md:py-[16px] ml-auto text-light10 text-[16px] font-popp font-[500] tracking-[0.16px] bg-primary90 rounded-[8px] border border-primary70">
                         <p>{screenSize < "640" ? "Register" : "Register to OptiCCS"}</p>
 
-                    </Link>
+                    </Link> */}
                 </div>
                 {/* form */}
                 <div className="relative flex flex-1 ">

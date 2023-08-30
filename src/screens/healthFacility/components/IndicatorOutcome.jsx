@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { LuCalendarDays } from 'react-icons/lu'
 import { motion } from "framer-motion"
 import axiosInstance from '../../../utils/axios'
+import { useAuth } from '../hooks/useAuth'
 
-const IndicatorOutcome = () => {
-    const [patients4visits, setPatients4visits] = useState()
+const IndicatorOutcome = ({ patients }) => {
+    const { healthfacilityAuth } = useAuth()
+    const { healthfacilityid } = healthfacilityAuth.others;
+    const [patients4visits, setPatients4visits] = useState(0)
 
-    const getPatientswith4visits = async () => {
+    const numberOfWomen4visits = async () => {
         try {
-            const res = await axiosInstance.get('/patients/find/4visits');
-            setPatients4visits(res.data.length)
+            const res = await axiosInstance.get(`/admin/healthfacility/data/find/4visits?healthfacility=${healthfacilityid}`);
+            setPatients4visits(res.data[0].patient_count)
         } catch (err) {
 
         }
     }
     useEffect(() => {
-        getPatientswith4visits()
-    })
+        numberOfWomen4visits()
+    }, [])
     return (
         <motion.div initial={{
             opacity: 0,
@@ -42,7 +45,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>{patients4visits || 0}</h2>
+                            <h2 className='text-[32px] font-[600]'>{patients4visits}</h2>
                             <h2 className='text-[14px] font-[400]'>Number of women of reproductive age who received at least 4 ANC visits at intervention facility</h2>
                         </div>
                     </div>
@@ -51,7 +54,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-dark50' />
                         </div>
                         <div className='flex flex-col text-dark50'>
-                            <h2 className='text-[32px] font-[600]'>0</h2>
+                            <h2 className='text-[32px] font-[600]'>{patients}</h2>
                             <h2 className='text-[14px] font-[400]'>Total number of women who visit intervention facilities for ANC</h2>
                         </div>
                     </div>
@@ -63,7 +66,7 @@ const IndicatorOutcome = () => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>{(patients4visits / 2390).toFixed(2) || 0}</h2>
+                            <h2 className='text-[32px] font-[600]'>{(patients4visits / patients).toFixed(2)}</h2>
                             <h2 className='text-[14px] font-[400]'>Numerator/Denominator</h2>
                         </div>
                     </div>

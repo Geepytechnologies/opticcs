@@ -107,7 +107,7 @@ const DashboardHome = () => {
 
     switch (navigatorSlide) {
         case 1:
-            componentToRender = <IndicatorOutcome />;
+            componentToRender = <IndicatorOutcome patients={patients} />;
             break;
         case 2:
             componentToRender = <IntermediateResult1 />;
@@ -124,7 +124,7 @@ const DashboardHome = () => {
     }
     const tableRef = useRef()
     return (
-        <div>
+        <div className='min-w-[1000px]'>
             {/* content */}
             <div ref={tableRef} className='bg-primary10'>
                 {/* dashboard */}

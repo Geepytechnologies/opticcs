@@ -8,15 +8,15 @@ const IndicatorOutcome = ({ patients }) => {
 
     const numberOfWomen4visits = async () => {
         try {
-            const res = await axiosInstance.get('/patients/find/4visits');
-            setPatients4visits(res.data.result.length)
+            const res = await axiosInstance.get('/admin/national/data/find/4visits');
+            setPatients4visits(res.data[0].patient_count)
         } catch (err) {
 
         }
     }
     useEffect(() => {
         numberOfWomen4visits()
-    })
+    }, [])
     return (
         <motion.div initial={{
             opacity: 0,
@@ -63,7 +63,7 @@ const IndicatorOutcome = ({ patients }) => {
                             <LuCalendarDays className='text-white' />
                         </div>
                         <div className='flex flex-col text-white'>
-                            <h2 className='text-[32px] font-[600]'>{(patients4visits / 2390).toFixed(2)}</h2>
+                            <h2 className='text-[32px] font-[600]'>{(patients4visits / patients).toFixed(2)}</h2>
                             <h2 className='text-[14px] font-[400]'>Numerator/Denominator</h2>
                         </div>
                     </div>

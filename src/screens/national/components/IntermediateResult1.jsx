@@ -103,7 +103,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-white' />
                             </div>
                             <div className='flex flex-col text-white'>
-                                <h2 className='text-[20px] font-[600]'>0</h2>
+                                <h2 className='text-[20px] font-[600]'>{patients}</h2>
                                 <h2 className='text-[10px] font-[400]'>Number of pregnant women who are tested for malaria</h2>
                             </div>
                         </div>
@@ -112,7 +112,7 @@ const IntermediateResult1 = ({ patients }) => {
                                 <LuCalendarDays className='text-dark50' />
                             </div>
                             <div className='flex flex-col text-dark50'>
-                                <h2 className='text-[20px] font-[600]'>0</h2>
+                                <h2 className='text-[20px] font-[600]'>{patients}</h2>
                                 <h2 className='text-[10px] font-[400]'>Total number of women who attended antenatal clinic</h2>
                             </div>
                         </div>
