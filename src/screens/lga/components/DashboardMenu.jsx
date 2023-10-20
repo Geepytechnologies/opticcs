@@ -16,7 +16,7 @@ import { BiLogOut } from "react-icons/bi"
 import { RxDashboard } from "react-icons/rx"
 import { RiArrowUpDownLine } from "react-icons/ri"
 import { HiOutlineUserGroup, } from "react-icons/hi"
-import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUserPlus } from "react-icons/hi2"
+import { HiArrowsUpDown, HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUserPlus } from "react-icons/hi2"
 import { LuCalendarDays } from "react-icons/lu"
 import { MdOutlineGroup } from "react-icons/md"
 import { CgNotes } from "react-icons/cg"
@@ -149,6 +149,17 @@ const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
                 >
                     <FaRegUser />
                     <p>My Profile</p>
+                </Link>
+                {/* Usage */}
+                <Link
+                    to="/lga/usage"
+                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("usage")
+                        ? "bg-[#842029] text-white drop-shadow-lg"
+                        : " hover:text-[black] hover:bg-gray-200"
+                        }`}
+                >
+                    <HiArrowsUpDown />
+                    <p>Usage Analytics</p>
                 </Link>
                 {/* Logout */}
                 <div onClick={() => setconfirmlogout(true)}

@@ -10,7 +10,7 @@ import HealthWorker from "./pages/HealthWorker";
 import HealthFacility from "./pages/HealthFacility";
 import State from "./pages/State";
 import LGA from "./pages/LGA";
-import Messages from "./pages/Messages";
+import UsageAnalytics from "./pages/UsageAnalytics";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import LoadPage from "../LoadPage";
@@ -89,7 +89,7 @@ const NationalApp = () => {
                                 <Route index path="/state" element={<State />}></Route>
                                 <Route index path="/lga" element={<LGA />}></Route>
                                 <Route index path="/accounts" element={<Accounts />}></Route>
-                                {/* <Route index path="/message" element={<Messages />}></Route> */}
+                                <Route index path="/usage" element={<UsageAnalytics />}></Route>
                                 <Route index path="/settings" element={<Settings />}></Route>
                                 <Route index path="/profile" element={<Profile />}></Route>
                                 <Route index path="/notifications" element={<Notifications />}></Route>

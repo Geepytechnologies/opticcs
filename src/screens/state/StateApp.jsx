@@ -20,6 +20,7 @@ import Patientview from "./components/Patientview";
 import useLogout from "./hooks/useLogout";
 import { motion } from "framer-motion"
 import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCircleFill } from "react-icons/bs";
+import UsageAnalytics from "./pages/UsageAnalytics";
 
 
 const StateApp = () => {
@@ -88,7 +89,7 @@ const StateApp = () => {
                                 <Route index path="/health-facility" element={<HealthFacility />}></Route>
                                 <Route index path="/lga" element={<LGA />}></Route>
                                 <Route index path="/accounts" element={<Accounts />}></Route>
-                                {/* <Route index path="/message" element={<Messages />}></Route> */}
+                                <Route index path="/usage" element={<UsageAnalytics />}></Route>
                                 <Route index path="/settings" element={<Settings />}></Route>
                                 <Route index path="/profile" element={<Profile />}></Route>
                                 <Route index path="/notifications" element={<Notifications />}></Route>
