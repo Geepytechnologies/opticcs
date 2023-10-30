@@ -5,17 +5,24 @@ import Activitylog from "../components/Activitylog";
 import { LuCalendarDays } from "react-icons/lu";
 import { useEffect } from "react";
 import axiosInstance from "../../../utils/axios";
+import DatePicker from 'react-datepicker';
+import { AiFillCalendar } from "react-icons/ai"
 
 const UsageAnalytics = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
+    const [sessions, setSessions] = useState()
+    const [sessiongraphdata, setSessiongraphdata] = useState()
+    const [startDate, setStartDate] = useState(new Date());
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+
     let componentToRender;
 
     switch (navigatorSlide) {
         case 1:
-            componentToRender = <Activitylog />;
+            componentToRender = <Activitylog count={sessiongraphdata} />;
             break;
         case 2:
-            componentToRender = <ActiveUsers />;
+            componentToRender = <ActiveUsers data={sessions} />;
             break;
         default:
             componentToRender = null;
@@ -25,6 +32,23 @@ const UsageAnalytics = () => {
     const [patients, setPatients] = useState(0)
     const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
+
+    const getAllSessions = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/find/all?start_date=${formattedStartDate}`);
+            setSessions(res.data.result)
+        } catch (err) {
+
+        }
+    }
+    const getSessiongraph = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/data`);
+            setSessiongraphdata(res.data.result)
+        } catch (err) {
+
+        }
+    }
 
     const getAllHealthWorkers = async () => {
         try {
@@ -63,7 +87,13 @@ const UsageAnalytics = () => {
         getAllPatients()
         getAllstates()
         getHealthfacilities()
+        getAllSessions()
+        getSessiongraph()
     }, [])
+    useEffect(() => {
+        getAllSessions()
+
+    }, [startDate])
     return (
         <div>
             <div className='bg-primary10'>
@@ -120,9 +150,24 @@ const UsageAnalytics = () => {
                 <div className='w-full flex items-center justify-center font-inter my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
                         {/* navigator */}
-                        <div className='flex items-center gap-4 w-full mb-8'>
-                            <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Activity Log</div>
-                            <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Active Users  </div>
+                        <div className="flex items-center justify-between px-2 w-full mb-8">
+                            <div className='flex items-center gap-4 w-full'>
+                                <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Activity Log</div>
+                                <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Active Users  </div>
+
+                            </div>
+
+                            <div className="z-50">
+                                <div className="flex gap-2 cursor-pointer items-center text-white p-3 bg-primary70 rounded-lg">
+                                    <AiFillCalendar className="text-[24px]" />
+                                    <DatePicker className="bg-primary70  outline-0 text-white"
+                                        selected={startDate}
+                                        shouldCloseOnSelect
+                                        onChange={(date) => setStartDate(date)}
+                                    />
+
+                                </div>
+                            </div>
 
                         </div>
 

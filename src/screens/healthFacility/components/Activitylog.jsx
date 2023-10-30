@@ -3,9 +3,7 @@ import Activitychart from "../charts/Activitychart"
 import { BsFillInfoCircleFill } from "react-icons/bs"
 
 
-const Activitylog = () => {
-    const data = [120, 20, 40, 23, 56, 54, 22, 12, 2, 4, 56, 32]
-    const objectArray = data.map(number => ({ number }));
+const Activitylog = ({ count }) => {
     return (
         <div>
             <div className="shadow-2xl bg-white w-[600px]">
@@ -16,7 +14,7 @@ const Activitylog = () => {
                     </div>
 
                 </div>
-                <Activitychart series={objectArray} />
+                <Activitychart series={count} />
 
             </div>
         </div>

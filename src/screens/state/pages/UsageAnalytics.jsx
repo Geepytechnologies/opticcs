@@ -5,17 +5,26 @@ import Activitylog from "../components/Activitylog";
 import { LuCalendarDays } from "react-icons/lu";
 import { useEffect } from "react";
 import axiosInstance from "../../../utils/axios";
+import { useAuth } from "../hooks/useAuth";
+import DatePicker from 'react-datepicker';
+import { AiFillCalendar } from "react-icons/ai"
 
 const UsageAnalytics = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
+    const [sessions, setSessions] = useState()
+    const [sessiongraphdata, setSessiongraphdata] = useState()
+    const [startDate, setStartDate] = useState(new Date());
+    const formattedStartDate = startDate.toISOString().split('T')[0];
+    const { stateAuth } = useAuth()
+    const { state } = stateAuth.others;
     let componentToRender;
 
     switch (navigatorSlide) {
         case 1:
-            componentToRender = <Activitylog />;
+            componentToRender = <Activitylog count={sessiongraphdata} />;
             break;
         case 2:
-            componentToRender = <ActiveUsers />;
+            componentToRender = <ActiveUsers data={sessions} />;
             break;
         default:
             componentToRender = null;
@@ -26,18 +35,37 @@ const UsageAnalytics = () => {
     const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
 
+    const getAllSessions = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/find/state?start_date=${formattedStartDate}&state=${state}`);
+            setSessions(res.data.result)
+        } catch (err) {
+
+        }
+    }
+    const getSessiongraph = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/data/state?state=${state}`);
+            setSessiongraphdata(res.data.result)
+        } catch (err) {
+
+        }
+    }
+
     const getAllHealthWorkers = async () => {
         try {
             const res = await axiosInstance.get('/users/find');
-            setHealthWorkers(res.data.result.length)
+            const stateworkers = res.data.result.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setHealthWorkers(stateworkers.length)
         } catch (err) {
 
         }
     }
     const getAllPatients = async () => {
         try {
-            const res = await axiosInstance.get('/patients/find');
-            setPatients(res.data.result.length)
+            const res = await axiosInstance.get('/patients/findwithworkers');
+            const statepatients = res.data.result.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setPatients(statepatients.length)
         } catch (err) {
 
         }
@@ -54,7 +82,8 @@ const UsageAnalytics = () => {
     const getHealthfacilities = async () => {
         try {
             const res = await axiosInstance.get('/admin/healthfacility/find');
-            setHfnumbers(res.data.length)
+            const statehealthfacilities = res.data.filter((obj) => (obj.state).toLowerCase() == (stateAuth.others.state).toLowerCase())
+            setHfnumbers(statehealthfacilities.length)
         } catch (err) {
 
         }
@@ -64,7 +93,13 @@ const UsageAnalytics = () => {
         getAllPatients()
         getAllLGAs()
         getHealthfacilities()
+        getAllSessions()
+        getSessiongraph()
     }, [])
+    useEffect(() => {
+        getAllSessions()
+
+    }, [startDate])
     return (
         <div>
             <div className='bg-primary10'>
@@ -121,9 +156,24 @@ const UsageAnalytics = () => {
                 <div className='w-full flex items-center justify-center font-inter my-5'>
                     <div className='bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4'>
                         {/* navigator */}
-                        <div className='flex items-center gap-4 w-full mb-8'>
-                            <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Activity Log</div>
-                            <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Active Users  </div>
+                        <div className="flex items-center justify-between px-2 w-full mb-8">
+                            <div className='flex items-center gap-4 w-full'>
+                                <div onClick={() => setNavigatorSlide(1)} className={`cursor-pointer text-center ${navigatorSlide === 1 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Activity Log</div>
+                                <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>Active Users  </div>
+
+                            </div>
+
+                            <div className="z-50">
+                                <div className="flex gap-2 cursor-pointer items-center text-white p-3 bg-[#7A6EFE] rounded-lg">
+                                    <AiFillCalendar className="text-[24px]" />
+                                    <DatePicker className="bg-[#7A6EFE]  outline-0 text-white"
+                                        selected={startDate}
+                                        shouldCloseOnSelect
+                                        onChange={(date) => setStartDate(date)}
+                                    />
+
+                                </div>
+                            </div>
 
                         </div>
 
