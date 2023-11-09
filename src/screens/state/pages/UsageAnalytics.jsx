@@ -167,14 +167,16 @@ const UsageAnalytics = () => {
             getAllSessions()
 
 
-        }
-        if (indicatorsearchparam.query == "lga") {
-            getLgaSessiongraph()
-            getAllLgaSession()
+        } else
+            if (indicatorsearchparam.query == "lga") {
+                getLgaSessiongraph()
+                getAllLgaSession()
 
 
-        }
-        getAllSessions()
+            } else {
+                getSessiongraph()
+                getAllSessions()
+            }
 
     }, [startDate])
     return (

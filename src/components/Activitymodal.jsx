@@ -46,7 +46,7 @@ const Activitymodal = ({ data }) => {
                     <div className='flex flex-col gap-5'>
                         <div>
                             <p className='font-[500]'>First Visits:</p>
-                            {data.session_data.firstvisit.length ?
+                            {data.session_data.firstvisit && data.session_data.firstvisit.length ?
                                 (<ol className='list-decimal'>
                                     {data.session_data.firstvisit.map((item, index) => (
                                         <li key={index}>First Visit Record at {item.split(" ")[1]}</li>
@@ -57,23 +57,23 @@ const Activitymodal = ({ data }) => {
                         </div>
                         <div>
                             <p className='font-[500]'>Return Visits:</p>
-                            {data.session_data.returnvisit.length ?
+                            {data.session_data.returnvisit && data.session_data.returnvisit.length ?
                                 (<ol className='list-decimal'>
                                     {data.session_data.returnvisit.map((item, index) => (
                                         <li key={index}>Return Visit Record at {item.split(" ")[1]}</li>
 
                                     ))}
                                 </ol>) : <p>No record</p>}
-                            <p className='font-[500]'>Schedules:</p>
-                            {data.session_data.schedule.length ?
-                                (<ol className='list-decimal'>
-                                    {data.session_data.schedule.map((item, index) => (
-                                        <li key={index}>Created a schedule at {item.split(" ")[1]}</li>
-
-                                    ))}
-                                </ol>) : <p>No record</p>}
 
                         </div>
+                        <p className='font-[500]'>Schedules:</p>
+                        {data.session_data.schedule && data.session_data.schedule.length ?
+                            (<ol className='list-decimal'>
+                                {data.session_data.schedule.map((item, index) => (
+                                    <li key={index}>Created a schedule at {item.split(" ")[1]}</li>
+
+                                ))}
+                            </ol>) : <p>No record</p>}
 
                     </div>
                 </div>
