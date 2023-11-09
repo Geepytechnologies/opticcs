@@ -8,33 +8,98 @@ import axiosInstance from "../../../utils/axios";
 import { useAuth } from "../hooks/useAuth";
 import DatePicker from 'react-datepicker';
 import { AiFillCalendar } from "react-icons/ai"
+import stateLocalGovts from "../../../utils/stateandlgas";
 
 const UsageAnalytics = () => {
     const [navigatorSlide, setNavigatorSlide] = useState(1);
     const [sessions, setSessions] = useState()
     const [sessiongraphdata, setSessiongraphdata] = useState()
     const [startDate, setStartDate] = useState(new Date());
+    const [healthWorkers, setHealthWorkers] = useState(0)
+    const [patients, setPatients] = useState(0)
+    const [statenumbers, setStatenumbers] = useState(0)
+    const [hfnumbers, setHfnumbers] = useState(0)
+
     const formattedStartDate = startDate.toISOString().split('T')[0];
+    const [localGovts, setLocalGovts] = useState([]);
+    const [statesearch, setStatesearch] = useState("all")
+    const [lgasearch, setLgasearch] = useState("all")
+    const [ward, setWard] = useState("all")
+    const [indicatorsearchparam, setindicatorsearchparam] = useState({ query: "", state: "", lga: "" })
     const { stateAuth } = useAuth()
     const { state } = stateAuth.others;
     let componentToRender;
 
     switch (navigatorSlide) {
         case 1:
-            componentToRender = <Activitylog count={sessiongraphdata} />;
+            componentToRender = <Activitylog count={sessiongraphdata} param={indicatorsearchparam} />;
             break;
         case 2:
-            componentToRender = <ActiveUsers data={sessions} />;
+            componentToRender = <ActiveUsers data={sessions} param={indicatorsearchparam} date={formattedStartDate} />;
             break;
         default:
             componentToRender = null;
             break;
     }
-    const [healthWorkers, setHealthWorkers] = useState(0)
-    const [patients, setPatients] = useState(0)
-    const [statenumbers, setStatenumbers] = useState(0)
-    const [hfnumbers, setHfnumbers] = useState(0)
+    const getLgaSessiongraph = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/data/lga?lga=${lgasearch}`);
+            setSessiongraphdata(res.data.result)
+        } catch (err) {
 
+        }
+    }
+    const getAllLgaSession = async () => {
+        try {
+            const res = await axiosInstance.get(`/session/find/lga?start_date=${formattedStartDate}&lga=${lgasearch}`);
+            setSessions(res.data.result)
+        } catch (err) {
+
+        }
+    }
+    const handlestate = (e) => {
+        setStatesearch(e.target.value)
+    }
+    const handlelgasearch = (e) => {
+        setLgasearch(e.target.value)
+    }
+    const handlesearchsubmit = async () => {
+        let searchquery;
+        try {
+            if (lgasearch == "all") {
+                searchquery = "state"
+                setindicatorsearchparam({ query: searchquery, state: "", lga: lgasearch })
+                getSessiongraph()
+                getAllSessions()
+
+            }
+            if (lgasearch !== "all") {
+                searchquery = "lga"
+                setindicatorsearchparam({ query: searchquery, state: "", lga: lgasearch })
+                getLgaSessiongraph()
+                getAllLgaSession()
+
+            }
+
+            // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+        } catch (error) {
+
+        }
+    }
+    const capitalizeFirstLetter = (word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    };
+    useEffect(() => {
+        setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
+
+    }, [])
+
+    useEffect(() => {
+        if (statesearch !== "all") {
+            setLocalGovts(stateLocalGovts[capitalizeFirstLetter(statesearch)]);
+
+        }
+    }, [statesearch])
     const getAllSessions = async () => {
         try {
             const res = await axiosInstance.get(`/session/find/state?start_date=${formattedStartDate}&state=${state}`);
@@ -97,6 +162,18 @@ const UsageAnalytics = () => {
         getSessiongraph()
     }, [])
     useEffect(() => {
+        if (indicatorsearchparam.query == "state") {
+            getSessiongraph()
+            getAllSessions()
+
+
+        }
+        if (indicatorsearchparam.query == "lga") {
+            getLgaSessiongraph()
+            getAllLgaSession()
+
+
+        }
         getAllSessions()
 
     }, [startDate])
@@ -175,6 +252,43 @@ const UsageAnalytics = () => {
                                 </div>
                             </div>
 
+                        </div>
+                        {/* search box */}
+                        <div className='w-full flex items-center justify-center my-5'>
+                            <div className='bg-white min-w-[95%] pl-2 py-2 flex flex-row  items-center justify-center gap-6'>
+                                {/* 1 */}
+
+                                {/* 2 */}
+                                {/* {statesearch !== 'all' && */}
+                                <div className='flex flex-col'>
+                                    {/* <label className='text-primary90 font-[400]'>LGA</label> */}
+                                    <select name="lga" onChange={handlelgasearch} value={lgasearch} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]">
+                                        <option value="all" >
+                                            All LGA
+                                        </option>
+                                        {localGovts?.map((localGovt) => (
+                                            <option key={localGovt} value={localGovt}>{localGovt}</option>
+                                        ))}
+                                    </select>
+
+                                </div>
+                                {/* } */}
+                                {/* 3 */}
+                                {lgasearch !== 'all' && <div className='flex flex-col'>
+                                    {/* <label className='text-primary90 font-[400]'>Ward</label> */}
+                                    <select defaultValue="" onChange={(e) => setWard(e.target.value)} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
+
+                                        <option value={ward}>{"All wards"}</option>
+
+
+                                    </select>
+
+                                </div>
+                                }
+                                <div className='flex gap-2 justify-end ml-6'>
+                                    <button onClick={handlesearchsubmit} className="bg-primary90 p-[16px] text-light10 rounded-[8px]">Search</button>
+                                </div>
+                            </div>
                         </div>
 
                         {componentToRender}

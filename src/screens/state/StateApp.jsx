@@ -21,9 +21,13 @@ import useLogout from "./hooks/useLogout";
 import { motion } from "framer-motion"
 import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCircleFill } from "react-icons/bs";
 import UsageAnalytics from "./pages/UsageAnalytics";
+import { useModal } from "../../utils/hooks/useModal";
+import Activitymodal from "../../components/Activitymodal";
 
 
 const StateApp = () => {
+    const { showModal, toggleModal, modaldata } = useModal();
+
     const [loaderFinished, setLoaderFinished] = useState(false);
     const [showmenu, setShowmenu] = useState(true)
     const logoutUser = useLogout()
@@ -96,6 +100,8 @@ const StateApp = () => {
                             </Routes>
                         </div>
                     </div>
+                    {showModal && <Activitymodal data={modaldata} />}
+
                 </div>
             }
         </>

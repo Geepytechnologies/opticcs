@@ -20,9 +20,12 @@ import Patientview from "./components/Patientview";
 import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion"
 import useLogout from "./hooks/useLogout";
+import Activitymodal from "./components/Activitymodal";
+import { useModal } from "../../utils/hooks/useModal";
 
 
 const NationalApp = () => {
+    const { showModal, toggleModal, modaldata } = useModal();
     const [loaderFinished, setLoaderFinished] = useState(false);
     const [showmenu, setShowmenu] = useState(true)
     const logoutUser = useLogout()
@@ -96,6 +99,7 @@ const NationalApp = () => {
                             </Routes>
                         </div>
                     </div>
+                    {showModal && <Activitymodal data={modaldata} />}
                 </div>
             }
         </>

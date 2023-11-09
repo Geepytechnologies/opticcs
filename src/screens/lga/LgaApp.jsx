@@ -21,10 +21,14 @@ import { BsFillArrowLeftSquareFill, BsFillArrowRightSquareFill, BsFillArrowUpCir
 import { motion } from "framer-motion"
 import Patientview from "./components/Patientview";
 import UsageAnalytics from "./pages/UsageAnalytics";
+import { useModal } from "../../utils/hooks/useModal";
+import Activitymodal from "../../components/Activitymodal";
 
 
 
 const LgaApp = () => {
+    const { showModal, toggleModal, modaldata } = useModal();
+
     const [loaderFinished, setLoaderFinished] = useState(false);
     const [showmenu, setShowmenu] = useState(true)
     const logoutUser = useLogout()
@@ -95,6 +99,8 @@ const LgaApp = () => {
                             </Routes>
                         </div>
                     </div>
+                    {showModal && <Activitymodal data={modaldata} />}
+
                 </div>
             }
         </>

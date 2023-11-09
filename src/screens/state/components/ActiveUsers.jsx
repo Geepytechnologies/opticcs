@@ -1,5 +1,6 @@
 import React from "react"
 import moment from "moment"
+import { Link } from "react-router-dom";
 
 
 const ActiveUsers = ({ data }) => {
@@ -44,22 +45,23 @@ const ActiveUsers = ({ data }) => {
                 </thead>
                 <tbody>
                     {!data.length && <tr className="flex items-center justify-center text-primary70 text-[20px] font-mont"><td>No Record</td></tr>}
-                    {data.map((item, index) => (<tr key={index} className="text-[#636363] h-[50px]">
-                        <td>{index + 1}</td>
-                        <td>{item.healthworker}</td>
-                        <td>{item.id}</td>
-                        <td>{item.cadre}</td>
-                        <td className="">
-                            <div className="flex items-center justify-center gap-2">
-                                {item.session_status == "completed" ? <p className="w-3 h-3 rounded-full bg-[red]"></p> : <p className="w-3 h-3 rounded-full bg-[green]"></p>}
-                                <p>{item.session_status}</p>
+                    {data.map((item, index) => (
+                        <tr key={index} className="text-[#636363] h-[50px] cursor-pointer">
+                            <td>{index + 1}</td>
+                            <td>{item.healthworker}</td>
+                            <td>{item.id}</td>
+                            <td>{item.cadre}</td>
+                            <td className="">
+                                <div className="flex items-center justify-center gap-2">
+                                    {item.session_status == "completed" ? <p className="w-3 h-3 rounded-full bg-[red]"></p> : <p className="w-3 h-3 rounded-full bg-[green]"></p>}
+                                    <p>{item.session_status}</p>
 
-                            </div>
-                        </td>
-                        <td>{item.start_time}</td>
-                        <td>{item.end_time}</td>
-                        <td>{timeduration(item.start_time, item.end_time)}</td>
-                    </tr>))}
+                                </div>
+                            </td>
+                            <td>{item.start_time}</td>
+                            <td>{item.end_time}</td>
+                            <td>{timeduration(item.start_time, item.end_time)}</td>
+                        </tr>))}
                 </tbody>
             </table>
         </div>

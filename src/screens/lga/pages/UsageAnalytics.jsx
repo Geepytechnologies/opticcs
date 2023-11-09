@@ -17,6 +17,8 @@ const UsageAnalytics = () => {
     const [sessiongraphdata, setSessiongraphdata] = useState()
     const [startDate, setStartDate] = useState(new Date());
     const formattedStartDate = startDate.toISOString().split('T')[0];
+    const [ward, setWard] = useState("all")
+    const [indicatorsearchparam, setindicatorsearchparam] = useState({ query: "", state: "", lga: "" })
     let componentToRender;
 
     switch (navigatorSlide) {
@@ -32,7 +34,6 @@ const UsageAnalytics = () => {
     }
     const [healthWorkers, setHealthWorkers] = useState(0)
     const [patients, setPatients] = useState(0)
-    const [statenumbers, setStatenumbers] = useState(0)
     const [hfnumbers, setHfnumbers] = useState(0)
 
     const getAllSessions = async () => {
@@ -157,7 +158,22 @@ const UsageAnalytics = () => {
                             </div>
 
                         </div>
+                        {/* search box */}
+                        <div className='w-full flex items-center justify-center my-5'>
+                            <div className='bg-white min-w-[95%] pl-2 py-2 flex flex-row  items-center justify-center gap-6'>
+                                {/* 3 */}
+                                <div className='flex flex-col'>
+                                    {/* <label className='text-primary90 font-[400]'>Ward</label> */}
+                                    <select defaultValue="" onChange={(e) => setWard(e.target.value)} className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]">
 
+                                        <option value={ward}>{"All wards"}</option>
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
                         {componentToRender}
 
                     </div>
