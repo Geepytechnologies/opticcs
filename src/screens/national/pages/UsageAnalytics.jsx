@@ -26,7 +26,6 @@ const UsageAnalytics = () => {
     const [ward, setWard] = useState("all")
     const [indicatorsearchparam, setindicatorsearchparam] = useState({ query: "", state: "", lga: "" })
 
-    console.log(sessions)
     let componentToRender;
 
     switch (navigatorSlide) {
@@ -91,7 +90,6 @@ const UsageAnalytics = () => {
     const getAllSessions = async () => {
         try {
             const res = await axiosInstance.get(`/session/find/all?start_date=${formattedStartDate}`);
-            console.log(res.data.result)
             setSessions(res.data.result)
         } catch (err) {
 

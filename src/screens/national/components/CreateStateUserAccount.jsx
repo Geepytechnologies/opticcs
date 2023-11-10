@@ -340,7 +340,7 @@ const CreateStateUserAccount = () => {
                                 {useridError.status && <span className='text-[12px] font-[500] italic text-red-500'>{useridError.message}</span>}
                             </div>
                             <input type="text"
-                                name="userid" value={values.userid} onBlur={handleUseridBlur}
+                                name="userid" readOnly value={values.userid} onBlur={handleUseridBlur}
                                 className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
                                 placeholder="userID"
                             />
@@ -353,7 +353,7 @@ const CreateStateUserAccount = () => {
                                 {passwordError.status && <span className='text-[12px] font-[500] italic text-red-500'>{passwordError.message}</span>}
                             </div>
                             <div className="p-[16px] flex items-center justify-center bg-transparent text-secondary30 rounded-[8px] border border-[#C6C7C8]">
-                                <input type={`${showpassword ? "text" : "password"}`} readonly value={values.password}
+                                <input type={`${showpassword ? "text" : "password"}`} readOnly value={values.password}
                                     name="password" onBlur={handlePasswordBlur}
                                     className=" outline-none"
                                     placeholder="Password"

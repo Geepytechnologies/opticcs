@@ -5,7 +5,7 @@ const Activitymodal = ({ data }) => {
     const { showModal, toggleModal } = useModal();
 
     return (
-        <div className="w-screen h-screen absolute top-0 flex items-center z-[200] justify-center bg-[rgba(0,0,0,0.4)]">
+        <div className="w-screen h-screen fixed top-0 flex items-center z-[200] justify-center bg-[rgba(0,0,0,0.4)]">
             <div className="bg-white w-[80%] lg:w-[60%] h-[400px] overflow-y-auto rounded-md relative">
                 <img src="/images/Logo.png" alt="logo" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10  saturate-0" />
 

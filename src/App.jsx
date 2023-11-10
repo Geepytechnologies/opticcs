@@ -25,6 +25,9 @@ import PersistLgaLogin from './utils/PersistLgaLogin';
 import RequireHealthfacilityAuth from './utils/RequireHealthfacilityAuth';
 import PersistHealthfacilityLogin from './utils/PersistHealthfacilityLogin';
 import HealthfacilityLogin from './screens/healthFacility/pages/HealthfacilityLogin';
+import NationalLoginRecovery from './screens/national/pages/NationalLoginRecovery';
+import NationalRecoveryConfirm from './screens/national/pages/NationalRecoveryConfirm';
+import NationalResetPassword from './screens/national/pages/NationalResetPassword';
 
 
 
@@ -51,6 +54,9 @@ function App() {
           </Route>
         </Route>
         <Route path="/national/login" element={<NationalLogin />}></Route>
+        <Route path="/national/forgotpassword" element={<NationalLoginRecovery />}></Route>
+        <Route path="/national/resetpassword" element={<NationalResetPassword />}></Route>
+        <Route path="/national/confirmOTP" element={<NationalRecoveryConfirm />}></Route>
         <Route element={<PersistStateLogin />}>
           <Route element={<RequireStateAuth />}>
             <Route path="/state/*" element={<StateApp />}></Route>

@@ -7,7 +7,7 @@ import CustomToast from '../../../components/CustomToast';
 import LoaderSmall from '../../../components/LoaderSmall';
 
 
-const NationalLogin = () => {
+const NationalLoginRecovery = () => {
     const { nationalAuth, setNationalAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -36,51 +36,47 @@ const NationalLogin = () => {
     };
 
     const screenSize = document.documentElement.clientWidth;
-    const [values, setValues] = useState({ password: "", userid: "" });
+    const [values, setValues] = useState({ phone: "" });
+    const [numberError, setNumberError] = useState(false)
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setValues({ ...values, [name]: value });
-    };
-    const loginUser = async () => {
-        setIsLoading(true);
-        try {
-            const res = await axiosPrivate.post("/admin/national/signin", {
-                userid: values.userid,
-                password: values.password,
-            });
-            if (res.data) {
-                setIsLoading(false)
-                loadToast("Login Successful", "success")
-                navigate('/national')
-                setNationalAuth((prevAuth) => {
-                    // This function receives the previous state as its argument
-                    // and returns the updated state
-
-                    return res.data.result;
-                });
-
+        setValues((prevValues) => {
+            const updatedValues = { ...prevValues, [name]: value };
+            if (updatedValues.phone.length > 10) {
+                setNumberError(true);
+            } else {
+                setNumberError(false);
             }
-            // console.log({ authLogin: auth });
+            return updatedValues;
+        });
+    };
+    const sendOtp = async () => {
+        setIsLoading(true);
+        const mobilenumber = "234" + values.phone
+        try {
+            const res = await axiosPrivate.post("/admin/national/password/sendOtp", {
+                mobile_number: mobilenumber,
+            });
+            if (res.status == 200) {
+                setIsLoading(false)
+                loadToast("OTP sent", "success")
+                setTimeout(() => {
+                    navigate('/national/confirmOTP', { state: { key: mobilenumber }, replace: true })
 
+                }, [2000])
+            }
 
         } catch (err) {
             setIsLoading(false)
-            if (err?.response?.data.message == "User not found") {
-                loadToast("User not found", "error")
-            }
-            else if (err?.response?.data.message == "wrong credentials") {
-                loadToast("Wrong credentials", "error")
-            } else {
-                loadToast("Something Went wrong", "error")
+            loadToast("Something Went wrong", "error")
 
-            }
         }
 
 
     };
     const handleForm = async (e) => {
         e.preventDefault();
-        loginUser();
+        sendOtp();
     };
 
     return (
@@ -118,36 +114,26 @@ const NationalLogin = () => {
                                 </p>
                                 <img src="/images/handemoji.png" />
                             </div>
-                            <div className="text-center text-[24px] font-popp font-[500] tracking-[0.24px] text-primary10">
-                                Please enter details to sign in
+                            <div className="text-center text-[20px] font-popp font-[500] tracking-[0.24px] text-primary10">
+                                Please enter the phone Number for this account
                             </div>
+                            <p className="text-center text-[17px] font-popp font-[400] tracking-[0.24px] text-primary10">A password reset token will be sent to you!!!</p>
                             <form onSubmit={handleForm} className="flex flex-col gap-4 mt-4">
                                 <div className="flex flex-col">
                                     <label className="text-[16px] font-[500] text-[#fff]">
-                                        User ID<span className="ml-2 text-red-500">*</span>
+                                        Phone Number<span className="ml-2 text-red-500">*</span>
                                     </label>
-                                    <input name="userid" type='text' onChange={handleChange}
-                                        className="p-[16px] text-primary10 bg-transparent outline-none rounded-[8px] border border-primary10"
-                                        placeholder="Enter your User ID"
-                                    />
+                                    <div className={`p-[16px] flex items-center gap-3 bg-primary10 rounded-[8px] border-2  ${numberError ? "border-[red]" : "border-primary10"} `}>
+                                        <p>+234</p>
+                                        <input name="phone" type='number' onChange={handleChange}
+                                            className=" text-black bg-primary10 outline-0"
+                                            placeholder="8021233120"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <label className="text-[16px] font-[500] text-[#fff]">
-                                        I.D Password<span className="ml-2 text-red-500">*</span>
-                                    </label>
-                                    <input name="password" type='password' onChange={handleChange}
-                                        className="p-[16px] bg-transparent text-primary10 outline-none rounded-[8px] border border-primary10"
-                                        placeholder="XXXX XXXX X4380"
-                                    />
-                                </div>
-                                <div>
-                                    <Link to="/national/forgotpassword" className="text-[16px] hover:text-primary70 cursor-pointer text-right font-[500] text-[#fff]">
-                                        <p>forgot Password?</p>
-                                    </Link>
-                                </div>
-                                {!isLoading ? <button type='submit' className="text-primary90 font-[500] font-popp text-[16px] min-w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]">
-                                    Log In
-                                </button> : <div className='min-w-[380px]'><LoaderSmall /></div>}
+                                {!isLoading ? (!numberError ? <button type='submit' className={`text-primary90 font-[500] font-popp text-[16px] min-w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]`}>
+                                    Submit
+                                </button> : <button disabled className={`text-primary90 cursor-not-allowed font-[500] font-popp text-[16px] min-w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]`}>Submit</button>) : <div className='min-w-[380px]'><LoaderSmall /></div>}
                             </form>
                         </div>
                     </div>
@@ -157,4 +143,4 @@ const NationalLogin = () => {
     );
 };
 
-export default NationalLogin;
+export default NationalLoginRecovery;

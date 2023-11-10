@@ -11,7 +11,7 @@ const Settings = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            const res = await axiosPrivate.post("/admin/national/resetpassword", {
+            const res = await axiosPrivate.post("/admin/national/changepassword", {
                 oldpassword, newpassword
             })
             alert("Password has been changed")

@@ -7,7 +7,7 @@ import CustomToast from '../../../components/CustomToast';
 import LoaderSmall from '../../../components/LoaderSmall';
 
 
-const NationalLogin = () => {
+const NationalRecoveryConfirm = () => {
     const { nationalAuth, setNationalAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,7 +16,7 @@ const NationalLogin = () => {
     const [toastmessage, setToastmessage] = useState("")
     const [toastStatus, setToastStatus] = useState("")
     const from = location.state?.from?.pathname || "/";
-
+    const mobilenumber = location.state.key
     function scrollToTop() {
         window.scrollTo({
             top: 0,
@@ -36,51 +36,47 @@ const NationalLogin = () => {
     };
 
     const screenSize = document.documentElement.clientWidth;
-    const [values, setValues] = useState({ password: "", userid: "" });
+    const [values, setValues] = useState({ otp: "" });
     const handleChange = (event) => {
         const { name, value } = event.target;
         setValues({ ...values, [name]: value });
     };
-    const loginUser = async () => {
+    const Confirmotp = async () => {
         setIsLoading(true);
-        try {
-            const res = await axiosPrivate.post("/admin/national/signin", {
-                userid: values.userid,
-                password: values.password,
-            });
-            if (res.data) {
-                setIsLoading(false)
-                loadToast("Login Successful", "success")
-                navigate('/national')
-                setNationalAuth((prevAuth) => {
-                    // This function receives the previous state as its argument
-                    // and returns the updated state
 
-                    return res.data.result;
-                });
+        try {
+            const res = await axiosPrivate.post("/admin/national/password/confirmOtp", {
+                mobile_number: mobilenumber,
+                otp: values.otp
+            });
+            if (res.status === 200 && res.data.result.message === "OTP verified success") {
+                setIsLoading(false)
+                loadToast("OTP Confirmed", "success")
+                setTimeout(() => {
+                    navigate('/national/resetpassword', { state: { key: mobilenumber }, replace: true })
+
+                }, [2000])
+
+
+            } else {
+                setIsLoading(false)
+                loadToast(res.data.result.message, "warning")
+                navigate('/national/resetpassword', { replace: true })
 
             }
-            // console.log({ authLogin: auth });
-
 
         } catch (err) {
             setIsLoading(false)
-            if (err?.response?.data.message == "User not found") {
-                loadToast("User not found", "error")
-            }
-            else if (err?.response?.data.message == "wrong credentials") {
-                loadToast("Wrong credentials", "error")
-            } else {
-                loadToast("Something Went wrong", "error")
-
-            }
+            loadToast("Oops!!!, Please Try Again", "error")
+        } finally {
+            setIsLoading(false)
         }
 
 
     };
     const handleForm = async (e) => {
         e.preventDefault();
-        loginUser();
+        Confirmotp();
     };
 
     return (
@@ -118,35 +114,24 @@ const NationalLogin = () => {
                                 </p>
                                 <img src="/images/handemoji.png" />
                             </div>
-                            <div className="text-center text-[24px] font-popp font-[500] tracking-[0.24px] text-primary10">
-                                Please enter details to sign in
+                            <div className="text-center text-[20px] font-popp font-[500] tracking-[0.24px] text-primary10">
+                                Please enter the OTP Number sent to you
                             </div>
+
                             <form onSubmit={handleForm} className="flex flex-col gap-4 mt-4">
                                 <div className="flex flex-col">
                                     <label className="text-[16px] font-[500] text-[#fff]">
-                                        User ID<span className="ml-2 text-red-500">*</span>
+                                        OTP code<span className="ml-2 text-red-500">*</span>
                                     </label>
-                                    <input name="userid" type='text' onChange={handleChange}
-                                        className="p-[16px] text-primary10 bg-transparent outline-none rounded-[8px] border border-primary10"
-                                        placeholder="Enter your User ID"
-                                    />
-                                </div>
-                                <div className="flex flex-col">
-                                    <label className="text-[16px] font-[500] text-[#fff]">
-                                        I.D Password<span className="ml-2 text-red-500">*</span>
-                                    </label>
-                                    <input name="password" type='password' onChange={handleChange}
-                                        className="p-[16px] bg-transparent text-primary10 outline-none rounded-[8px] border border-primary10"
-                                        placeholder="XXXX XXXX X4380"
-                                    />
-                                </div>
-                                <div>
-                                    <Link to="/national/forgotpassword" className="text-[16px] hover:text-primary70 cursor-pointer text-right font-[500] text-[#fff]">
-                                        <p>forgot Password?</p>
-                                    </Link>
+                                    <div className="p-[16px] flex items-center gap-3 bg-primary10 rounded-[8px] border border-primary10">
+                                        <input name="otp" type='number' onChange={handleChange}
+                                            className=" text-black outline-0 bg-primary10"
+                                            placeholder="123456"
+                                        />
+                                    </div>
                                 </div>
                                 {!isLoading ? <button type='submit' className="text-primary90 font-[500] font-popp text-[16px] min-w-[380px] flex items-center justify-center rounded-[8px] bg-primary10 py-[16px]">
-                                    Log In
+                                    Submit
                                 </button> : <div className='min-w-[380px]'><LoaderSmall /></div>}
                             </form>
                         </div>
@@ -157,4 +142,4 @@ const NationalLogin = () => {
     );
 };
 
-export default NationalLogin;
+export default NationalRecoveryConfirm;
