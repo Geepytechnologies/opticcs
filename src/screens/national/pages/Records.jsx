@@ -16,6 +16,7 @@ import { FaRegFileAlt } from "react-icons/fa";
 import { downloadTable } from "../../../utils/helpers";
 import Recordfirstvisit from "../components/Recordfirstvisit";
 import Recordreturnvisit from "../components/Recordreturnvisit";
+import Recordpatients from "../components/Recordpatients";
 
 const Records = () => {
   //filter
@@ -107,6 +108,9 @@ const Records = () => {
     case 2:
       componentToRender = <Recordreturnvisit />;
       break;
+    case 3:
+      componentToRender = <Recordpatients />;
+      break;
     default:
       componentToRender = null;
       break;
@@ -160,6 +164,16 @@ const Records = () => {
             }`}
           >
             Return Visit
+          </div>
+          <div
+            onClick={() => setNavigatorSlide(3)}
+            className={`cursor-pointer text-center ${
+              navigatorSlide === 3
+                ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                : "text-light90 pb-2 font-[500]"
+            }`}
+          >
+            Patients
           </div>
         </div>
         {/* navigator screen slides */}
