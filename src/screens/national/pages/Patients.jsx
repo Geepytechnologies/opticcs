@@ -48,7 +48,7 @@ const Patients = () => {
     getAllPatients();
   }, []);
   const filterPatients = (patients, searchitem, filter) => {
-    if (!patients) return []; // Return an empty array if patients is falsy
+    if (!patients) return [];
     let filteredpage;
     if (searchitem && selectedDateFrom && selectedDateTo) {
       filteredpage = patients.filter(

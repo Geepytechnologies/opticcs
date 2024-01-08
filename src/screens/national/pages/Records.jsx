@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineFileSearch,
-} from "react-icons/ai";
-import { HiOutlineUserGroup } from "react-icons/hi2";
+
 import axiosInstance from "../../../utils/axios";
-import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import moment from "moment";
 import Notfound from "../../../components/Notfound";
@@ -17,14 +11,13 @@ import { downloadTable } from "../../../utils/helpers";
 import Recordfirstvisit from "../components/Recordfirstvisit";
 import Recordreturnvisit from "../components/Recordreturnvisit";
 import Recordpatients from "../components/Recordpatients";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Records = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "HealthFacility"];
-  const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
 
   //
   const [patients, setPatients] = useState();
@@ -53,43 +46,7 @@ const Records = () => {
   useEffect(() => {
     getAllPatients();
   }, []);
-  const filterPatients = (patients, searchitem, filter) => {
-    if (!patients) return []; // Return an empty array if patients is falsy
-    let filteredpage;
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      filteredpage = patients.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else if (searchitem) {
-      filteredpage = patients.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-      return filteredpage;
-    } else if (selectedDateFrom && selectedDateTo) {
-      filteredpage = patients.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else {
-      return patients;
-    }
-  };
-  const filteredPatients = filterPatients(patients, searchitem, filter);
-  //   useEffect(() => {
-  //     if (!currentpage.isPagination) {
-  //       setCurrentpage(1);
-  //     }
-  //   }, [filteredPatients]);
+
   const navigate = useNavigate();
 
   const handleItemClick = (itemId) => {
@@ -103,7 +60,12 @@ const Records = () => {
 
   switch (navigatorSlide) {
     case 1:
-      componentToRender = <Recordfirstvisit />;
+      componentToRender = (
+        <Recordfirstvisit
+          selectedDateFrom={selectedDateFrom}
+          selectedDateTo={selectedDateTo}
+        />
+      );
       break;
     case 2:
       componentToRender = <Recordreturnvisit />;
@@ -116,6 +78,51 @@ const Records = () => {
       break;
   }
 
+  const Filterbox = () => {
+    const handleDateToChange = (date) => {
+      if (date >= selectedDateFrom) {
+        setSelectedDateTo(date);
+      }
+    };
+    const handleDateFromChange = (date) => {
+      if (date <= Date.now()) {
+        setSelectedDateFrom(date);
+      }
+    };
+    const capitalizeFirstLetter = (word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    };
+    return (
+      <div className="w-full flex items-center justify-center my-5">
+        <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">
+          {/* 2 */}
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Date From</label>
+            <DatePicker
+              className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+              placeholderText="choose Date"
+              selected={selectedDateFrom}
+              onChange={(date) => handleDateFromChange(date)}
+              dateFormat="yyyy-MM-dd"
+              defaultValue={selectedDateFrom}
+            />
+          </div>
+          {/* 3 */}
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Date To</label>
+            <DatePicker
+              className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+              placeholderText="choose Date"
+              selected={selectedDateTo}
+              onChange={(date) => handleDateToChange(date)}
+              dateFormat="yyyy-MM-dd"
+              defaultValue={selectedDateTo}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
   return (
     <div>
       <div className="bg-primary10 w-full flex flex-col min-h-screen">
@@ -133,14 +140,8 @@ const Records = () => {
 
         {/* selectbox1 */}
         <Filterbox
-          filterdata={filterdata}
           selectedDateTo={selectedDateTo}
-          setSearchitem={setSearchitem}
-          setSelectedDateTo={setSelectedDateTo}
           selectedDateFrom={selectedDateFrom}
-          setSelectedDateFrom={setSelectedDateFrom}
-          setFilter={setFilter}
-          filter={filter}
         />
 
         {/* navigator */}
@@ -178,66 +179,6 @@ const Records = () => {
         </div>
         {/* navigator screen slides */}
         {componentToRender}
-
-        <div className="w-full flex-1 flex items-center justify-center font-inter my-5">
-          <div className="bg-white min-h-[500px] w-[95%] flex flex-col items-center justify-between pl-6 py-4">
-            <table className="cursor-default w-full">
-              <thead>
-                <tr>
-                  <th>SN</th>
-                  <th>Patient Name</th>
-                  <th>Patient ID</th>
-                  <th>State</th>
-                  <th>LGA</th>
-                  <th>Health Facility</th>
-                  <th>Last Visit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {patients
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredPatients
-                      : patients
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          onClick={() => handleItemClick(item.id)}
-                          key={item.id}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>
-                            {currentpage.value == 1
-                              ? index + 1
-                              : 10 * currentpage.value + (index + 1) - 10}
-                          </td>
-                          <td>{item.firstname}</td>
-                          <td>{item.id}</td>
-                          <td>{item.state}</td>
-                          <td>{item.lga}</td>
-                          <td>{item.healthFacility}</td>
-                          <td>{moment(item.last_visit).fromNow()}</td>
-                        </tr>
-                      ))
-                  : null}
-              </tbody>
-            </table>
-            {!filteredPatients.length && <Notfound />}
-            {/* pagination */}
-            <Pagination
-              currentpage={currentpage.value}
-              setCurrentpage={setCurrentpage}
-              pages={
-                filteredPatients
-                  ? filteredPatients.length / 10
-                  : patients?.length / 10
-              }
-            />
-          </div>
-        </div>
       </div>
     </div>
   );

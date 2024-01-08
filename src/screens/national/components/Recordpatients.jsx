@@ -25,7 +25,7 @@ const Recordpatients = () => {
           <p className="text-primary90 font-[600]">Patient Records</p>
           {/* download csv */}
           <button
-            onClick={() => downloadTable(tableRef, "First Visit list")}
+            onClick={() => downloadTable(tableRef, "Patients list")}
             className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
           >
             Download CSV

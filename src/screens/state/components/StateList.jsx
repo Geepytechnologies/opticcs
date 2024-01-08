@@ -32,35 +32,39 @@ const LgaList = () => {
       </div>
       <div className="w-full flex items-center justify-center">
         <table className="cursor-default w-[95%]">
-          <tr>
-            <th>SN</th>
-            <th>LGA</th>
-            <th>LGA ID</th>
-            <th>Office Address</th>
-            <th>Date Created</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-          {lgalist?.map((item, index) => (
-            <tr
-              key={index}
-              className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-            >
-              <td>{item.id}</td>
-              <td>{item.lga}</td>
-              <td>{item.lgaid}</td>
-              <td>{item.officeaddress}</td>
-              <td>{moment(item.createdat).fromNow()}</td>
-              <td className="">{item.phone}</td>
-              <td className="">{item.email}</td>
-              {item.status ? (
-                <td className="text-red-500">Deactivate</td>
-              ) : (
-                <td className="text-primary90">Activate</td>
-              )}
+          <thead>
+            <tr>
+              <th>SN</th>
+              <th>LGA</th>
+              <th>LGA ID</th>
+              <th>Office Address</th>
+              <th>Date Created</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Actions</th>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {lgalist?.map((item, index) => (
+              <tr
+                key={index}
+                className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+              >
+                <td>{item.id}</td>
+                <td>{item.lga}</td>
+                <td>{item.lgaid}</td>
+                <td>{item.officeaddress}</td>
+                <td>{moment(item.createdat).fromNow()}</td>
+                <td className="">{item.phone}</td>
+                <td className="">{item.email}</td>
+                {item.status ? (
+                  <td className="text-red-500">Deactivate</td>
+                ) : (
+                  <td className="text-primary90">Activate</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
       {/* pagination */}

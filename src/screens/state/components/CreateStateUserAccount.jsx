@@ -195,33 +195,33 @@ const CreateStateUserAccount = () => {
     validateValues();
     try {
       setLoading(true);
-      //   const res = await axiosInstance.post("/admin/lga/users", {
-      //     lga: values.lga,
-      //     state: state,
-      //     staffname: values.staffname,
-      //     staffid: values.staffid,
-      //     gender: values.gender,
-      //     cadre: values.cadre,
-      //     phone: values.phone,
-      //     email: values.email,
-      //     userid: values.userid,
-      //     password: values.password,
-      //     accountType: values.accountType,
-      //   });
-      //   if (res.data) {
-      alert("LGA User account has been created");
-      setValues({
-        lga: "",
-        staffname: "",
-        staffid: "",
-        gender: "male",
-        phone: "",
-        email: "",
-        userid: "",
-        password: "",
-        cadre: "",
+      const res = await axiosInstance.post("/admin/lga/users", {
+        lga: values.lga,
+        state: state,
+        staffname: values.staffname,
+        staffid: values.staffid,
+        gender: values.gender,
+        cadre: values.cadre,
+        phone: values.phone,
+        email: values.email,
+        userid: values.userid,
+        password: values.password,
+        accountType: values.accountType,
       });
-      //   }
+      if (res.data) {
+        alert("LGA User account has been created");
+        setValues({
+          lga: "",
+          staffname: "",
+          staffid: "",
+          gender: "male",
+          phone: "",
+          email: "",
+          userid: "",
+          password: "",
+          cadre: "",
+        });
+      }
     } catch (error) {
     } finally {
       setLoading(false);

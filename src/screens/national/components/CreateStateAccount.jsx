@@ -169,6 +169,7 @@ const CreateStateAccount = () => {
               )}
             </div>
             <select
+              value={values.state}
               name="state"
               onChange={handleChange2}
               onBlur={handleStateBlur}
@@ -229,6 +230,7 @@ const CreateStateAccount = () => {
             </div>
             <input
               type="text"
+              value={values.stateboard}
               name="stateboard"
               onBlur={handlestateboardBlur}
               onChange={handleChange2}
@@ -249,6 +251,7 @@ const CreateStateAccount = () => {
             </div>
             <input
               type="text"
+              value={values.stateid}
               name="stateid"
               onBlur={handleStateidBlur}
               onChange={handleChange2}
@@ -268,6 +271,7 @@ const CreateStateAccount = () => {
               )}
             </div>
             <input
+              value={values.officeaddress}
               type="officeaddress"
               name="officeaddress"
               onChange={handleChange2}
@@ -288,6 +292,7 @@ const CreateStateAccount = () => {
               )}
             </div>
             <input
+              value={values.phone}
               type="number"
               onChange={handleChange2}
               name="phone"
@@ -308,6 +313,7 @@ const CreateStateAccount = () => {
               )}
             </div>
             <input
+              value={values.email}
               type="email"
               onChange={handleChange2}
               name="email"

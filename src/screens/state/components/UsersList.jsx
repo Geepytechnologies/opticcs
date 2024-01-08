@@ -4,12 +4,13 @@ import axiosInstance from "../../../utils/axios";
 import moment from "moment";
 import Pagination from "../../../components/Pagination";
 
-const UsersList = () => {
+const UsersList = ({ state }) => {
   const [lgaUsers, setlgaUsers] = useState();
   //pagination
   const [currentpage, setCurrentpage] = useState(1);
+
   const getlgausers = async () => {
-    const res = await axiosInstance.get("/admin/lga/users");
+    const res = await axiosInstance.get(`/admin/lga/users?state=${state}`);
     setlgaUsers(res.data);
   };
   useEffect(() => {
@@ -37,6 +38,7 @@ const UsersList = () => {
             <th>Phone Number</th>
             <th>Cadre</th>
             <th>Gender</th>
+            <th>State</th>
           </tr>
         </thead>
         <tbody>
@@ -53,6 +55,7 @@ const UsersList = () => {
               <td className="">{item.phone}</td>
               <td className="">{item.cadre}</td>
               <td className="">{item.gender}</td>
+              <td className="">{item.state}</td>
             </tr>
           ))}
         </tbody>

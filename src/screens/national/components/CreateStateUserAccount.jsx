@@ -207,7 +207,7 @@ const CreateStateUserAccount = ({ states }) => {
       if (res.data) {
         showSuccess("State User account has been created");
         setValues({
-          state: "Abia",
+          state: "",
           staffname: "",
           staffid: "",
           gender: "male",
@@ -241,6 +241,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <select
+              value={values.state}
               name="state"
               onChange={handleChange2}
               onBlur={handleStateBlur}
@@ -269,6 +270,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <input
+              value={values.staffname}
               type="text"
               name="staffname"
               onBlur={handlestaffnameBlur}
@@ -289,6 +291,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <input
+              value={values.staffid}
               type="text"
               name="staffid"
               onBlur={handlestaffidBlur}
@@ -336,6 +339,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <input
+              value={values.phone}
               type="text"
               onChange={handleChange2}
               name="phone"
@@ -356,6 +360,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <input
+              value={values.email}
               type="email"
               onChange={handleChange2}
               name="email"
@@ -376,6 +381,7 @@ const CreateStateUserAccount = ({ states }) => {
               )}
             </div>
             <input
+              value={values.cadre}
               type="text"
               name="cadre"
               onBlur={handleCadreBlur}

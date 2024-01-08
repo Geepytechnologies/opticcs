@@ -9,12 +9,13 @@ import { useAuth } from "../hooks/useAuth";
 
 const Accounts = () => {
   const { stateAuth } = useAuth();
+  const state = stateAuth?.others?.state;
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   let componentToRender;
 
   switch (navigatorSlide) {
     case 1:
-      componentToRender = <UsersList />;
+      componentToRender = <UsersList state={state} />;
       break;
     case 2:
       componentToRender = <CreateStateAccount />;
