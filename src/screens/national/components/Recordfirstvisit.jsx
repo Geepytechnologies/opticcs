@@ -110,14 +110,15 @@ const Recordfirstvisit = ({
             </tbody>
           </table>
         )}
-        {!filteredVisits.length && <Notfound />}
+        {!patientfirstvisits?.length && !loading && <Notfound />}
         {/* pagination */}
+
         <Pagination
           currentpage={currentpage.value}
           setCurrentpage={setCurrentpage}
           pages={
-            filteredVisits
-              ? filteredVisits.length / 10
+            filteredVisits?.length
+              ? filteredVisits?.length / 10
               : patientfirstvisits?.length / 10
           }
         />

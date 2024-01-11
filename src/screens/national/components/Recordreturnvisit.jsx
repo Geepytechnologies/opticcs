@@ -3,6 +3,7 @@ import Notfound from "../../../components/Notfound";
 import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 import { downloadTable } from "../../../utils/helpers";
+import LoaderSmall from "../../../components/LoaderSmall";
 
 const Recordreturnvisit = ({
   selectedDateFrom,
@@ -11,6 +12,8 @@ const Recordreturnvisit = ({
   searchitem,
 }) => {
   const [patientreturnvisits, setPatientreturnvisits] = useState();
+  const [currentpage, setCurrentpage] = useState({ value: 1 });
+  const [loading, setLoading] = useState(false);
 
   const headers = patientreturnvisits && Object.keys(patientreturnvisits[0]);
   const tableRef = useRef();
@@ -67,47 +70,52 @@ const Recordreturnvisit = ({
             Download CSV
           </button>
         </div>
-        <table
-          ref={tableRef}
-          className="cursor-default w-full whitespace-nowrap overflow-scroll"
-        >
-          <thead>
-            <tr className="">
-              {headers?.map((header) => (
-                <th className="" key={header}>
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {patientreturnvisits
-              ? ((selectedDateTo && selectedDateFrom) || (searchitem && values)
-                  ? filteredVisits
-                  : patientreturnvisits
-                )
-                  .slice(10 * currentpage.value - 10, 10 * currentpage.value)
-                  .map((item, index) => (
-                    <tr key={index}>
-                      {headers?.map((header) => (
-                        <td key={header}>{item[header]}</td>
-                      ))}
-                    </tr>
-                  ))
-              : null}
-          </tbody>
-        </table>
-        {/* {!filteredPatients.length && <Notfound />} */}
+        {loading ? (
+          <LoaderSmall />
+        ) : (
+          <table
+            ref={tableRef}
+            className="cursor-default w-full whitespace-nowrap overflow-scroll"
+          >
+            <thead>
+              <tr className="">
+                {headers?.map((header) => (
+                  <th className="" key={header}>
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {patientreturnvisits
+                ? ((selectedDateTo && selectedDateFrom) ||
+                  (searchitem && values)
+                    ? filteredVisits
+                    : patientreturnvisits
+                  )
+                    .slice(10 * currentpage.value - 10, 10 * currentpage.value)
+                    .map((item, index) => (
+                      <tr key={index}>
+                        {headers?.map((header) => (
+                          <td key={header}>{item[header]}</td>
+                        ))}
+                      </tr>
+                    ))
+                : null}
+            </tbody>
+          </table>
+        )}
+        {!patientreturnvisits?.length && <Notfound />}
         {/* pagination */}
-        {/* <Pagination
+        <Pagination
           currentpage={currentpage.value}
           setCurrentpage={setCurrentpage}
           pages={
-            filteredPatients
-              ? filteredPatients.length / 10
-              : patients?.length / 10
+            filteredVisits?.length
+              ? filteredVisits?.length / 10
+              : patientreturnvisits?.length / 10
           }
-        /> */}
+        />
       </div>
     </div>
   );

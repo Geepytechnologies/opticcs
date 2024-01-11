@@ -216,6 +216,11 @@ const Records = () => {
     const capitalizeFirstLetter = (word) => {
       return word.charAt(0).toUpperCase() + word.slice(1);
     };
+    const resetfilters = () => {
+      setFilter(filterdata[0]);
+      setSelectedDateTo();
+      setSelectedDateFrom();
+    };
     return (
       <div className="w-full flex items-center justify-center my-5">
         <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">
@@ -271,8 +276,11 @@ const Records = () => {
               defaultValue={selectedDateTo}
             />
           </div>
-          <div className="bg-primary90 text-white px-3 py-2 font-500 text-center rounded-[8px]">
-            Search
+          <div
+            onClick={resetfilters}
+            className="bg-primary90 cursor-pointer text-white px-3 py-2 font-500 text-center rounded-[8px]"
+          >
+            Reset
           </div>
         </div>
       </div>

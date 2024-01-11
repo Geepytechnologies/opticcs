@@ -41,7 +41,6 @@ const Pagination = ({ currentpage, setCurrentpage, pages }) => {
       setFinalPage(10);
     }
   }, [pages, currentpage]);
-  // console.log({ cp: currentpage, ip: initialPage, fp: finalPage });
   return (
     <div className="flex items-center justify-center mt-9">
       <div className="flex items-center gap-3">
