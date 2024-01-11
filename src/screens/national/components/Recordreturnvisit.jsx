@@ -4,21 +4,56 @@ import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 import { downloadTable } from "../../../utils/helpers";
 
-const Recordreturnvisit = () => {
-  const [patientfirstvisits, setPatientfirstvisits] = useState();
+const Recordreturnvisit = ({
+  selectedDateFrom,
+  selectedDateTo,
+  values,
+  searchitem,
+}) => {
+  const [patientreturnvisits, setPatientreturnvisits] = useState();
 
-  const headers = patientfirstvisits && Object.keys(patientfirstvisits[0]);
+  const headers = patientreturnvisits && Object.keys(patientreturnvisits[0]);
   const tableRef = useRef();
   const getAllPatientFirstVisits = async () => {
     try {
       const res = await axiosInstance.get("/patients/returnvisits/find");
-      setPatientfirstvisits(res.data);
+      setPatientreturnvisits(res.data);
     } catch (error) {}
   };
   useEffect(() => {
-    // getIndicatordata();
     getAllPatientFirstVisits();
   }, []);
+
+  const filtervisits = (patientreturnvisits, searchitem, values) => {
+    // console.log({ filter: values, searchitem: searchitem });
+    if (!patientreturnvisits) return [];
+    if (searchitem && selectedDateFrom && selectedDateTo) {
+      return patientreturnvisits.filter(
+        (item) =>
+          item[searchitem]?.toLowerCase().includes(values?.toLowerCase()) &&
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+    } else if (searchitem || values) {
+      return patientreturnvisits.filter((item) =>
+        item[searchitem]?.toLowerCase().includes(values?.toLowerCase())
+      );
+    } else if (selectedDateFrom && selectedDateTo) {
+      return patientreturnvisits.filter(
+        (item) =>
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+    } else {
+      return patientreturnvisits;
+    }
+  };
+  const filteredVisits = filtervisits(patientreturnvisits, searchitem, values);
+
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
@@ -46,13 +81,20 @@ const Recordreturnvisit = () => {
             </tr>
           </thead>
           <tbody>
-            {patientfirstvisits?.map((item, index) => (
-              <tr key={index}>
-                {headers?.map((header) => (
-                  <td key={header}>{item[header]}</td>
-                ))}
-              </tr>
-            ))}
+            {patientreturnvisits
+              ? ((selectedDateTo && selectedDateFrom) || (searchitem && values)
+                  ? filteredVisits
+                  : patientreturnvisits
+                )
+                  .slice(10 * currentpage.value - 10, 10 * currentpage.value)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      {headers?.map((header) => (
+                        <td key={header}>{item[header]}</td>
+                      ))}
+                    </tr>
+                  ))
+              : null}
           </tbody>
         </table>
         {/* {!filteredPatients.length && <Notfound />} */}

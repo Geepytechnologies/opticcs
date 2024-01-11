@@ -178,10 +178,24 @@ const Records = () => {
       );
       break;
     case 2:
-      componentToRender = <Recordreturnvisit />;
+      componentToRender = (
+        <Recordreturnvisit
+          selectedDateFrom={selectedDateFrom}
+          selectedDateTo={selectedDateTo}
+          values={filtervalue}
+          searchitem={filter}
+        />
+      );
       break;
     case 3:
-      componentToRender = <Recordpatients />;
+      componentToRender = (
+        <Recordpatients
+          selectedDateFrom={selectedDateFrom}
+          selectedDateTo={selectedDateTo}
+          values={filtervalue}
+          searchitem={filter}
+        />
+      );
       break;
     default:
       componentToRender = null;

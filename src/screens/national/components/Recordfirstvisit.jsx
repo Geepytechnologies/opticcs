@@ -15,10 +15,6 @@ const Recordfirstvisit = ({
   const [loading, setLoading] = useState(false);
   const [currentpage, setCurrentpage] = useState({ value: 1 });
 
-  //filter
-  // const [selectedDateTo, setSelectedDateTo] = useState();
-  // const [selectedDateFrom, setSelectedDateFrom] = useState();
-
   const headers = patientfirstvisits && Object.keys(patientfirstvisits[0]);
   const tableRef = useRef();
 
@@ -34,32 +30,12 @@ const Recordfirstvisit = ({
     }
   };
   useEffect(() => {
-    // getIndicatordata();
     getAllPatientFirstVisits();
   }, []);
-  // const filtervisits = (patientfirstvisits) => {
-  //   if (!patientfirstvisits) return [];
-  //   let filteredpage;
-  //   if (selectedDateFrom && selectedDateTo) {
-  //     // console.log(patientfirstvisits);
-  //     filteredpage = patientfirstvisits.filter(
-  //       (item) =>
-  //         new Date(item.firstvisit_date).getTime() >=
-  //           new Date(selectedDateFrom).getTime() &&
-  //         new Date(item.firstvisit_date).getTime() <=
-  //           new Date(selectedDateTo).getTime()
-  //     );
-  //     return filteredpage;
-  //   } else {
-  //     return patientfirstvisits;
-  //   }
-  // };
-  // const filteredVisits = filtervisits(patientfirstvisits);
 
   const filtervisits = (patientfirstvisits, searchitem, values) => {
-    console.log({ filter: values, searchitem: searchitem });
-    if (!patientfirstvisits) return []; // Return an empty array if patients is false
-
+    // console.log({ filter: values, searchitem: searchitem });
+    if (!patientfirstvisits) return [];
     if (searchitem && selectedDateFrom && selectedDateTo) {
       return patientfirstvisits.filter(
         (item) =>
@@ -86,7 +62,6 @@ const Recordfirstvisit = ({
     }
   };
   const filteredVisits = filtervisits(patientfirstvisits, searchitem, values);
-  console.log(filteredVisits);
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
