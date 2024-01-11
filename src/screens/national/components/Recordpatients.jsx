@@ -3,21 +3,56 @@ import Notfound from "../../../components/Notfound";
 import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 
-const Recordpatients = () => {
-  const [patientfirstvisits, setPatientfirstvisits] = useState();
+const Recordpatients = ({
+  selectedDateFrom,
+  selectedDateTo,
+  values,
+  searchitem,
+}) => {
+  const [patients, setPatients] = useState();
+  const [currentpage, setCurrentpage] = useState({ value: 1 });
 
-  const headers = patientfirstvisits && Object.keys(patientfirstvisits[0]);
+  const headers = patients && Object.keys(patients[0]);
   const tableRef = useRef();
-  const getAllPatientFirstVisits = async () => {
+
+  const getAllPatients = async () => {
     try {
       const res = await axiosInstance.get("/patients/find");
-      setPatientfirstvisits(res.data.result);
+      setPatients(res.data.result);
     } catch (error) {}
   };
   useEffect(() => {
-    // getIndicatordata();
-    getAllPatientFirstVisits();
+    getAllPatients();
   }, []);
+  const filterpatients = (patients, searchitem, values) => {
+    // console.log({ filter: values, searchitem: searchitem });
+    if (!patients) return [];
+    if (searchitem && selectedDateFrom && selectedDateTo) {
+      return patients.filter(
+        (item) =>
+          item[searchitem]?.toLowerCase().includes(values?.toLowerCase()) &&
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+    } else if (searchitem || values) {
+      return patients.filter((item) =>
+        item[searchitem]?.toLowerCase().includes(values?.toLowerCase())
+      );
+    } else if (selectedDateFrom && selectedDateTo) {
+      return patients.filter(
+        (item) =>
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+    } else {
+      return patients;
+    }
+  };
+  const filteredPatients = filterpatients(patients, searchitem, values);
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
@@ -45,18 +80,25 @@ const Recordpatients = () => {
             </tr>
           </thead>
           <tbody>
-            {patientfirstvisits?.map((item, index) => (
-              <tr key={index}>
-                {headers?.map((header) => (
-                  <td key={header}>{item[header]}</td>
-                ))}
-              </tr>
-            ))}
+            {patients
+              ? ((selectedDateTo && selectedDateFrom) || (searchitem && values)
+                  ? filteredPatients
+                  : patients
+                )
+                  .slice(10 * currentpage.value - 10, 10 * currentpage.value)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      {headers?.map((header) => (
+                        <td key={header}>{item[header]}</td>
+                      ))}
+                    </tr>
+                  ))
+              : null}
           </tbody>
         </table>
-        {/* {!filteredPatients.length && <Notfound />} */}
+        {!filteredPatients.length && <Notfound />}
         {/* pagination */}
-        {/* <Pagination
+        <Pagination
           currentpage={currentpage.value}
           setCurrentpage={setCurrentpage}
           pages={
@@ -64,7 +106,7 @@ const Recordpatients = () => {
               ? filteredPatients.length / 10
               : patients?.length / 10
           }
-        /> */}
+        />
       </div>
     </div>
   );
