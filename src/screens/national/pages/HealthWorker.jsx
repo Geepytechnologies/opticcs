@@ -6,6 +6,7 @@ import axiosInstance from "../../../utils/axios";
 import Pagination from "../../../components/Pagination";
 import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
+import { downloadTable } from "../../../utils/helpers";
 
 const HealthWorker = () => {
   const [workers, setWorkers] = useState();
@@ -69,6 +70,7 @@ const HealthWorker = () => {
     }
   };
   const filteredworkers = filterworkers(workers, searchitem, filter);
+  const tableRef = React.useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -97,11 +99,19 @@ const HealthWorker = () => {
           setFilter={setFilter}
           filter={filter}
         />
-
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Health workers")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
                   <th>SN</th>

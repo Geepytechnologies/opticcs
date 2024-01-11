@@ -3,8 +3,14 @@ import Notfound from "../../../components/Notfound";
 import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 import LoaderSmall from "../../../components/LoaderSmall";
+import { downloadTable } from "../../../utils/helpers";
 
-const Recordfirstvisit = ({ selectedDateFrom, selectedDateTo }) => {
+const Recordfirstvisit = ({
+  selectedDateFrom,
+  selectedDateTo,
+  values,
+  searchitem,
+}) => {
   const [patientfirstvisits, setPatientfirstvisits] = useState();
   const [loading, setLoading] = useState(false);
   const [currentpage, setCurrentpage] = useState({ value: 1 });
@@ -15,6 +21,7 @@ const Recordfirstvisit = ({ selectedDateFrom, selectedDateTo }) => {
 
   const headers = patientfirstvisits && Object.keys(patientfirstvisits[0]);
   const tableRef = useRef();
+
   const getAllPatientFirstVisits = async () => {
     try {
       setLoading(true);
@@ -30,24 +37,56 @@ const Recordfirstvisit = ({ selectedDateFrom, selectedDateTo }) => {
     // getIndicatordata();
     getAllPatientFirstVisits();
   }, []);
-  const filtervisits = (patientfirstvisits) => {
-    if (!patientfirstvisits) return [];
-    let filteredpage;
-    if (selectedDateFrom && selectedDateTo) {
-      // console.log(patientfirstvisits);
-      filteredpage = patientfirstvisits.filter(
+  // const filtervisits = (patientfirstvisits) => {
+  //   if (!patientfirstvisits) return [];
+  //   let filteredpage;
+  //   if (selectedDateFrom && selectedDateTo) {
+  //     // console.log(patientfirstvisits);
+  //     filteredpage = patientfirstvisits.filter(
+  //       (item) =>
+  //         new Date(item.firstvisit_date).getTime() >=
+  //           new Date(selectedDateFrom).getTime() &&
+  //         new Date(item.firstvisit_date).getTime() <=
+  //           new Date(selectedDateTo).getTime()
+  //     );
+  //     return filteredpage;
+  //   } else {
+  //     return patientfirstvisits;
+  //   }
+  // };
+  // const filteredVisits = filtervisits(patientfirstvisits);
+
+  const filtervisits = (patientfirstvisits, searchitem, values) => {
+    console.log({ filter: values, searchitem: searchitem });
+    if (!patientfirstvisits) return []; // Return an empty array if patients is false
+
+    if (searchitem && selectedDateFrom && selectedDateTo) {
+      return patientfirstvisits.filter(
         (item) =>
-          new Date(item.firstvisit_date).getTime() >=
+          item[searchitem]?.toLowerCase().includes(values?.toLowerCase()) &&
+          new Date(item.createdat).getTime() >=
             new Date(selectedDateFrom).getTime() &&
-          new Date(item.firstvisit_date).getTime() <=
+          new Date(item.createdat).getTime() <=
             new Date(selectedDateTo).getTime()
       );
-      return filteredpage;
+    } else if (searchitem || values) {
+      return patientfirstvisits.filter((item) =>
+        item[searchitem]?.toLowerCase().includes(values?.toLowerCase())
+      );
+    } else if (selectedDateFrom && selectedDateTo) {
+      return patientfirstvisits.filter(
+        (item) =>
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
     } else {
       return patientfirstvisits;
     }
   };
-  const filteredVisits = filtervisits(patientfirstvisits);
+  const filteredVisits = filtervisits(patientfirstvisits, searchitem, values);
+  console.log(filteredVisits);
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
@@ -79,7 +118,8 @@ const Recordfirstvisit = ({ selectedDateFrom, selectedDateTo }) => {
             </thead>
             <tbody>
               {patientfirstvisits
-                ? (selectedDateTo && selectedDateFrom
+                ? ((selectedDateTo && selectedDateFrom) ||
+                  (searchitem && values)
                     ? filteredVisits
                     : patientfirstvisits
                   )

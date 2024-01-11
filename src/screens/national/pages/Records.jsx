@@ -18,6 +18,17 @@ const Records = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
+  const filterdata = ["National", "state", "lga", "HealthFacility"];
+  const [filter, setFilter] = useState(filterdata[0]);
+  const [searchitem, setSearchitem] = useState();
+  const [stateAccounts, setStateAccounts] = useState();
+  const [lgaAccounts, setlgaAccounts] = useState();
+  const [hfAccounts, sethfAccounts] = useState();
+
+  const [nationalSelect, setNationalSelect] = useState();
+  const [stateSelect, setStateSelect] = useState();
+  const [lgaSelect, setLgaSelect] = useState();
+  const [healthfacilitySelect, setHealthfacilitySelect] = useState();
 
   //
   const [patients, setPatients] = useState();
@@ -27,6 +38,22 @@ const Records = () => {
     isPagination: false,
   });
 
+  const getFiltervalues = () => {
+    let item;
+    if (filter === "National") {
+      item = "";
+    }
+    if (filter === "state") {
+      item = stateSelect;
+    }
+    if (filter === "lga") {
+      item = lgaSelect;
+    }
+    if (filter === "HealthFacility") {
+      item = healthfacilitySelect;
+    }
+    return item;
+  };
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get("/admin/national/data/general");
@@ -34,18 +61,40 @@ const Records = () => {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    // getIndicatordata();
-  }, []);
   const getAllPatients = async () => {
     try {
       const res = await axiosInstance.get("/patients/findwithworkers");
       setPatients(res.data.result);
     } catch (err) {}
   };
+  const getAllStates = async () => {
+    const result = await axiosInstance.get("/admin/state/data/find/states");
+    setStateAccounts(result.data);
+  };
+  const getAllLga = async () => {
+    const result = await axiosInstance.get(`/admin/lga/data/find/lga`);
+    setlgaAccounts(result.data);
+  };
+  const gethealthfacilities = async () => {
+    try {
+      const result = await axiosInstance.get("/admin/healthfacility/find");
+      sethfAccounts(result.data);
+    } catch (error) {}
+  };
   useEffect(() => {
     getAllPatients();
+    getAllStates();
+    getAllLga();
+    gethealthfacilities();
   }, []);
+
+  const sortedstates = stateAccounts?.sort((a, b) =>
+    a.state.localeCompare(b.state)
+  );
+  const sortedlgas = lgaAccounts?.sort((a, b) => a.lga.localeCompare(b.lga));
+  const sortedhealthfacilities = hfAccounts?.sort((a, b) =>
+    a.healthfacilityname.localeCompare(b.healthfacilityname)
+  );
 
   const navigate = useNavigate();
 
@@ -53,9 +102,68 @@ const Records = () => {
     navigate(`/national/patients/${itemId}`);
   };
 
+  const capitalizeFirstLetter = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
+
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   //data
 
+  const NationalSelectbox = () => (
+    <select
+      value={nationalSelect}
+      onChange={(e) => setNationalSelect(e.target.value)}
+      className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+    >
+      <option>All States</option>
+    </select>
+  );
+
+  const Stateselectbox = () => (
+    <select
+      value={stateSelect}
+      onChange={(e) => setStateSelect(e.target.value)}
+      className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+    >
+      <option>Choose State</option>
+      {sortedstates?.map((item, index) => (
+        <option key={index} value={item.state}>
+          {capitalizeFirstLetter(item.state)}
+        </option>
+      ))}
+    </select>
+  );
+
+  const Lgaselectbox = () => (
+    <select
+      value={lgaSelect}
+      onChange={(e) => setLgaSelect(e.target.value)}
+      className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+    >
+      <option>Choose LGA</option>
+      {sortedlgas?.map((item, index) => (
+        <option key={index} value={item.lga}>
+          {capitalizeFirstLetter(item.lga)}
+        </option>
+      ))}
+    </select>
+  );
+
+  const Hfselectbox = () => (
+    <select
+      value={healthfacilitySelect}
+      onChange={(e) => setHealthfacilitySelect(e.target.value)}
+      className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+    >
+      <option>Choose Facility</option>
+      {sortedhealthfacilities?.map((item, index) => (
+        <option key={index} value={item.healthfacilityname}>
+          {capitalizeFirstLetter(item.healthfacilityname)}
+        </option>
+      ))}
+    </select>
+  );
+  const filtervalue = getFiltervalues();
   let componentToRender;
 
   switch (navigatorSlide) {
@@ -64,6 +172,8 @@ const Records = () => {
         <Recordfirstvisit
           selectedDateFrom={selectedDateFrom}
           selectedDateTo={selectedDateTo}
+          values={filtervalue}
+          searchitem={filter}
         />
       );
       break;
@@ -95,7 +205,36 @@ const Records = () => {
     return (
       <div className="w-full flex items-center justify-center my-5">
         <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">
+          {/* 1 */}
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Filter</label>
+            <select
+              defaultValue=""
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+            >
+              {filterdata?.map((item, index) => (
+                <option key={index} value={item}>
+                  {capitalizeFirstLetter(item)}
+                </option>
+              ))}
+            </select>
+          </div>
           {/* 2 */}
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">value</label>
+            {filter === "National" ? (
+              <NationalSelectbox />
+            ) : filter === "state" ? (
+              <Stateselectbox />
+            ) : filter === "lga" ? (
+              <Lgaselectbox />
+            ) : filter === "HealthFacility" ? (
+              <Hfselectbox />
+            ) : null}
+          </div>
+          {/* 3 */}
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Date From</label>
             <DatePicker
@@ -107,7 +246,7 @@ const Records = () => {
               defaultValue={selectedDateFrom}
             />
           </div>
-          {/* 3 */}
+          {/* 4 */}
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Date To</label>
             <DatePicker
@@ -118,6 +257,9 @@ const Records = () => {
               dateFormat="yyyy-MM-dd"
               defaultValue={selectedDateTo}
             />
+          </div>
+          <div className="bg-primary90 text-white px-3 py-2 font-500 text-center rounded-[8px]">
+            Search
           </div>
         </div>
       </div>
