@@ -5,6 +5,8 @@ import Pagination from "../../../components/Pagination";
 import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
 import axiosInstance from "../../../utils/axios";
+import { downloadTable } from "../../../utils/helpers";
+import { useRef } from "react";
 
 const State = () => {
   //filter
@@ -56,6 +58,7 @@ const State = () => {
     }
   };
   const filteredStates = filterstates(states, searchitem, filter);
+  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -87,10 +90,19 @@ const State = () => {
           setFilter={setFilter}
           filter={filter}
         />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "States")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <tr>
                 <th>SN</th>
                 <th>State Board Name</th>

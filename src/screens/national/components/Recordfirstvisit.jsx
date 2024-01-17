@@ -16,6 +16,26 @@ const Recordfirstvisit = ({
   const [currentpage, setCurrentpage] = useState({ value: 1 });
 
   const headers = patientfirstvisits && Object.keys(patientfirstvisits[0]);
+  const sortedheaders = Array.from(new Set(headers)).sort();
+  const priorityKeys = ["firstname", "firstname", "middlename", "surname"];
+  const customSort = (a, b) => {
+    // Compare based on priority keys
+    for (const key of priorityKeys) {
+      if (a[key] !== b[key]) {
+        return a[key] - b[key];
+      }
+    }
+
+    // If priority keys are the same, sort alphabetically
+    const aKeys = Object.keys(a).sort();
+    const bKeys = Object.keys(b).sort();
+
+    return aKeys.join().localeCompare(bKeys.join());
+  };
+  const sortedArray = headers?.sort(customSort);
+
+  console.log({ sa: sortedArray });
+  // console.log({ sh: sortedheaders });
   const tableRef = useRef();
 
   const getAllPatientFirstVisits = async () => {
@@ -23,6 +43,7 @@ const Recordfirstvisit = ({
       setLoading(true);
       const res = await axiosInstance.get("/patients/firstvisits/find");
       setPatientfirstvisits(res.data.result);
+      console.log(res.data.result[0]);
     } catch (error) {
       setLoading(false);
     } finally {
@@ -84,7 +105,7 @@ const Recordfirstvisit = ({
           >
             <thead>
               <tr className="">
-                {headers?.map((header) => (
+                {sortedArray?.map((header) => (
                   <th className="" key={header}>
                     {header}
                   </th>
@@ -101,7 +122,7 @@ const Recordfirstvisit = ({
                     .slice(10 * currentpage.value - 10, 10 * currentpage.value)
                     .map((item, index) => (
                       <tr key={index}>
-                        {headers?.map((header) => (
+                        {sortedArray?.map((header) => (
                           <td key={header}>{item[header]}</td>
                         ))}
                       </tr>

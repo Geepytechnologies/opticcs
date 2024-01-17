@@ -3,6 +3,7 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import axiosInstance from "../../../utils/axios";
 import moment from "moment";
 import Pagination from "../../../components/Pagination";
+import Csvbutton from "../../../components/Csvbutton";
 
 const StateList = () => {
   const [states, setStates] = useState();
@@ -33,14 +34,8 @@ const StateList = () => {
         </button>
       </div>
       {/* download csv */}
-      <div className="flex items-center justify-end mt-[40px] pr-4">
-        <button
-          onClick={() => downloadTable(tableRef, "state list")}
-          className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
-        >
-          Download CSV
-        </button>
-      </div>
+      <Csvbutton tableRef={tableRef} tableName={"state list"} />
+
       <table ref={tableRef} className="cursor-default mt-7 w-full">
         <thead>
           <tr>

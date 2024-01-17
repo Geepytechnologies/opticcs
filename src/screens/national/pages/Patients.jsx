@@ -12,6 +12,8 @@ import moment from "moment";
 import Notfound from "../../../components/Notfound";
 import Patientview from "../components/Patientview";
 import { useNavigate } from "react-router-dom";
+import { downloadTable } from "../../../utils/helpers";
+import { useRef } from "react";
 
 const Patients = () => {
   //filter
@@ -89,6 +91,7 @@ const Patients = () => {
   const handleItemClick = (itemId) => {
     navigate(`/national/patients/${itemId}`);
   };
+  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10 flex flex-col min-h-screen">
@@ -115,11 +118,19 @@ const Patients = () => {
           setFilter={setFilter}
           filter={filter}
         />
-
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Patients")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex-1 flex items-center justify-center font-inter my-5">
           <div className="bg-white min-h-[500px] w-[95%] flex flex-col items-center justify-between pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
                   <th>SN</th>

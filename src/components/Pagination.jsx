@@ -21,20 +21,20 @@ const Pagination = ({ currentpage, setCurrentpage, pages }) => {
       setCurrentpage({ value: currentpage + 1, isPagination: true });
     }
     if (finalPage == currentpage && currentpage !== pages) {
-      setFinalPage(finalPage * 2);
+      setFinalPage(finalPage + 10);
       setInitialPage(initialPage + 10);
       setCurrentpage({ value: currentpage + 1, isPagination: true });
     }
   };
   useEffect(() => {
-    if (pages < 1) {
+    if (!pages || pages < 1) {
       setShowarrow(false);
     } else {
       setShowarrow(true);
     }
     if (currentpage <= initialPage && currentpage > 1) {
-      setInitialPage(finalPage / 10 - 1);
-      setFinalPage(finalPage / 10 - 1 + 10);
+      setInitialPage(initialPage - 10);
+      setFinalPage(initialPage);
     }
     if (currentpage <= initialPage && currentpage == 1) {
       setInitialPage(0);

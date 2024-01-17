@@ -7,6 +7,8 @@ import { LuCalendarDays } from "react-icons/lu";
 import axiosInstance from "../../../utils/axios";
 import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
+import { downloadTable } from "../../../utils/helpers";
+import { useRef } from "react";
 
 const HealthFacility = () => {
   //filter
@@ -65,6 +67,7 @@ const HealthFacility = () => {
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
+  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -93,10 +96,19 @@ const HealthFacility = () => {
           setFilter={setFilter}
           filter={filter}
         />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Health Facility")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
                   <th>SN</th>
