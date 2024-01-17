@@ -7,7 +7,7 @@ import Pagination from "../../../components/Pagination";
 import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { Csvbutton } from "../../../components/Csvbutton";
+import Csvbutton from "../../../components/Csvbutton";
 import { useRef } from "react";
 
 const Patients = () => {
