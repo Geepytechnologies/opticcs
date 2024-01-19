@@ -139,6 +139,7 @@ const State = () => {
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 states?.length / 10 ||
                 (filteredStates && filteredStates?.length / 10)

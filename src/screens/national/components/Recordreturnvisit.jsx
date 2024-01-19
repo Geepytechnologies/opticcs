@@ -56,7 +56,12 @@ const Recordreturnvisit = ({
     }
   };
   const filteredVisits = filtervisits(patientreturnvisits, searchitem, values);
-
+  const pages = filteredVisits?.length
+    ? filteredVisits?.length / 20
+    : patientreturnvisits?.length / 20;
+  if (currentpage.value > pages + 1) {
+    setCurrentpage({ value: 1 });
+  }
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
@@ -110,10 +115,11 @@ const Recordreturnvisit = ({
         <Pagination
           currentpage={currentpage.value}
           setCurrentpage={setCurrentpage}
+          displaynum={20}
           pages={
             filteredVisits?.length
-              ? filteredVisits?.length / 10
-              : patientreturnvisits?.length / 10
+              ? filteredVisits?.length / 20
+              : patientreturnvisits?.length / 20
           }
         />
       </div>

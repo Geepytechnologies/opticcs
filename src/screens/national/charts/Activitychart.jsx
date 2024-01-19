@@ -3,7 +3,6 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 
 const Activitychart = ({ series }) => {
-  console.log(series);
   const ActivitychartOptions = {
     series: [
       {

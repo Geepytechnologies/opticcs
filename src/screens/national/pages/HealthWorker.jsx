@@ -156,6 +156,7 @@ const HealthWorker = () => {
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 filteredworkers
                   ? filteredworkers.length / 10

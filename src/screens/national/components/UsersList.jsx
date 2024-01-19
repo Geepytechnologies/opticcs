@@ -71,6 +71,7 @@ const UsersList = () => {
             currentpage={currentpage}
             setCurrentpage={setCurrentpage}
             pages={stateusers?.length / 10}
+            displaynum={10}
           />
         </div>
       </div>

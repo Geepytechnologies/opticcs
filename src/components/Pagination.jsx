@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi2";
 
-const Pagination = ({ currentpage, setCurrentpage, pages }) => {
+const Pagination = ({ currentpage, setCurrentpage, pages, displaynum }) => {
   const [initialPage, setInitialPage] = useState(0);
-  const [finalPage, setFinalPage] = useState(10);
+  const [finalPage, setFinalPage] = useState(displaynum);
   const [showarrow, setShowarrow] = useState(true);
   const numOfPages = Array.from({ length: pages > 1 ? pages + 1 : pages }).map(
     (_, index) => index + 1
@@ -21,8 +21,8 @@ const Pagination = ({ currentpage, setCurrentpage, pages }) => {
       setCurrentpage({ value: currentpage + 1, isPagination: true });
     }
     if (finalPage == currentpage && currentpage !== pages) {
-      setFinalPage(finalPage + 10);
-      setInitialPage(initialPage + 10);
+      setFinalPage(finalPage + displaynum);
+      setInitialPage(initialPage + displaynum);
       setCurrentpage({ value: currentpage + 1, isPagination: true });
     }
   };
@@ -33,14 +33,17 @@ const Pagination = ({ currentpage, setCurrentpage, pages }) => {
       setShowarrow(true);
     }
     if (currentpage <= initialPage && currentpage > 1) {
-      setInitialPage(initialPage - 10);
+      setInitialPage(initialPage - displaynum);
       setFinalPage(initialPage);
     }
     if (currentpage <= initialPage && currentpage == 1) {
       setInitialPage(0);
-      setFinalPage(10);
+      setFinalPage(displaynum);
     }
   }, [pages, currentpage]);
+  if (currentpage > pages + 1) {
+    setCurrentpage({ value: 1 });
+  }
   return (
     <div className="flex items-center justify-center mt-9">
       <div className="flex items-center gap-3">

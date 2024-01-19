@@ -34,7 +34,7 @@ const Recordfirstvisit = ({
   };
   const sortedArray = headers?.sort(customSort);
 
-  console.log({ sa: sortedArray });
+  // console.log({ sa: sortedArray });
   // console.log({ sh: sortedheaders });
   const tableRef = useRef();
 
@@ -43,7 +43,6 @@ const Recordfirstvisit = ({
       setLoading(true);
       const res = await axiosInstance.get("/patients/firstvisits/find");
       setPatientfirstvisits(res.data.result);
-      console.log(res.data.result[0]);
     } catch (error) {
       setLoading(false);
     } finally {
@@ -53,7 +52,6 @@ const Recordfirstvisit = ({
   useEffect(() => {
     getAllPatientFirstVisits();
   }, []);
-
   const filtervisits = (patientfirstvisits, searchitem, values) => {
     // console.log({ filter: values, searchitem: searchitem });
     if (!patientfirstvisits) return [];
@@ -83,6 +81,14 @@ const Recordfirstvisit = ({
     }
   };
   const filteredVisits = filtervisits(patientfirstvisits, searchitem, values);
+  // console.log(filteredVisits);
+  const pages = filteredVisits?.length
+    ? filteredVisits?.length / 20
+    : patientfirstvisits?.length / 20;
+
+  if (currentpage.value > pages + 1) {
+    setCurrentpage({ value: 1 });
+  }
   return (
     <div className="w-full flex items-center justify-center font-inter my-5">
       <div className="bg-white min-h-[500px] w-[1000px] overflow-x-auto pl-6  py-4">
@@ -119,7 +125,7 @@ const Recordfirstvisit = ({
                     ? filteredVisits
                     : patientfirstvisits
                   )
-                    .slice(10 * currentpage.value - 10, 10 * currentpage.value)
+                    .slice(20 * currentpage.value - 20, 20 * currentpage.value)
                     .map((item, index) => (
                       <tr key={index}>
                         {sortedArray?.map((header) => (
@@ -137,10 +143,11 @@ const Recordfirstvisit = ({
         <Pagination
           currentpage={currentpage.value}
           setCurrentpage={setCurrentpage}
+          displaynum={20}
           pages={
             filteredVisits?.length
-              ? filteredVisits?.length / 10
-              : patientfirstvisits?.length / 10
+              ? filteredVisits?.length / 20
+              : patientfirstvisits?.length / 20
           }
         />
       </div>

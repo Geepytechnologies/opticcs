@@ -229,9 +229,9 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
                 Daily Habits and Lifestyle{" "}
               </p>
               {/* chart 1 */}
-              {chart == "all" || chart == "doyousmoke" ? (
-                <div className="grid grid-cols-2 gap-5">
-                  {/* Pie chart (smoke) */}
+              <div className="grid grid-cols-2 gap-5">
+                {/* Pie chart (smoke) */}
+                {chart == "all" || chart == "doyousmoke" ? (
                   <div className=" min-w-[250px] shadow-xl">
                     <div className="flex items-center justify-between px-2 py-4">
                       <div className="flex flex-col">
@@ -260,7 +260,10 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
                       </div>
                     </div>
                   </div>
-                  {/* Pie chart (Drink Alcohol) */}
+                ) : null}
+
+                {/* Pie chart (Drink Alcohol) */}
+                {chart == "all" || chart == "alcohol" ? (
                   <div className=" min-w-[250px] shadow-xl">
                     <div className="flex items-center justify-between px-2 py-4">
                       <div className="flex flex-col">
@@ -289,7 +292,9 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
                       </div>
                     </div>
                   </div>
-                  {/* live with */}
+                ) : null}
+                {/* live with */}
+                {chart == "all" || chart == "livewith" ? (
                   <div className=" min-w-[250px] shadow-xl">
                     <div className="flex items-center justify-between px-2 py-4">
                       <div className="flex flex-col">
@@ -342,6 +347,8 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
                       </div>
                     </div>
                   </div>
+                ) : null}
+                {chart == "all" || chart == "threatened" ? (
                   <div className=" min-w-[250px] shadow-xl">
                     <div className="flex items-center justify-between px-2 py-4">
                       <div className="flex flex-col">
@@ -372,8 +379,8 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
                       </div>
                     </div>
                   </div>
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
             {/* obstetric history */}
             <div>

@@ -179,6 +179,7 @@ const Patients = () => {
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 filteredPatients
                   ? filteredPatients.length / 10

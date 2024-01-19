@@ -86,31 +86,41 @@ const DashboardIndicators = () => {
   //::::API CALL FUNCTIONS --end::://
 
   //:::Filter Box options:::///
-  const Firstvisitoption = () => (
-    <>
-      {datainfo?.map((chart, index) => (
-        <option key={index} value={chart}>
-          {capitalizeFirstLetter(chart)}
-        </option>
-      ))}
-    </>
-  );
-  const Returnvisitoption = () => (
-    <>
-      {datainforeturn?.map((chart, index) => (
-        <option key={index} value={chart}>
-          {capitalizeFirstLetter(chart)}
-        </option>
-      ))}
-    </>
-  );
+  const Firstvisitoption = () => {
+    const sorted = datainfo?.sort((a, b) => a.localeCompare(b));
+    return (
+      <>
+        {sorted?.map((chart, index) => (
+          <option key={index} value={chart}>
+            {capitalizeFirstLetter(chart)}
+          </option>
+        ))}
+      </>
+    );
+  };
+  const Returnvisitoption = () => {
+    const sorted = datainforeturn?.sort((a, b) => a.localeCompare(b));
+
+    return (
+      <>
+        {sorted?.map((chart, index) => (
+          <option key={index} value={chart}>
+            {capitalizeFirstLetter(chart)}
+          </option>
+        ))}
+      </>
+    );
+  };
+
   const Testresultoption = () => (
     <>
-      {datainforeturn?.map((chart, index) => (
-        <option key={index} value={chart}>
-          {capitalizeFirstLetter(chart)}
-        </option>
-      ))}
+      <option value={"hiv"}>{capitalizeFirstLetter("hiv")}</option>
+      <option value={"malaria"}>{capitalizeFirstLetter("malaria")}</option>
+    </>
+  );
+  const Scheduleoption = () => (
+    <>
+      <option value={"schedule"}>{capitalizeFirstLetter("Schedule")}</option>
     </>
   );
 
@@ -155,7 +165,10 @@ const DashboardIndicators = () => {
       break;
     case 4:
       componentToRender = (
-        <IndicatorNavigatorScreen4 param={indicatorsearchparam} />
+        <IndicatorNavigatorScreen4
+          param={indicatorsearchparam}
+          chart={chartParam}
+        />
       );
       optionToRender = <Testresultoption />;
       break;
@@ -163,6 +176,7 @@ const DashboardIndicators = () => {
       componentToRender = (
         <IndicatorNavigatorScreen5 param={indicatorsearchparam} />
       );
+      optionToRender = <Scheduleoption />;
       break;
     default:
       componentToRender = null;

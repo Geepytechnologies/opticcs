@@ -147,6 +147,7 @@ const HealthFacility = () => {
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 healthFacilities?.length / 10 ||
                 (filteredHealthfacilities &&
