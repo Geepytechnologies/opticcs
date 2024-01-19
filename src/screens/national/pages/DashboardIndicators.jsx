@@ -33,6 +33,7 @@ const DashboardIndicators = () => {
   const [stateAccounts, setStateAccounts] = useState();
   const [lgaAccounts, setLgaAccounts] = useState();
   const [datainfo, setDatainfo] = useState();
+  const [datainforeturn, setDatainforeturn] = useState([]);
 
   //::::API CALL FUNCTIONS --start::://
   const getAllStates = async () => {
@@ -73,13 +74,52 @@ const DashboardIndicators = () => {
     );
     setLgaAccounts(result.data);
   };
+  const getIndicatordatareturn = async () => {
+    try {
+      const res = await axiosInstance.get(
+        "/admin/national/data/general/return"
+      );
+      setDatainforeturn(Object.keys(res.data));
+    } catch (error) {}
+  };
+
   //::::API CALL FUNCTIONS --end::://
+
+  //:::Filter Box options:::///
+  const Firstvisitoption = () => (
+    <>
+      {datainfo?.map((chart, index) => (
+        <option key={index} value={chart}>
+          {capitalizeFirstLetter(chart)}
+        </option>
+      ))}
+    </>
+  );
+  const Returnvisitoption = () => (
+    <>
+      {datainforeturn?.map((chart, index) => (
+        <option key={index} value={chart}>
+          {capitalizeFirstLetter(chart)}
+        </option>
+      ))}
+    </>
+  );
+  const Testresultoption = () => (
+    <>
+      {datainforeturn?.map((chart, index) => (
+        <option key={index} value={chart}>
+          {capitalizeFirstLetter(chart)}
+        </option>
+      ))}
+    </>
+  );
 
   //:::UseEffect calls:::///
   useEffect(() => {
     getAllStates();
     getIndicatordata();
     getAllPatients();
+    getIndicatordatareturn();
   }, []);
 
   //:::sort states alphabetically::://
@@ -88,6 +128,7 @@ const DashboardIndicators = () => {
   );
 
   let componentToRender;
+  let optionToRender;
 
   //::::Navigator switch:::://
   switch (navigatorSlide) {
@@ -98,19 +139,25 @@ const DashboardIndicators = () => {
           chart={chartParam}
         />
       );
+      optionToRender = <Firstvisitoption />;
       break;
     case 2:
       componentToRender = <IndicatorNavigatorScreen2 />;
       break;
     case 3:
       componentToRender = (
-        <IndicatorNavigatorScreen3 param={indicatorsearchparam} />
+        <IndicatorNavigatorScreen3
+          param={indicatorsearchparam}
+          chart={chartParam}
+        />
       );
+      optionToRender = <Returnvisitoption />;
       break;
     case 4:
       componentToRender = (
         <IndicatorNavigatorScreen4 param={indicatorsearchparam} />
       );
+      optionToRender = <Testresultoption />;
       break;
     case 5:
       componentToRender = (
@@ -209,7 +256,7 @@ const DashboardIndicators = () => {
               className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
             >
               <option value="all" disabled>
-                Choose a value
+                All states
               </option>
               {stateAccounts?.length &&
                 sortedstates.map((item, index) => (
@@ -229,7 +276,7 @@ const DashboardIndicators = () => {
                 value={lgasearch}
                 className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
               >
-                <option value="">Choose LGA</option>
+                <option value="">All LGA</option>
                 {lgaAccounts?.map((localGovt, index) => (
                   <option key={index} value={localGovt.lga}>
                     {localGovt.lga}
@@ -283,12 +330,9 @@ const DashboardIndicators = () => {
               onChange={(e) => setChart(e.target.value)}
               className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
             >
-              <option value="all">Choose chart</option>
-              {datainfo?.map((chart, index) => (
-                <option key={index} value={chart}>
-                  {capitalizeFirstLetter(chart)}
-                </option>
-              ))}
+              <option value="all">All charts</option>
+
+              {optionToRender}
             </select>
           </div>
           {/* 5 button */}

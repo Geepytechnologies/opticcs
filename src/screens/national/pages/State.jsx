@@ -103,33 +103,37 @@ const State = () => {
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
             <table ref={tableRef} className="cursor-default w-full">
-              <tr>
-                <th>SN</th>
-                <th>State Board Name</th>
-                <th>State ID</th>
-                <th>Address</th>
-                <th>Date Created</th>
-                <th>Actions</th>
-              </tr>
-              {states
-                ? (searchitem || (selectedDateTo && selectedDateFrom)
-                    ? filteredStates
-                    : states
-                  ).map((item, index) => (
-                    <tr
-                      key={index}
-                      className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                    >
-                      <td>{index + 1}</td>
-                      <td>{item.boardname}</td>
-                      <td>{item.stateid}</td>
-                      <td>{item.officeaddress}</td>
-                      <td>{moment(item.createdat).fromNow()}</td>
-                      {/* <td className='text-primary90'>Message</td> */}
-                      <td className="text-[#B02A37]">Deactivate</td>
-                    </tr>
-                  ))
-                : null}
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>State Board Name</th>
+                  <th>State ID</th>
+                  <th>Address</th>
+                  <th>Date Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {states
+                  ? (searchitem || (selectedDateTo && selectedDateFrom)
+                      ? filteredStates
+                      : states
+                    ).map((item, index) => (
+                      <tr
+                        key={index}
+                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                      >
+                        <td>{index + 1}</td>
+                        <td>{item.boardname}</td>
+                        <td>{item.stateid}</td>
+                        <td>{item.officeaddress}</td>
+                        <td>{moment(item.createdat).fromNow()}</td>
+                        {/* <td className='text-primary90'>Message</td> */}
+                        <td className="text-[#B02A37]">Deactivate</td>
+                      </tr>
+                    ))
+                  : null}
+              </tbody>
             </table>
             {/* pagination */}
             <Pagination

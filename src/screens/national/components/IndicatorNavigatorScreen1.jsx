@@ -21,7 +21,7 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
     }
   }, [param]);
   const [datainfo, setDatainfo] = useState();
-  //   console.log(datainfo);
+  // console.log(datainfo);
 
   const getIndicatordata = async () => {
     try {
@@ -704,1100 +704,1181 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
               {/* chart 1 */}
               <div className="grid grid-cols-2 gap-5">
                 {/* Pie chart */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Pulmonary</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Cough
-                      </p>
+                {chart == "all" || chart == "cough" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Pulmonary</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Cough
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.cough.yes, datainfo.cough.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>Yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.cough.yes, datainfo.cough.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>Yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Pie chart */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Pulmonary</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Difficulty in breathing
-                      </p>
+                {chart == "all" || chart == "difficultybreathing" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Pulmonary</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Difficulty in breathing
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.difficultybreathing.yes,
+                        datainfo.difficultybreathing.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary90"></div>
+                        <span>Yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.difficultybreathing.yes,
-                      datainfo.difficultybreathing.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary90"></div>
-                      <span>Yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Pie chart */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Cardiovascular</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Palpitations
-                      </p>
+                {chart == "all" || chart == "palpitations" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Cardiovascular</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Palpitations
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The pie chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.palpitations.yes,
+                        datainfo.palpitations.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The pie chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.palpitations.yes,
-                      datainfo.palpitations.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Cardiovascular */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Cardiovascular</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Swelling of feet and/or legs
-                      </p>
+                {chart == "all" || chart == "swellingfeet" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Cardiovascular</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Swelling of feet and/or legs
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.swellingfeet.yes,
+                        datainfo.swellingfeet.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.swellingfeet.yes,
-                      datainfo.swellingfeet.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Cardiovascular */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Cardiovascular</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe chest pain
-                      </p>
+                {chart == "all" || chart == "chestpain" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Cardiovascular</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe chest pain
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The pie chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.chestpain.yes, datainfo.chestpain.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The pie chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.chestpain.yes, datainfo.chestpain.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Cardiovascular */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Cardiovascular</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe epigastric pain
-                      </p>
+                {chart == "all" || chart == "epigastricpain" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Cardiovascular</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe epigastric pain
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.epigastricpain.yes,
+                        datainfo.epigastricpain.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.epigastricpain.yes,
-                      datainfo.epigastricpain.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* low birthweight babies */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Cardiovascular</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe tiredness after doing little activity
-                      </p>
+                {chart == "all" || chart == "severetiredness" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Cardiovascular</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe tiredness after doing little activity
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.severetiredness.yes,
+                        datainfo.severetiredness.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.severetiredness.yes,
-                      datainfo.severetiredness.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Neurologic */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Neurologic</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Dizziness/Light flashing
-                      </p>
+                {chart == "all" || chart == "dizziness" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Neurologic</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Dizziness/Light flashing
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.dizziness.yes, datainfo.dizziness.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.dizziness.yes, datainfo.dizziness.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Gastrointestinal */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gastrointestinal</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe abdominal pain
-                      </p>
+                {chart == "all" || chart == "severeabdominalpain" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Gastrointestinal
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe abdominal pain
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.severeabdominalpain.yes,
+                        datainfo.severeabdominalpain.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.severeabdominalpain.yes,
-                      datainfo.severeabdominalpain.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Gastrointestinal */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gastrointestinal</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Persistent vomiting (not able to eat or drink anything
-                        without vomiting)
-                      </p>
+                {chart == "all" || chart == "persistentvomiting" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Gastrointestinal
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Persistent vomiting (not able to eat or drink anything
+                          without vomiting)
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.persistentvomiting.yes,
+                        datainfo.persistentvomiting.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.persistentvomiting.yes,
-                      datainfo.persistentvomiting.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Gastrointestinal */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gastrointestinal</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe diarrhoea (passage of watery stools of more than
-                        3 times in a day)
-                      </p>
+                {chart == "all" || chart == "severediarrhoea" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Gastrointestinal
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe diarrhoea (passage of watery stools of more
+                          than 3 times in a day)
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.severediarrhoea.yes,
+                        datainfo.severediarrhoea.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.severediarrhoea.yes,
-                      datainfo.severediarrhoea.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Urinary */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Urinary</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Pain with urination
-                      </p>
+                {chart == "all" || chart == "painwithurination" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Urinary</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Pain with urination
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.painwithurination.yes,
+                        datainfo.painwithurination.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.painwithurination.yes,
-                      datainfo.painwithurination.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Urinary */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Urinary</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Severe flank pain
-                      </p>
+                {chart == "all" || chart == "severeflankpain" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Urinary</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Severe flank pain
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.severeflankpain.yes,
+                        datainfo.severeflankpain.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.severeflankpain.yes,
-                      datainfo.severeflankpain.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Urinary */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Urinary</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Blood in urine
-                      </p>
+                {chart == "all" || chart == "bloodinurine" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Urinary</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Blood in urine
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.bloodinurine.yes,
+                        datainfo.bloodinurine.yes,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.bloodinurine.yes,
-                      datainfo.bloodinurine.yes,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Gynaecological */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gynaecological</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        vaginal discharge
-                      </p>
+                {chart == "all" || chart == "vaginaldischarge" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Gynaecological</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          vaginal discharge
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.vaginaldischarge.yes,
+                        datainfo.vaginaldischarge.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.vaginaldischarge.yes,
-                      datainfo.vaginaldischarge.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Gynaecological */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gynaecological</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Deep pelvic pain during sex
-                      </p>
+                {chart == "all" || chart == "vaginaldischarge" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Gynaecological</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Deep pelvic pain during sex
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.deeppelvicpain.yes,
+                        datainfo.deeppelvicpain.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.deeppelvicpain.yes,
-                      datainfo.deeppelvicpain.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Gynaecological */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Gynaecological</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Diagnosis with syphilis
-                      </p>
+                {chart == "all" || chart == "syphilis" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Gynaecological</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Diagnosis with syphilis
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.syphilis.yes, datainfo.syphilis.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.syphilis.yes, datainfo.syphilis.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Dry cough */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Dry cough</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Persistent dry cough of up to or more than one month
-                        duration?
-                      </p>
+                {chart == "all" || chart == "persistentdrycough" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Dry cough</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Persistent dry cough of up to or more than one month
+                          duration?
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.persistentdrycough.yes,
+                        datainfo.persistentdrycough.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.persistentdrycough.yes,
-                      datainfo.persistentdrycough.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Weight loss */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Weight loss</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Unexplained progressive weight loss.
-                      </p>
+                {chart == "all" || chart == "progressiveweightloss" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Weight loss</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Unexplained progressive weight loss.
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.progressiveweightloss.yes,
+                        datainfo.progressiveweightloss.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.progressiveweightloss.yes,
-                      datainfo.progressiveweightloss.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Night sweats */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Night sweats</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Night sweats
-                      </p>
+                {chart == "all" || chart == "nightsweats" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Night sweats</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Night sweats
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.nightsweats.yes,
+                        datainfo.nightsweats.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.nightsweats.yes, datainfo.nightsweats.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Tuberculosis */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Tuberculosis</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Have you ever been diagnosed with tuberculosis?
-                      </p>
+                {chart == "all" || chart == "diagnosedwithtuberculosis" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Tuberculosis</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Have you ever been diagnosed with tuberculosis?
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.diagnosedwithtuberculosis.yes,
+                        datainfo.diagnosedwithtuberculosis.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.diagnosedwithtuberculosis.yes,
-                      datainfo.diagnosedwithtuberculosis.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Tuberculosis treatment */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">
-                        Tuberculosis treatment
-                      </p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Have you been treated previously for TB?
-                      </p>
+                {chart == "all" || chart == "treatedTBpreviously" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Tuberculosis treatment
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Have you been treated previously for TB?
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.treatedTBpreviously.yes,
+                        datainfo.treatedTBpreviously.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.treatedTBpreviously.yes,
-                      datainfo.treatedTBpreviously.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Heart disease */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Heart disease</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Heart disease
-                      </p>
+                {chart == "all" || chart == "heartdisease" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Heart disease</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Heart disease
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.heartdisease.yes,
+                        datainfo.heartdisease.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.heartdisease.yes,
-                      datainfo.heartdisease.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Anaemia */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Anaemia</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Anaemia in the last 3 months
-                      </p>
+                {chart == "all" || chart == "anaemia" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Anaemia</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Anaemia in the last 3 months
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.anaemia.yes, datainfo.anaemia.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.anaemia.yes, datainfo.anaemia.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Kidney disease */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Kidney disease</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Kidney disease
-                      </p>
+                {chart == "all" || chart == "kidneydisease" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Kidney disease</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Kidney disease
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.kidneydisease.yes,
+                        datainfo.kidneydisease.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.kidneydisease.yes,
-                      datainfo.kidneydisease.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Sickle cell disease */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">
-                        Sickle cell disease
-                      </p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Sickle cell disease
-                      </p>
+                {chart == "all" || chart == "sicklecell" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Sickle cell disease
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Sickle cell disease
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.sicklecell.yes, datainfo.sicklecell.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.sicklecell.yes, datainfo.sicklecell.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Diabetes */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Diabetes</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Diabetes
-                      </p>
+                {chart == "all" || chart == "diabetes" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Diabetes</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Diabetes
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.diabetes.yes, datainfo.diabetes.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.diabetes.yes, datainfo.diabetes.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* Goitre */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Goitre</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Goitre
-                      </p>
+                {chart == "all" || chart == "goitre" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Goitre</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Goitre
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.goitre.yes, datainfo.goitre.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.goitre.yes, datainfo.goitre.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* HIV/AIDS */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">HIV/AIDS</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        HIV/AIDS
-                      </p>
+                {chart == "all" || chart == "hivaids" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">HIV/AIDS</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          HIV/AIDS
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.hivaids.yes, datainfo.hivaids.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.hivaids.yes, datainfo.hivaids.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* chronic illness */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">chronic illness</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Any other serious chronic illness
-                      </p>
+                {chart == "all" || chart == "otherseriouschronicillnesses" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">chronic illness</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Any other serious chronic illness
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.otherseriouschronicillnesses.yes,
+                        datainfo.otherseriouschronicillnesses.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.otherseriouschronicillnesses.yes,
-                      datainfo.otherseriouschronicillnesses.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Surgery */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Surgery</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Have you ever had surgery?
-                      </p>
+                {chart == "all" || chart == "hadsurgery" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Surgery</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Have you ever had surgery?
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.hadsurgery.yes, datainfo.hadsurgery.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.hadsurgery.yes, datainfo.hadsurgery.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Herbal remedies */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Herbal remedies</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Herbal remedies
-                      </p>
+                {chart == "all" || chart == "herbalremedies" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Herbal remedies</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Herbal remedies
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.herbalremedies.yes,
+                        datainfo.herbalremedies.yes,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.herbalremedies.yes,
-                      datainfo.herbalremedies.yes,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* over the counter */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Over-the-counter</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Over-the-counter
-                      </p>
+                {chart == "all" || chart == "otcdrugs" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Over-the-counter
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Over-the-counter
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.otcdrugs.yes, datainfo.otcdrugs.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.otcdrugs.yes, datainfo.otcdrugs.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
 
                 {/* Dietary supplements */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">
-                        Dietary supplements
-                      </p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        Dietary supplements
-                      </p>
+                {chart == "all" || chart == "dietarysupplements" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">
+                          Dietary supplements
+                        </p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          Dietary supplements
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[
+                        datainfo.dietarysupplements.yes,
+                        datainfo.dietarysupplements.no,
+                      ]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[
-                      datainfo.dietarysupplements.yes,
-                      datainfo.dietarysupplements.no,
-                    ]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
                 {/* tetanus */}
-                <div className=" min-w-[250px] shadow-xl">
-                  <div className="flex items-center justify-between px-2 py-4">
-                    <div className="flex flex-col">
-                      <p className="font-[500] text-black">Tetanus</p>
-                      <p className="font-[400] text-[#4F4F4F] text-[14px]">
-                        tetanus
-                      </p>
+                {chart == "all" || chart == "tetanus" ? (
+                  <div className=" min-w-[250px] shadow-xl">
+                    <div className="flex items-center justify-between px-2 py-4">
+                      <div className="flex flex-col">
+                        <p className="font-[500] text-black">Tetanus</p>
+                        <p className="font-[400] text-[#4F4F4F] text-[14px]">
+                          tetanus
+                        </p>
+                      </div>
+                      <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
                     </div>
-                    <IoMdInformationCircle className="text-[#BDBDBD] text-[25px]" />
+                    <hr />
+                    {/* The chart diagram */}
+                    <GenericPie
+                      colors={["#14A673", "#D1FF60"]}
+                      series={[datainfo.tetanus.yes, datainfo.tetanus.no]}
+                    />
+                    {/* info about chart */}
+                    <div className="flex gap-7 px-2 py-4">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
+                        <span>yes</span>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
+                        <span>No</span>
+                      </div>
+                    </div>
                   </div>
-                  <hr />
-                  {/* The chart diagram */}
-                  <GenericPie
-                    colors={["#14A673", "#D1FF60"]}
-                    series={[datainfo.tetanus.yes, datainfo.tetanus.no]}
-                  />
-                  {/* info about chart */}
-                  <div className="flex gap-7 px-2 py-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary70"></div>
-                      <span>yes</span>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#D1FF60]"></div>
-                      <span>No</span>
-                    </div>
-                  </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </motion.div>
