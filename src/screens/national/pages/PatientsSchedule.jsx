@@ -107,40 +107,49 @@ const PatientsSchedule = () => {
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
             <table ref={tableRef} className="cursor-default w-full">
-              <tr>
-                <th>SN</th>
-                <th>Patient Name</th>
-                <th>Patient ID</th>
-                <th>Health Facility</th>
-                <th>Scheduled Date</th>
-                <th>Status</th>
-              </tr>
-              {patientsSchedule
-                ? (searchitem || (selectedDateTo && selectedDateFrom)
-                    ? filteredPatients
-                    : patientsSchedule
-                  )
-                    .slice(10 * currentpage.value - 10, 10 * currentpage.value)
-                    .map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{index + 1}</td>
-                        <td>{item.firstname}</td>
-                        <td>{item.patient_id}</td>
-                        <td>{item.healthFacility}</td>
-                        <td>{`from ${moment(item.datefrom).format(
-                          "yyyy-MM-DD"
-                        )} to ${moment(item.dateto).format("yyyy-MM-DD")}`}</td>
-                        {item.completed == 1 ? (
-                          <td className="text-primary70">{`Completed`}</td>
-                        ) : (
-                          <td className="text-[#CC9A06]">{` Not Completed`}</td>
-                        )}
-                      </tr>
-                    ))
-                : null}
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Patient Name</th>
+                  <th>Patient ID</th>
+                  <th>Health Facility</th>
+                  <th>Scheduled Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patientsSchedule
+                  ? (searchitem || (selectedDateTo && selectedDateFrom)
+                      ? filteredPatients
+                      : patientsSchedule
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{index + 1}</td>
+                          <td>{item.firstname}</td>
+                          <td>{item.patient_id}</td>
+                          <td>{item.healthFacility}</td>
+                          <td>{`from ${moment(item.datefrom).format(
+                            "yyyy-MM-DD"
+                          )} to ${moment(item.dateto).format(
+                            "yyyy-MM-DD"
+                          )}`}</td>
+                          {item.completed == 1 ? (
+                            <td className="text-primary70">{`Completed`}</td>
+                          ) : (
+                            <td className="text-[#CC9A06]">{` Not Completed`}</td>
+                          )}
+                        </tr>
+                      ))
+                  : null}
+              </tbody>
             </table>
             {/* pagination */}
             <Pagination

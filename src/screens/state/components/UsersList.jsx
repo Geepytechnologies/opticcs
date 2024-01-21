@@ -8,8 +8,10 @@ import Csvbutton from "../../../components/Csvbutton";
 const UsersList = ({ state }) => {
   const [lgaUsers, setlgaUsers] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
-
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const getlgausers = async () => {
     const res = await axiosInstance.get(`/admin/lga/users?state=${state}`);
     setlgaUsers(res.data);
@@ -45,29 +47,32 @@ const UsersList = ({ state }) => {
           </tr>
         </thead>
         <tbody>
-          {lgaUsers?.map((item, index) => (
-            <tr
-              key={index}
-              className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-            >
-              <td>{item.id}</td>
-              <td>{item.staffname}</td>
-              <td>{item.staffid}</td>
-              <td>{item.lga}</td>
-              <td>{moment(item.createdat).fromNow()}</td>
-              <td className="">{item.phone}</td>
-              <td className="">{item.cadre}</td>
-              <td className="">{item.gender}</td>
-              <td className="">{item.state}</td>
-            </tr>
-          ))}
+          {lgaUsers
+            ?.slice(10 * currentpage.value - 10, 10 * currentpage.value)
+            .map((item, index) => (
+              <tr
+                key={index}
+                className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+              >
+                <td>{item.id}</td>
+                <td>{item.staffname}</td>
+                <td>{item.staffid}</td>
+                <td>{item.lga}</td>
+                <td>{moment(item.createdat).fromNow()}</td>
+                <td className="">{item.phone}</td>
+                <td className="">{item.cadre}</td>
+                <td className="">{item.gender}</td>
+                <td className="">{item.state}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {/* pagination */}
       <Pagination
-        currentpage={currentpage}
+        currentpage={currentpage.value}
         setCurrentpage={setCurrentpage}
         pages={lgaUsers?.length / 10}
+        displaynum={10}
       />
     </div>
   );

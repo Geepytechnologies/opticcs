@@ -81,7 +81,6 @@ const DashboardIndicators = () => {
   //:::Filter Box options:::///
   const Firstvisitoption = () => {
     const sorted = datainfo?.sort((a, b) => a.localeCompare(b));
-    console.log(sorted);
     return (
       <>
         {sorted?.map((chart, index) => (

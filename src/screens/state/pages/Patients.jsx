@@ -9,6 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Csvbutton from "../../../components/Csvbutton";
 import { useRef } from "react";
+import Notfound from "../../../components/Notfound";
 
 const Patients = () => {
   const { stateAuth } = useAuth();
@@ -110,47 +111,56 @@ const Patients = () => {
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
             <table ref={tableRef} className="cursor-default w-full">
-              <tr>
-                <th>SN</th>
-                <th>Patient Name</th>
-                <th>Patient ID</th>
-                <th>State</th>
-                <th>LGA</th>
-                <th>Health Facility</th>
-                <th>Last Visit</th>
-              </tr>
-              {patients
-                ? (searchitem || (selectedDateTo && selectedDateFrom)
-                    ? filteredPatients
-                    : patients
-                  )
-                    .slice(10 * currentpage.value - 10, 10 * currentpage.value)
-                    .map((item, index) => (
-                      <tr
-                        onClick={() => handleItemClick(item.id)}
-                        key={item.id}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>
-                          {currentpage.value == 1
-                            ? index + 1
-                            : 10 * currentpage.value + (index + 1) - 10}
-                        </td>
-                        <td>{item.firstname}</td>
-                        <td>{item.id}</td>
-                        <td>{item.state}</td>
-                        <td>{item.lga}</td>
-                        <td>{item.healthFacility}</td>
-                        <td>{moment(item.last_visit).fromNow()}</td>
-                      </tr>
-                    ))
-                : null}
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Patient Name</th>
+                  <th>Patient ID</th>
+                  <th>State</th>
+                  <th>LGA</th>
+                  <th>Health Facility</th>
+                  <th>Last Visit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients
+                  ? (searchitem || (selectedDateTo && selectedDateFrom)
+                      ? filteredPatients
+                      : patients
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          onClick={() => handleItemClick(item.id)}
+                          key={item.id}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>
+                            {currentpage.value == 1
+                              ? index + 1
+                              : 10 * currentpage.value + (index + 1) - 10}
+                          </td>
+                          <td>{item.firstname}</td>
+                          <td>{item.id}</td>
+                          <td>{item.state}</td>
+                          <td>{item.lga}</td>
+                          <td>{item.healthFacility}</td>
+                          <td>{moment(item.last_visit).fromNow()}</td>
+                        </tr>
+                      ))
+                  : null}
+              </tbody>
             </table>
+            {!filteredPatients.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
-              pages={filteredPatients.length / 10}
+              pages={filteredPatients?.length / 10}
               displaynum={10}
             />
           </div>

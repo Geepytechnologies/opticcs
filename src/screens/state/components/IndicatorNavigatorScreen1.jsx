@@ -12,7 +12,6 @@ import { useAuth } from "../hooks/useAuth";
 const IndicatorNavigatorScreen1 = ({ param, chart }) => {
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
-  console.log(param);
   useEffect(() => {
     if (param.query == "lga") {
       getIndicatordataforlga();

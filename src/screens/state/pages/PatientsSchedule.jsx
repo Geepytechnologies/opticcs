@@ -18,7 +18,10 @@ const PatientsSchedule = () => {
   const [filter, setFilter] = useState(filterdata[0]);
   const [searchitem, setSearchitem] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const [patientsSchedule, setPatientsSchedule] = useState();
   const array = [1, 2, 3, 4];
   const getAllPatientschedule = async () => {

@@ -19,8 +19,10 @@ const LGA = () => {
   const [filter, setFilter] = useState(filterdata[0]);
   const [searchitem, setSearchitem] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
-  // page state
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  }); // page state
   const [lga, setLga] = useState();
   const getAllLga = async () => {
     try {
@@ -114,20 +116,25 @@ const LGA = () => {
                   ? (searchitem || (selectedDateTo && selectedDateFrom)
                       ? filteredLga
                       : lga
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{index + 1}</td>
-                        <td>{item.boardname}</td>
-                        <td>{item.lgaID}</td>
-                        <td>{item.officeaddress}</td>
-                        <td>{moment(item.createdat).fromNow()}</td>
-                        {/* <td className="text-primary90">Message</td> */}
-                        <td className="text-[#B02A37]">Deactivate</td>
-                      </tr>
-                    ))
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{index + 1}</td>
+                          <td>{item.boardname}</td>
+                          <td>{item.lgaID}</td>
+                          <td>{item.officeaddress}</td>
+                          <td>{moment(item.createdat).fromNow()}</td>
+                          {/* <td className="text-primary90">Message</td> */}
+                          <td className="text-[#B02A37]">Deactivate</td>
+                        </tr>
+                      ))
                   : null}
               </tbody>
             </table>
@@ -135,7 +142,7 @@ const LGA = () => {
 
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
               pages={

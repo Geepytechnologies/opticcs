@@ -8,6 +8,7 @@ import axiosInstance from "../../../utils/axios";
 import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
 import Csvbutton from "../../../components/Csvbutton";
+import Notfound from "../../../components/Notfound";
 
 const PatientsSchedule = () => {
   const { lgaAuth } = useAuth();
@@ -19,7 +20,10 @@ const PatientsSchedule = () => {
   const [filter, setFilter] = useState(filterdata[0]);
   const [searchitem, setSearchitem] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const [patientsSchedule, setPatientsSchedule] = useState();
   const array = [1, 2, 3, 4];
   const getAllPatientschedule = async () => {
@@ -34,6 +38,38 @@ const PatientsSchedule = () => {
     getAllPatientschedule();
   }, []);
   const tableRef = useRef();
+  const filterPatients = (patientsSchedule, searchitem, filter) => {
+    if (!patientsSchedule) return [];
+    let filteredpage;
+    if (searchitem && selectedDateFrom && selectedDateTo) {
+      filteredpage = patients.filter(
+        (item) =>
+          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+      return filteredpage;
+    } else if (searchitem) {
+      filteredpage = patientsSchedule.filter((item) =>
+        item[filter].toLowerCase().includes(searchitem.toLowerCase())
+      );
+      return filteredpage;
+    } else if (selectedDateFrom && selectedDateTo) {
+      filteredpage = patientsSchedule.filter(
+        (item) =>
+          new Date(item.createdat).getTime() >=
+            new Date(selectedDateFrom).getTime() &&
+          new Date(item.createdat).getTime() <=
+            new Date(selectedDateTo).getTime()
+      );
+      return filteredpage;
+    } else {
+      return patientsSchedule;
+    }
+  };
+  const filteredPatients = filterPatients(patientsSchedule, searchitem, filter);
   return (
     <div>
       <div className="bg-primary10">
@@ -87,34 +123,43 @@ const PatientsSchedule = () => {
                             .includes(searchitem?.toLowerCase())
                         )
                       : patientsSchedule
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{index + 1}</td>
-                        <td>{item.firstname}</td>
-                        <td>{item.patient_id}</td>
-                        <td>{item.healthFacility}</td>
-                        <td>{`from ${moment(item.datefrom).format(
-                          "yyyy-MM-DD"
-                        )} to ${moment(item.dateto).format("yyyy-MM-DD")}`}</td>
-                        {item.completed == 1 ? (
-                          <td className="text-primary70">{`Completed`}</td>
-                        ) : (
-                          <td className="text-[#CC9A06]">{` Not Completed`}</td>
-                        )}
-                      </tr>
-                    ))
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{index + 1}</td>
+                          <td>{item.firstname}</td>
+                          <td>{item.patient_id}</td>
+                          <td>{item.healthFacility}</td>
+                          <td>{`from ${moment(item.datefrom).format(
+                            "yyyy-MM-DD"
+                          )} to ${moment(item.dateto).format(
+                            "yyyy-MM-DD"
+                          )}`}</td>
+                          {item.completed == 1 ? (
+                            <td className="text-primary70">{`Completed`}</td>
+                          ) : (
+                            <td className="text-[#CC9A06]">{` Not Completed`}</td>
+                          )}
+                        </tr>
+                      ))
                   : null}
               </tbody>
             </table>
+            {!filteredPatients.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
-              pages={patientsSchedule?.length / 10}
               displaynum={10}
+              pages={filteredPatients.length / 10}
             />
           </div>
         </div>

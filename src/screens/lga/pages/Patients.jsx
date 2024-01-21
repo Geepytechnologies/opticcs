@@ -8,6 +8,7 @@ import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Csvbutton from "../../../components/Csvbutton";
+import Notfound from "../../../components/Notfound";
 
 const Patients = () => {
   const { lgaAuth } = useAuth();
@@ -23,8 +24,10 @@ const Patients = () => {
   //
   const [patients, setPatients] = useState();
   const [isActive, setIsActive] = useState(1);
-  const [currentpage, setCurrentpage] = useState(1);
-
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   // if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
   //     console.log("greater")
   // } else {
@@ -123,29 +126,36 @@ const Patients = () => {
                   ? (searchitem || (selectedDateTo && selectedDateFrom)
                       ? filteredPatients
                       : patients
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        onClick={() => handleItemClick(item.id)}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{index + 1}</td>
-                        <td>{item.firstname}</td>
-                        <td>{item.id}</td>
-                        <td>{item.state}</td>
-                        <td>{item.lga}</td>
-                        <td>{item.healthFacility}</td>
-                        <td>{moment(item.last_visit).fromNow()}</td>
-                      </tr>
-                    ))
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          onClick={() => handleItemClick(item.id)}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{index + 1}</td>
+                          <td>{item.firstname}</td>
+                          <td>{item.id}</td>
+                          <td>{item.state}</td>
+                          <td>{item.lga}</td>
+                          <td>{item.healthFacility}</td>
+                          <td>{moment(item.last_visit).fromNow()}</td>
+                        </tr>
+                      ))
                   : null}
               </tbody>
             </table>
+            {!filteredPatients.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
-              pages={patients?.length / 10}
+              pages={filteredPatients?.length / 10}
               displaynum={10}
             />
           </div>

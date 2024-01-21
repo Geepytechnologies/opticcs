@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import Csvbutton from "../../../components/Csvbutton";
 
 const ActiveUsers = ({ data }) => {
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const timeduration = (start, finish) => {
     let x;
     const time1 = moment(start, "HH:mm:ss");
@@ -49,29 +53,41 @@ const ActiveUsers = ({ data }) => {
               <td>No Record</td>
             </tr>
           )}
-          {data.map((item, index) => (
-            <tr key={index} className="text-[#636363] h-[50px] cursor-pointer">
-              <td>{index + 1}</td>
-              <td>{item.healthworker}</td>
-              <td>{item.id}</td>
-              <td>{item.cadre}</td>
-              <td className="">
-                <div className="flex items-center justify-center gap-2">
-                  {item.session_status == "completed" ? (
-                    <p className="w-3 h-3 rounded-full bg-[red]"></p>
-                  ) : (
-                    <p className="w-3 h-3 rounded-full bg-[green]"></p>
-                  )}
-                  <p>{item.session_status}</p>
-                </div>
-              </td>
-              <td>{item.start_time}</td>
-              <td>{item.end_time}</td>
-              <td>{timeduration(item.start_time, item.end_time)}</td>
-            </tr>
-          ))}
+          {data
+            .slice(10 * currentpage.value - 10, 10 * currentpage.value)
+            .map((item, index) => (
+              <tr
+                key={index}
+                className="text-[#636363] h-[50px] cursor-pointer"
+              >
+                <td>{index + 1}</td>
+                <td>{item.healthworker}</td>
+                <td>{item.id}</td>
+                <td>{item.cadre}</td>
+                <td className="">
+                  <div className="flex items-center justify-center gap-2">
+                    {item.session_status == "completed" ? (
+                      <p className="w-3 h-3 rounded-full bg-[red]"></p>
+                    ) : (
+                      <p className="w-3 h-3 rounded-full bg-[green]"></p>
+                    )}
+                    <p>{item.session_status}</p>
+                  </div>
+                </td>
+                <td>{item.start_time}</td>
+                <td>{item.end_time}</td>
+                <td>{timeduration(item.start_time, item.end_time)}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
+      {/* pagination */}
+      <Pagination
+        currentpage={currentpage.value}
+        setCurrentpage={setCurrentpage}
+        pages={data?.length / 10}
+        displaynum={10}
+      />
     </div>
   );
 };

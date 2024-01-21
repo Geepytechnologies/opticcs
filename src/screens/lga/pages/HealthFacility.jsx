@@ -9,6 +9,7 @@ import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import Csvbutton from "../../../components/Csvbutton";
+import Notfound from "../../../components/Notfound";
 
 const HealthFacility = () => {
   const { lgaAuth } = useAuth();
@@ -23,7 +24,10 @@ const HealthFacility = () => {
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
   const [healthFacilities, setHealthfacilities] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const getHealthfacilities = async () => {
     try {
       const res = await axiosInstance.get("/admin/healthfacility/find");
@@ -119,33 +123,36 @@ const HealthFacility = () => {
                   ? (searchitem || (selectedDateTo && selectedDateFrom)
                       ? filteredHealthfacilities
                       : healthFacilities
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{item.id}</td>
-                        <td>{item.healthfacilityname}</td>
-                        <td>{item.healthfacilityID}</td>
-                        <td>{item.ward}</td>
-                        <td>{moment(item.createdat).fromNow()}</td>
-                        {/* <td className="text-primary90">Message</td> */}
-                        <td className="text-[#B02A37]">Deactivate</td>
-                      </tr>
-                    ))
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{item.id}</td>
+                          <td>{item.healthfacilityname}</td>
+                          <td>{item.healthfacilityID}</td>
+                          <td>{item.ward}</td>
+                          <td>{moment(item.createdat).fromNow()}</td>
+                          {/* <td className="text-primary90">Message</td> */}
+                          <td className="text-[#B02A37]">Deactivate</td>
+                        </tr>
+                      ))
                   : null}
               </tbody>
             </table>
+            {!filteredHealthfacilities.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                healthFacilities?.length / 10 ||
-                (filteredHealthfacilities &&
-                  filteredHealthfacilities?.length / 10)
-              }
+              pages={filteredHealthfacilities?.length / 10}
             />
           </div>
         </div>

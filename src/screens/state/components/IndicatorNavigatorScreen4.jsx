@@ -7,7 +7,6 @@ import { useAuth } from "../hooks/useAuth";
 const IndicatorNavigatorScreen4 = ({ param }) => {
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
-  console.log(param);
   useEffect(() => {
     if (param.query == "lga") {
       getIlgatestresult();

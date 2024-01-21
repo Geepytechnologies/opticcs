@@ -9,7 +9,10 @@ import Csvbutton from "../../../components/Csvbutton";
 
 const LgaList = () => {
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const [lgalist, setLgalist] = useState();
   const getLgas = async () => {
     try {
@@ -48,33 +51,36 @@ const LgaList = () => {
             </tr>
           </thead>
           <tbody>
-            {lgalist?.map((item, index) => (
-              <tr
-                key={index}
-                className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-              >
-                <td>{item.id}</td>
-                <td>{item.lga}</td>
-                <td>{item.lgaid}</td>
-                <td>{item.officeaddress}</td>
-                <td>{moment(item.createdat).fromNow()}</td>
-                <td className="">{item.phone}</td>
-                <td className="">{item.email}</td>
-                {item.status ? (
-                  <td className="text-red-500">Deactivate</td>
-                ) : (
-                  <td className="text-primary90">Activate</td>
-                )}
-              </tr>
-            ))}
+            {lgalist
+              ?.slice(10 * currentpage.value - 10, 10 * currentpage.value)
+              .map((item, index) => (
+                <tr
+                  key={index}
+                  className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                >
+                  <td>{item.id}</td>
+                  <td>{item.lga}</td>
+                  <td>{item.lgaid}</td>
+                  <td>{item.officeaddress}</td>
+                  <td>{moment(item.createdat).fromNow()}</td>
+                  <td className="">{item.phone}</td>
+                  <td className="">{item.email}</td>
+                  {item.status ? (
+                    <td className="text-red-500">Deactivate</td>
+                  ) : (
+                    <td className="text-primary90">Activate</td>
+                  )}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
       {/* pagination */}
       <Pagination
-        currentpage={currentpage}
+        currentpage={currentpage.value}
         setCurrentpage={setCurrentpage}
         pages={lgalist?.length / 10}
+        displaynum={10}
       />
     </div>
   );
