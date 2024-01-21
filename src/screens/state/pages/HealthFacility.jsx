@@ -9,6 +9,7 @@ import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import Csvbutton from "../../../components/Csvbutton";
+import Notfound from "../../../components/Notfound";
 
 const HealthFacility = () => {
   const { stateAuth } = useAuth();
@@ -135,17 +136,20 @@ const HealthFacility = () => {
                         <td>{item.healthfacilityID}</td>
                         <td>{item.ward}</td>
                         <td>{moment(item.createdat).fromNow()}</td>
-                        <td className="text-primary90">Message</td>
+                        {/* <td className='text-primary90'>Message</td> */}
                         <td className="text-[#B02A37]">Deactivate</td>
                       </tr>
                     ))
                   : null}
               </tbody>
             </table>
+            {!filteredHealthfacilities.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 healthFacilities?.length / 10 ||
                 (filteredHealthfacilities &&

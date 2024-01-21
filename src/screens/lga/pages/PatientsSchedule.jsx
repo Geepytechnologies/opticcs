@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { LuCalendarDays } from "react-icons/lu";
@@ -7,13 +7,14 @@ import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
+import Csvbutton from "../../../components/Csvbutton";
 
 const PatientsSchedule = () => {
   const { lgaAuth } = useAuth();
   const { lga } = lgaAuth.others;
   //filter
-  const [selectedDateTo, setSelectedDateTo] = useState(new Date());
-  const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
+  const [selectedDateTo, setSelectedDateTo] = useState();
+  const [selectedDateFrom, setSelectedDateFrom] = useState();
   const filterdata = ["firstname", "state", "lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
   const [searchitem, setSearchitem] = useState();
@@ -32,6 +33,7 @@ const PatientsSchedule = () => {
   useEffect(() => {
     getAllPatientschedule();
   }, []);
+  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -60,10 +62,12 @@ const PatientsSchedule = () => {
           setFilter={setFilter}
           filter={filter}
         />
+
+        <Csvbutton tableName="Patients Schedule" tableRef={tableRef} />
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -109,7 +113,8 @@ const PatientsSchedule = () => {
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
-              pages={0}
+              pages={patientsSchedule?.length / 10}
+              displaynum={10}
             />
           </div>
         </div>

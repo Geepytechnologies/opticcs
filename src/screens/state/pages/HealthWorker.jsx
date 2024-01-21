@@ -8,6 +8,7 @@ import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
 import Csvbutton from "../../../components/Csvbutton";
+import Notfound from "../../../components/Notfound";
 
 const HealthWorker = () => {
   const { stateAuth } = useAuth();
@@ -28,7 +29,10 @@ const HealthWorker = () => {
   const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const getworkers = async () => {
     try {
       const res = await axiosInstance.get("/users/find");
@@ -110,7 +114,7 @@ const HealthWorker = () => {
                   <th>SN</th>
                   <th>Name</th>
                   <th>Client ID</th>
-                  <th>Cadre</th>
+                  <th>Carde</th>
                   <th>State</th>
                   <th>LGA</th>
                   <th>Health Facility</th>
@@ -122,31 +126,40 @@ const HealthWorker = () => {
                   ? (searchitem || (selectedDateTo && selectedDateFrom)
                       ? filteredworkers
                       : workers
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{item.id}</td>
-                        <td>{item.healthworker}</td>
-                        <td>{item.id}</td>
-                        <td>{item.cadre}</td>
-                        <td>{item.state}</td>
-                        <td>{item.lga}</td>
-                        <td>{item.healthfacility}</td>
-                        <td>{item.phone}</td>
-                      </tr>
-                    ))
+                    )
+                      .slice(
+                        10 * currentpage.value - 10,
+                        10 * currentpage.value
+                      )
+                      .map((item, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                        >
+                          <td>{item.id}</td>
+                          <td>{item.healthworker}</td>
+                          <td>{item.id}</td>
+                          <td>{item.cadre}</td>
+                          <td>{item.state}</td>
+                          <td>{item.lga}</td>
+                          <td>{item.healthfacility}</td>
+                          <td>{item.phone}</td>
+                        </tr>
+                      ))
                   : null}
               </tbody>
             </table>
+            {!filteredworkers.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
-                workers?.length / 10 ||
-                (filteredworkers && filteredworkers?.length / 10)
+                filteredworkers
+                  ? filteredworkers.length / 10
+                  : workers?.length / 10
               }
             />
           </div>

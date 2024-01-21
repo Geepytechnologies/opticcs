@@ -127,6 +127,7 @@ const UsageAnalytics = () => {
   const getSessiongraph = async () => {
     try {
       const res = await axiosInstance.get(`/session/data?year=${year}`);
+      console.log(res.data.result);
       setSessiongraphdata(res.data.result);
     } catch (err) {}
   };

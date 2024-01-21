@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { MdOutlineGroup } from "react-icons/md";
@@ -7,6 +7,7 @@ import Pagination from "../../../components/Pagination";
 import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
 import { useAuth } from "../hooks/useAuth";
+import Csvbutton from "../../../components/Csvbutton";
 
 const HealthWorker = () => {
   const { lgaAuth } = useAuth();
@@ -69,6 +70,7 @@ const HealthWorker = () => {
     }
   };
   const filteredworkers = filterworkers(workers, searchitem, filter);
+  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -97,11 +99,11 @@ const HealthWorker = () => {
           setFilter={setFilter}
           filter={filter}
         />
-
+        <Csvbutton tableName={"Health workers"} tableRef={tableRef} />
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-            <table className="cursor-default w-full">
+            <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -141,6 +143,7 @@ const HealthWorker = () => {
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 workers?.length / 10 ||
                 (filteredworkers && filteredworkers?.length / 10)

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import axiosInstance from "../../../utils/axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import moment from "moment";
 import Pagination from "../../../components/Pagination";
+import Csvbutton from "../../../components/Csvbutton";
 
 const LgaList = () => {
   //pagination
@@ -19,19 +20,21 @@ const LgaList = () => {
   useEffect(() => {
     getLgas();
   }, []);
+  const tableRef = useRef();
   return (
     <div className="w-full ">
       <div className="flex gap-2 my-8 justify-start">
-        <input
+        {/* <input
           className="outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2"
           placeholder="Name or ID"
         />
         <button className="bg-primary90 p-2 text-light10 rounded-[8px]">
           Search
-        </button>
+        </button> */}
       </div>
+      <Csvbutton tableName={"LGA list"} tableRef={tableRef} />
       <div className="w-full flex items-center justify-center">
-        <table className="cursor-default w-[95%]">
+        <table ref={tableRef} className="cursor-default w-[95%]">
           <thead>
             <tr>
               <th>SN</th>

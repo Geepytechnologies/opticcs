@@ -124,17 +124,20 @@ const LGA = () => {
                         <td>{item.lgaID}</td>
                         <td>{item.officeaddress}</td>
                         <td>{moment(item.createdat).fromNow()}</td>
-                        <td className="text-primary90">Message</td>
+                        {/* <td className="text-primary90">Message</td> */}
                         <td className="text-[#B02A37]">Deactivate</td>
                       </tr>
                     ))
                   : null}
               </tbody>
             </table>
+            {!filteredLga && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
+              displaynum={10}
               pages={
                 lga?.length / 10 || (filteredLga && filteredLga?.length / 10)
               }

@@ -71,6 +71,7 @@ const StateList = () => {
         currentpage={currentpage}
         setCurrentpage={setCurrentpage}
         pages={facilitylist?.length / 10}
+        displaynum={10}
       />
     </div>
   );

@@ -20,6 +20,8 @@ const DashboardIndicators = () => {
   const [lgasearch, setLgasearch] = useState("all");
   const [ward, setWard] = useState("all");
   const [lgaAccounts, setLgaAccounts] = useState();
+  const [chartParam, setChartParam] = useState("all");
+  const [chart, setChart] = useState("all");
 
   const [indicatorsearchparam, setindicatorsearchparam] = useState({
     query: "",
@@ -31,7 +33,18 @@ const DashboardIndicators = () => {
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   //data
   const [patients, setPatients] = useState(0);
+  const [datainfo, setDatainfo] = useState();
+  const [datainforeturn, setDatainforeturn] = useState([]);
 
+  //:::utility functions::://
+  const getIndicatordata = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/admin/state/data/general?state=${state}`
+      );
+      setDatainfo(Object.keys(res.data));
+    } catch (error) {}
+  };
   const getAllLga = async (state) => {
     const result = await axiosInstance.get(
       `/admin/lga/data/find/lga?state=${state}`
@@ -39,51 +52,10 @@ const DashboardIndicators = () => {
     setLgaAccounts(result.data);
   };
 
-  useEffect(() => {
-    getAllLga(state);
-  }, []);
-  let componentToRender;
-
-  switch (navigatorSlide) {
-    case 1:
-      componentToRender = (
-        <IndicatorNavigatorScreen1 param={indicatorsearchparam} />
-      );
-      break;
-    case 2:
-      componentToRender = <IndicatorNavigatorScreen2 />;
-      break;
-    case 3:
-      componentToRender = (
-        <IndicatorNavigatorScreen3 param={indicatorsearchparam} />
-      );
-      break;
-    case 4:
-      componentToRender = (
-        <IndicatorNavigatorScreen4 param={indicatorsearchparam} />
-      );
-      break;
-    case 5:
-      componentToRender = (
-        <IndicatorNavigatorScreen5 param={indicatorsearchparam} />
-      );
-      break;
-    default:
-      componentToRender = null;
-      break;
-  }
-  const getAllPatients = async () => {
-    try {
-      const res = await axiosInstance.get(
-        `/patients/state/find?state=${state}`
-      );
-      setPatients(res.data.result.length);
-    } catch (err) {}
-  };
   const getAllStatePatients = async () => {
     try {
       const res = await axiosInstance.get(
-        `/patients/state/find?state=${statesearch}`
+        `/patients/state/find?state=${state}`
       );
       setPatients(res.data.result.length);
     } catch (err) {}
@@ -96,6 +68,110 @@ const DashboardIndicators = () => {
       setPatients(res.data.result.length);
     } catch (err) {}
   };
+  const getIndicatordatareturn = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/admin/national/data/general/return?state=${state}`
+      );
+      setDatainforeturn(Object.keys(res.data));
+    } catch (error) {}
+  };
+  //:::utility functions end::://
+
+  //:::Filter Box options:::///
+  const Firstvisitoption = () => {
+    const sorted = datainfo?.sort((a, b) => a.localeCompare(b));
+    console.log(sorted);
+    return (
+      <>
+        {sorted?.map((chart, index) => (
+          <option key={index} value={chart}>
+            {capitalizeFirstLetter(chart)}
+          </option>
+        ))}
+      </>
+    );
+  };
+  const Returnvisitoption = () => {
+    const sorted = datainforeturn?.sort((a, b) => a.localeCompare(b));
+
+    return (
+      <>
+        {sorted?.map((chart, index) => (
+          <option key={index} value={chart}>
+            {capitalizeFirstLetter(chart)}
+          </option>
+        ))}
+      </>
+    );
+  };
+
+  const Testresultoption = () => (
+    <>
+      <option value={"hiv"}>{capitalizeFirstLetter("hiv")}</option>
+      <option value={"malaria"}>{capitalizeFirstLetter("malaria")}</option>
+    </>
+  );
+  const Scheduleoption = () => (
+    <>
+      <option value={"schedule"}>{capitalizeFirstLetter("Schedule")}</option>
+    </>
+  );
+
+  //::::API CALLS:::://
+  useEffect(() => {
+    getAllLga(state);
+    getAllStatePatients();
+    getIndicatordata();
+    getIndicatordatareturn();
+  }, []);
+
+  let componentToRender;
+  let optionToRender;
+
+  switch (navigatorSlide) {
+    case 1:
+      componentToRender = (
+        <IndicatorNavigatorScreen1
+          param={indicatorsearchparam}
+          chart={chartParam}
+        />
+      );
+      optionToRender = <Firstvisitoption />;
+      break;
+    case 2:
+      componentToRender = <IndicatorNavigatorScreen2 />;
+      break;
+    case 3:
+      componentToRender = (
+        <IndicatorNavigatorScreen3
+          param={indicatorsearchparam}
+          chart={chartParam}
+        />
+      );
+      optionToRender = <Returnvisitoption />;
+      break;
+    case 4:
+      componentToRender = (
+        <IndicatorNavigatorScreen4
+          param={indicatorsearchparam}
+          chart={chartParam}
+        />
+      );
+      optionToRender = <Testresultoption />;
+      break;
+    case 5:
+      componentToRender = (
+        <IndicatorNavigatorScreen5 param={indicatorsearchparam} />
+      );
+      optionToRender = <Scheduleoption />;
+      break;
+    default:
+      componentToRender = null;
+      break;
+  }
+
+  //:::form handlers::://
   const handlestate = (e) => {
     setStatesearch(e.target.value);
   };
@@ -124,11 +200,10 @@ const DashboardIndicators = () => {
         getAllLgaPatients();
       }
       // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
+      setChartParam(chart);
     } catch (error) {}
   };
-  useEffect(() => {
-    getAllPatients();
-  }, []);
+  //::end:://
 
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -136,6 +211,8 @@ const DashboardIndicators = () => {
   useEffect(() => {
     setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
   }, []);
+
+  //::searchbox:://
   const Mysearchbox = () => {
     return (
       <div className="w-full flex items-center justify-center my-5">
@@ -174,6 +251,19 @@ const DashboardIndicators = () => {
               </select>
             </div>
           )}
+          {/* 4 */}
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Chart</label>
+            <select
+              value={chart}
+              onChange={(e) => setChart(e.target.value)}
+              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+            >
+              <option value="all">All charts</option>
+
+              {optionToRender}
+            </select>
+          </div>
           <div className="flex gap-2 justify-end ml-6">
             <button
               onClick={handlesearchsubmit}

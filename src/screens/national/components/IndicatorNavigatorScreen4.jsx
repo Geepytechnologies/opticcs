@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { IoMdInformationCircle } from "react-icons/io";
-import PieChart from "../charts/Piechart";
-import ExpectedDelivery from "../charts/ExpectedDelivery";
-import Hiv from "../charts/Hiv";
 import axiosInstance from "../../../utils/axios";
 import GenericPie from "../charts/GenericPie";
 
