@@ -39,12 +39,15 @@ const Patientview = () => {
       const res = await axiosInstance.get(
         `/admin/national/data/visitdates/${id}`
       );
+
       setReturnvisitparam({
-        id: res.data.returnvisit[0].id,
-        date: res.data.returnvisit[0].returnvisit_date,
+        id: res.data?.returnvisit[0]?.id,
+        date: res.data?.returnvisit[0]?.returnvisit_date,
       });
       setDates(res.data);
-    } catch (error) {}
+    } catch (error) {
+      // console.log(error);
+    }
   };
   const getpatientdetails = async () => {
     try {
@@ -72,6 +75,10 @@ const Patientview = () => {
     getvisitdates();
     getpatientdetails();
   }, [id]);
+  useEffect(() => {
+    getvisitdates();
+    getpatientdetails();
+  }, []);
 
   useEffect(() => {
     if (returnvisit) {
@@ -176,7 +183,7 @@ const Patientview = () => {
                 </p>
               ))} */}
               <p className="bg-primary90 p-2 text-center rounded-[10px] text-white">
-                {dates.returnvisit.length}
+                {dates?.returnvisit.length || 0}
               </p>
             </div>
           )}

@@ -7,6 +7,7 @@ import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
 import moment from "moment";
 import { downloadTable } from "../../../utils/helpers";
+import Notfound from "../../../components/Notfound";
 
 const PatientsSchedule = () => {
   //filter
@@ -151,6 +152,8 @@ const PatientsSchedule = () => {
                   : null}
               </tbody>
             </table>
+            {!filteredPatients.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}

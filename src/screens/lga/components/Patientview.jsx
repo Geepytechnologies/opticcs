@@ -39,8 +39,8 @@ const Patientview = () => {
         `/admin/national/data/visitdates/${id}`
       );
       setReturnvisitparam({
-        id: res.data.returnvisit[0].id,
-        date: res.data.returnvisit[0].returnvisit_date,
+        id: res.data?.returnvisit[0]?.id,
+        date: res.data?.returnvisit[0]?.returnvisit_date,
       });
       setDates(res.data);
     } catch (error) {}
@@ -166,7 +166,7 @@ const Patientview = () => {
                                         <p key={index} className='bg-primary90 p-2 text-center rounded-[10px] text-white'>{moment(item.returnvisit_date).format('yyyy-MM-DD')}</p>
                                     ))} */}
               <p className="bg-primary90 p-2 text-center rounded-[10px] text-white">
-                {dates.returnvisit.length}
+                {dates?.returnvisit.length || 0}
               </p>
             </div>
           )}
