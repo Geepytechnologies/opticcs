@@ -6,6 +6,7 @@ import {
   BrowserRouter,
   Route,
   Routes,
+  redirect,
   useLocation,
   useNavigate,
 } from "react-router-dom";
@@ -17,6 +18,8 @@ import Patientdetailreturn from "./Patientdetailreturn";
 import axiosInstance from "../../../utils/axios";
 import { useEffect } from "react";
 import moment from "moment";
+import { MdDelete } from "react-icons/md";
+import DeletepatientModal from "../../../components/DeletepatientModal";
 
 const Patientview = () => {
   const [dates, setDates] = useState();
@@ -33,6 +36,7 @@ const Patientview = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   const currentpage = location.pathname.split("/")[4];
+  const [showdelete, setShowdelete] = useState(false);
 
   const getvisitdates = async () => {
     try {
@@ -92,89 +96,112 @@ const Patientview = () => {
   } else {
     DOB = moment().diff(data?.dateofbirth, "years") + " years";
   }
+  const handleDelete = async (id) => {
+    try {
+      const res = await axiosInstance.delete(`/patients/${id}`);
+      if (res.data) {
+        setShowdelete(false);
+        navigate("/national/patients");
+      }
+    } catch (error) {}
+  };
   return (
-    <div className="bg-primary10 min-h-screen">
-      <div className="flex items-center justify-between  py-[40px] mx-4">
-        {/* arrow */}
-        <div
-          onClick={() => navigate(-1)}
-          className="flex cursor-pointer flex-1 items-center gap-2 font-[600] text-[24px]"
-        >
-          <IoReturnUpBackOutline />
-          <p>Patient View</p>
-        </div>
-        {/* name section */}
-        {data && (
-          <div className="border-[1.2px] rounded-[10px] flex flex-[3] items-center p-2 justify-center">
-            <div className="flex flex-col gap-1 items-center justify-center">
-              <div className="rounded-full flex items-center text-[16px] font-[500] justify-center bg-primary50 text-light10 w-[40px] h-[40px]">
-                <span>{data?.firstname.charAt(0).toUpperCase() ?? ""}</span>
-              </div>
-              <p className="font-[600] text-[24px]">
-                {data?.firstname.charAt(0).toUpperCase() +
-                  data?.firstname.slice(1) ?? ""}
-              </p>
-              <div className="flex gap-2 ">
-                <p>Tel: {data?.phone ?? ""}</p>
-                <p>Age: {DOB}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <p>Last visit</p>
-                <CiCalendarDate />
-                <p>{moment(lastvisit?.lastvisit).format("yyyy-MM-DD")}</p>
-              </div>
-            </div>
+    <>
+      {showdelete && (
+        <DeletepatientModal
+          setShowdelete={setShowdelete}
+          deletePatient={() => handleDelete(id)}
+        />
+      )}
+      <div className="bg-primary10 min-h-screen">
+        <div className="flex items-center justify-between  py-[40px] mx-4">
+          {/* arrow */}
+          <div
+            onClick={() => navigate(-1)}
+            className="flex cursor-pointer flex-1 items-center gap-2 font-[600] text-[24px]"
+          >
+            <IoReturnUpBackOutline />
+            <p>Patient View</p>
           </div>
-        )}
-      </div>
-      <div className="w-full flex justify-between gap-3 mx-3">
-        <div className=" bg-white flex items-start justify-center min-w-[250px] flex-1 p-3">
-          {currentpage == "firstvisit" ? (
-            <div className="flex flex-col gap-2 mt-6">
-              <p className="font-[600] text-[20px]">Date of Visit</p>
-              <p className="text-primary90">First Visit</p>
-              {dates?.firstvisit.map((item, index) => (
-                <p
-                  key={index}
-                  className="bg-primary90 p-2 text-center rounded-[10px] text-white"
-                >
-                  {moment(item.firstvisit_date).format("yyyy-MM-DD")}
+          {/* name section */}
+          {data && (
+            <div className="border-[1.2px] rounded-[10px] flex flex-[3] items-center p-2 justify-center">
+              <div className="flex flex-col gap-1 items-center justify-center">
+                <div className="rounded-full flex items-center text-[16px] font-[500] justify-center bg-primary50 text-light10 w-[40px] h-[40px]">
+                  <span>{data?.firstname.charAt(0).toUpperCase() ?? ""}</span>
+                </div>
+                <p className="font-[600] text-[24px]">
+                  {data?.firstname.charAt(0).toUpperCase() +
+                    data?.firstname.slice(1) ?? ""}
                 </p>
-              ))}
+                <div className="flex gap-2 ">
+                  <p>Tel: {data?.phone ?? ""}</p>
+                  <p>Age: {DOB}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p>Last visit</p>
+                  <CiCalendarDate />
+                  <p>{moment(lastvisit?.lastvisit).format("yyyy-MM-DD")}</p>
+                </div>
+                <div
+                  onClick={() => setShowdelete(true)}
+                  className="flex gap-2 items-center bg-primary50 px-3 cursor-pointer py-2"
+                >
+                  <MdDelete className="text-white text-[25px]" />
+                  <p className="font-[500] text-white">Delete Patient</p>
+                </div>
+              </div>
             </div>
-          ) : currentpage == "returnvisit" ? (
-            <div className="flex flex-col gap-2 mt-6">
-              <p className=" text-primary90">Return Visits</p>
-              {dates &&
-                dates.returnvisit.length &&
-                dates.returnvisit.map((item, index) => (
+          )}
+        </div>
+        <div className="w-full flex justify-between gap-3 mx-3">
+          <div className=" bg-white flex items-start justify-center min-w-[250px] flex-1 p-3">
+            {currentpage == "firstvisit" ? (
+              <div className="flex flex-col gap-2 mt-6">
+                <p className="font-[600] text-[20px]">Date of Visit</p>
+                <p className="text-primary90">First Visit</p>
+                {dates?.firstvisit.map((item, index) => (
                   <p
-                    onClick={() => handlereturnvisit(item, index)}
                     key={index}
-                    className={`rounded-[10px] cursor-pointer ${
-                      item.id == returnvisitparam.id
-                        ? "bg-primary90 p-2 text-center text-white"
-                        : "border-[1.2px] border-primary70 p-2 text-primary70 text-center "
-                    }`}
+                    className="bg-primary90 p-2 text-center rounded-[10px] text-white"
                   >
-                    {moment(item.returnvisit_date).format("yyyy-MM-DD")}
+                    {moment(item.firstvisit_date).format("yyyy-MM-DD")}
                   </p>
                 ))}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2 mt-6">
-              <p className="font-[600] text-[20px]">Date of Visits</p>
-              <p className="text-primary90">First Visit</p>
-              {dates?.firstvisit.map((item, index) => (
-                <p
-                  key={index}
-                  className="bg-primary90 p-2 text-center rounded-[10px] text-white"
-                >
-                  {moment(item.firstvisit_date).format("yyyy-MM-DD")}
-                </p>
-              ))}
-              <p className=" text-primary90">Return Visits</p>
-              {/* {dates?.returnvisit.map((item, index) => (
+              </div>
+            ) : currentpage == "returnvisit" ? (
+              <div className="flex flex-col gap-2 mt-6">
+                <p className=" text-primary90">Return Visits</p>
+                {dates &&
+                  dates.returnvisit.length &&
+                  dates.returnvisit.map((item, index) => (
+                    <p
+                      onClick={() => handlereturnvisit(item, index)}
+                      key={index}
+                      className={`rounded-[10px] cursor-pointer ${
+                        item.id == returnvisitparam.id
+                          ? "bg-primary90 p-2 text-center text-white"
+                          : "border-[1.2px] border-primary70 p-2 text-primary70 text-center "
+                      }`}
+                    >
+                      {moment(item.returnvisit_date).format("yyyy-MM-DD")}
+                    </p>
+                  ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 mt-6">
+                <p className="font-[600] text-[20px]">Date of Visits</p>
+                <p className="text-primary90">First Visit</p>
+                {dates?.firstvisit.map((item, index) => (
+                  <p
+                    key={index}
+                    className="bg-primary90 p-2 text-center rounded-[10px] text-white"
+                  >
+                    {moment(item.firstvisit_date).format("yyyy-MM-DD")}
+                  </p>
+                ))}
+                <p className=" text-primary90">Return Visits</p>
+                {/* {dates?.returnvisit.map((item, index) => (
                 <p
                   key={index}
                   className="bg-primary90 p-2 text-center rounded-[10px] text-white"
@@ -182,39 +209,40 @@ const Patientview = () => {
                   {moment(item.returnvisit_date).format("yyyy-MM-DD")}
                 </p>
               ))} */}
-              <p className="bg-primary90 p-2 text-center rounded-[10px] text-white">
-                {dates?.returnvisit.length || 0}
-              </p>
-            </div>
-          )}
-        </div>
-        <div className="bg-white flex-[3] min-w-[600px] p-3">
-          <Routes>
-            <Route index path="/" element={<Patientdetailshome />} />
-            <Route
-              index
-              path="/personalinformation"
-              element={<Patientdetailspersonal data={data} />}
-            />
-            <Route
-              index
-              path="/schedule"
-              element={<Patientdetailschedule id={id} />}
-            />
-            <Route
-              index
-              path="/firstvisit"
-              element={<Patientdetailfirst firstvisit={firstvisit} />}
-            />
-            <Route
-              index
-              path="/returnvisit"
-              element={<Patientdetailreturn returnvisit={returnvisit2} />}
-            />
-          </Routes>
+                <p className="bg-primary90 p-2 text-center rounded-[10px] text-white">
+                  {dates?.returnvisit.length || 0}
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="bg-white flex-[3] min-w-[600px] p-3">
+            <Routes>
+              <Route index path="/" element={<Patientdetailshome />} />
+              <Route
+                index
+                path="/personalinformation"
+                element={<Patientdetailspersonal data={data} />}
+              />
+              <Route
+                index
+                path="/schedule"
+                element={<Patientdetailschedule id={id} />}
+              />
+              <Route
+                index
+                path="/firstvisit"
+                element={<Patientdetailfirst firstvisit={firstvisit} />}
+              />
+              <Route
+                index
+                path="/returnvisit"
+                element={<Patientdetailreturn returnvisit={returnvisit2} />}
+              />
+            </Routes>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

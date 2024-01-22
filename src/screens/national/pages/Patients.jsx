@@ -14,6 +14,7 @@ import Patientview from "../components/Patientview";
 import { useNavigate } from "react-router-dom";
 import { downloadTable } from "../../../utils/helpers";
 import { useRef } from "react";
+import { MdDelete, MdDeleteOutline } from "react-icons/md";
 
 const Patients = () => {
   //filter
@@ -91,6 +92,7 @@ const Patients = () => {
   const handleItemClick = (itemId) => {
     navigate(`/national/patients/${itemId}`);
   };
+
   const tableRef = useRef();
   return (
     <div>
