@@ -4,8 +4,9 @@ import GenericPie from "../charts/GenericPie";
 import { motion } from "framer-motion";
 import axiosInstance from "../../../utils/axios";
 import LoaderSmall from "../../../components/LoaderSmall";
+import { useQuery } from "@tanstack/react-query";
 
-const IndicatorNavigatorScreen3 = ({ param, chart }) => {
+const IndicatorNavigatorScreen3 = ({ param, chart, anc }) => {
   useEffect(() => {
     if (param.query == "lga") {
       getIndicatordataforlga();
@@ -14,7 +15,7 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
       getIndicatordataforstate();
     }
     if (param.query == "national") {
-      getIndicatordata();
+      refetchNationalData();
     }
   }, [param]);
   const [datainfo, setDatainfo] = useState();
@@ -22,9 +23,10 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get(
-        "/admin/national/data/general/return"
+        `/admin/national/data/general/return?anc=${anc}`
       );
       setDatainfo(res.data);
+      return res.data;
     } catch (error) {}
   };
   const getIndicatordataforstate = async () => {
@@ -43,28 +45,32 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
       setDatainfo(res.data);
     } catch (error) {}
   };
+  const { data: nationalData, refetch: refetchNationalData } = useQuery({
+    queryKey: ["national", param, anc],
+    queryFn: getIndicatordata,
+  });
   useEffect(() => {
     if (param.query == "") {
-      getIndicatordata();
+      refetchNationalData();
     }
   }, []);
   return (
     <>
       {param.query == "national" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for National...
+          Showing ANC{anc} results for National...
         </p>
       )}
       {param.query == "" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for National...
+          Showing ANC{anc} results for National...
         </p>
       )}
       {param.query == "state" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${param.state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing ANC${anc} results for ${param.state} state...`}</p>
       )}
       {param.query == "lga" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${param.lga} Local Government Area in ${param.state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing ANC${anc} results for ${param.lga} Local Government Area in ${param.state} state...`}</p>
       )}
       {datainfo ? (
         <>

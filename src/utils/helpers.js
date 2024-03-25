@@ -28,3 +28,7 @@ export function downloadTable(tableRef, filename) {
     alert("Table downloaded as CSV!");
   }
 }
+
+export const capitalizeFirstLetter = (word) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};

@@ -4,6 +4,7 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi2";
 const Pagination = ({ currentpage, setCurrentpage, pages, displaynum }) => {
   const [initialPage, setInitialPage] = useState(0);
   const [finalPage, setFinalPage] = useState(displaynum);
+  const [reachedEnd, setReachedEnd] = useState();
   const [showarrow, setShowarrow] = useState(true);
   const numOfPages = Array.from({ length: pages > 1 ? pages + 1 : pages }).map(
     (_, index) => index + 1
@@ -40,10 +41,16 @@ const Pagination = ({ currentpage, setCurrentpage, pages, displaynum }) => {
       setInitialPage(0);
       setFinalPage(displaynum);
     }
+    if (Math.ceil(pages) == currentpage) {
+      setReachedEnd(true);
+    } else {
+      setReachedEnd(false);
+    }
   }, [pages, currentpage]);
   if (currentpage > pages + 1) {
     setCurrentpage({ value: 1 });
   }
+
   return (
     <div className="flex items-center justify-center mt-9">
       <div className="flex items-center gap-3">
@@ -71,7 +78,7 @@ const Pagination = ({ currentpage, setCurrentpage, pages, displaynum }) => {
             </div>
           ))}
         </div>
-        {showarrow && (
+        {showarrow && !reachedEnd && (
           <div
             onClick={() => pageright()}
             className="font-[600] bg-primary50 text-white px-3 py-2 cursor-pointer"

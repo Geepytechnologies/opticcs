@@ -7,26 +7,16 @@ import Parity from "../charts/Parity";
 import HeavyLoads from "../charts/HeavyLoads";
 import GenericPie from "../charts/GenericPie";
 import LoaderSmall from "../../../components/LoaderSmall";
+import { useQuery } from "@tanstack/react-query";
 
 const IndicatorNavigatorScreen1 = ({ param, chart }) => {
-  useEffect(() => {
-    if (param.query == "lga") {
-      getIndicatordataforlga();
-    }
-    if (param.query == "state") {
-      getIndicatordataforstate();
-    }
-    if (param.query == "national") {
-      getIndicatordata();
-    }
-  }, [param]);
   const [datainfo, setDatainfo] = useState();
-  // console.log(datainfo);
 
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get("/admin/national/data/general");
       setDatainfo(res.data);
+      return res.data;
     } catch (error) {}
   };
   const getIndicatordataforstate = async () => {
@@ -35,6 +25,7 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
         `/admin/state/data/general?state=${param.state}`
       );
       setDatainfo(res.data);
+      return res.data;
     } catch (error) {}
   };
   const getIndicatordataforlga = async () => {
@@ -43,31 +34,62 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
         `/admin/lga/data/general?lga=${param.lga}`
       );
       setDatainfo(res.data);
+      return res.data;
     } catch (error) {}
   };
+
+  const { data: nationalData, refetch: refetchNationalData } = useQuery({
+    queryKey: ["national"],
+    queryFn: getIndicatordata,
+  });
+  const { data: stateData, refetch: refetchStateData } = useQuery({
+    queryKey: ["state"],
+    queryFn: getIndicatordataforstate,
+  });
+  const { data: lgaData, refetch: refetchLgaData } = useQuery({
+    queryKey: ["lga"],
+    queryFn: getIndicatordataforlga,
+  });
+
+  useEffect(() => {
+    if (param.query == "lga") {
+      refetchLgaData();
+    }
+    if (param.query == "state") {
+      refetchStateData();
+    }
+    if (param.query == "national") {
+      refetchNationalData();
+    }
+  }, [param]);
+
   useEffect(() => {
     if (param.query == "") {
-      getIndicatordata();
+      refetchNationalData();
     }
   }, []);
   return (
     <>
       {param.query == "national" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for National...
+          Showing ANC1 results for National...
         </p>
       )}
       {param.query == "" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for National...
+          Showing ANC1 results for National...
         </p>
       )}
       {param.query == "state" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${param.state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing ANC1 results for ${param.state} state...`}</p>
       )}
       {param.query == "lga" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${param.lga} Local Government Area in ${param.state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing ANC1 results for ${param.lga} Local Government Area in ${param.state} state...`}</p>
       )}
+      {/* <div className="font-[500] flex-1 text-center">
+        <span className="text-primary70">{datainfo?.length} </span>Patient{" "}
+        {datainfo?.length > 1 ? "Records" : "Record"}
+      </div> */}
       {datainfo ? (
         <>
           <motion.div

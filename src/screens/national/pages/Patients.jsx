@@ -20,12 +20,19 @@ const Patients = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "HealthFacility"];
+  const filterdata = ["all", "firstname", "state", "lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
+  const [searchitem, setSearchitem] = useState({
+    state: "all",
+    lga: "all",
+    healthFacility: "all",
+    datefrom: "",
+    dateto: "",
+  });
 
   //
   const [patients, setPatients] = useState();
+  const [totalpatients, setTotalPatients] = useState();
   const [isActive, setIsActive] = useState(1);
   const [currentpage, setCurrentpage] = useState({
     value: 1,
@@ -41,52 +48,120 @@ const Patients = () => {
   useEffect(() => {
     getIndicatordata();
   }, []);
+
   const getAllPatients = async () => {
     try {
-      const res = await axiosInstance.get("/patients/findwithworkers");
-      setPatients(res.data.result);
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}`
+      );
+      const result = res.data.result;
+      setPatients(result);
+      setTotalPatients(res.data.count);
+    } catch (err) {}
+  };
+  const getAllPatientsForState = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}&state=${searchitem.state}`
+      );
+      const result = res.data.result;
+      setPatients(result);
+      setTotalPatients(res.data.count);
+    } catch (err) {}
+  };
+  const getAllPatientsForLga = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}&lga=${searchitem.lga}`
+      );
+      const result = res.data.result;
+      setPatients(result);
+      setTotalPatients(res.data.count);
+    } catch (err) {}
+  };
+  const getAllPatientsForHealthfacility = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}&healthfacility=${searchitem.healthFacility}`
+      );
+      const result = res.data.result;
+      setPatients(result);
+      setTotalPatients(res.data.count);
     } catch (err) {}
   };
   useEffect(() => {
-    getAllPatients();
-  }, []);
-  const filterPatients = (patients, searchitem, filter) => {
-    if (!patients) return [];
-    let filteredpage;
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      filteredpage = patients.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else if (searchitem) {
-      filteredpage = patients.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-      return filteredpage;
-    } else if (selectedDateFrom && selectedDateTo) {
-      filteredpage = patients.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else {
-      return patients;
+    if (
+      searchitem.state == "all" &&
+      searchitem.datefrom == "" &&
+      searchitem.dateto
+    ) {
+      getAllPatients();
     }
-  };
-  const filteredPatients = filterPatients(patients, searchitem, filter);
-  //   useEffect(() => {
-  //     if (!currentpage.isPagination) {
-  //       setCurrentpage(1);
-  //     }
-  //   }, [filteredPatients]);
+    if (
+      searchitem.state !== "all" &&
+      searchitem.datefrom == "" &&
+      searchitem.dateto == ""
+    ) {
+      getAllPatientsForState();
+    }
+    if (
+      searchitem.lga !== "all" &&
+      searchitem.datefrom == "" &&
+      searchitem.dateto == ""
+    ) {
+      getAllPatientsForLga();
+    }
+    if (
+      searchitem.healthFacility !== "" &&
+      searchitem.datefrom == "" &&
+      searchitem.dateto == ""
+    ) {
+      getAllPatientsForHealthfacility();
+    }
+    if (
+      searchitem.healthFacility == "all" &&
+      searchitem.lga == "all" &&
+      searchitem.state == "all" &&
+      searchitem.datefrom == "" &&
+      searchitem.dateto == ""
+    ) {
+      getAllPatients();
+    }
+  }, [currentpage.value, searchitem]);
+  // console.log(patients);
+  // const filterPatients = (patients, searchitem, filter) => {
+  //   if (!patients) return [];
+  //   let filteredpage;
+  //   if (searchitem && selectedDateFrom && selectedDateTo) {
+  //     filteredpage = patients.filter(
+  //       (item) =>
+  //         item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
+  //         new Date(item.createdat).getTime() >=
+  //           new Date(selectedDateFrom).getTime() &&
+  //         new Date(item.createdat).getTime() <=
+  //           new Date(selectedDateTo).getTime()
+  //     );
+  //     return filteredpage;
+  //   } else if (searchitem) {
+  //     filteredpage = patients.filter((item) =>
+  //       item[filter].toLowerCase().includes(searchitem.toLowerCase())
+  //     );
+  //     return filteredpage;
+  //   } else if (selectedDateFrom && selectedDateTo) {
+  //     filteredpage = patients.filter(
+  //       (item) =>
+  //         new Date(item.createdat).getTime() >=
+  //           new Date(selectedDateFrom).getTime() &&
+  //         new Date(item.createdat).getTime() <=
+  //           new Date(selectedDateTo).getTime()
+  //     );
+  //     return filteredpage;
+  //   } else {
+  //     return patients;
+  //   }
+  // };
+  // const filteredPatients = filterPatients(patients, searchitem, filter);
+
   const navigate = useNavigate();
 
   const handleItemClick = (itemId) => {
@@ -145,48 +220,34 @@ const Patients = () => {
                 </tr>
               </thead>
               <tbody>
-                {patients
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredPatients
-                      : patients
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          onClick={() => handleItemClick(item.id)}
-                          key={item.id}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>
-                            {currentpage.value == 1
-                              ? index + 1
-                              : 10 * currentpage.value + (index + 1) - 10}
-                          </td>
-                          <td>{item.firstname}</td>
-                          <td>{item.id}</td>
-                          <td>{item.state}</td>
-                          <td>{item.lga}</td>
-                          <td>{item.healthFacility}</td>
-                          <td>{moment(item.last_visit).fromNow()}</td>
-                        </tr>
-                      ))
-                  : null}
+                {patients?.map((item, index) => (
+                  <tr
+                    onClick={() => handleItemClick(item.id)}
+                    key={item.id}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>
+                      {currentpage.value == 1
+                        ? index + 1
+                        : 20 * currentpage.value + (index + 1) - 20}
+                    </td>
+                    <td>{item.firstname}</td>
+                    <td>{item.id}</td>
+                    <td>{item.state}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.healthFacility}</td>
+                    <td>{moment(item.last_visit).fromNow()}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {!filteredPatients.length && <Notfound />}
+            {!patients?.length && <Notfound />}
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                filteredPatients
-                  ? filteredPatients.length / 10
-                  : patients?.length / 10
-              }
+              pages={totalpatients / 20}
             />
           </div>
         </div>

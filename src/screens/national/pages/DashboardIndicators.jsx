@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axiosInstance from "../../../utils/axios";
 import Filterbox from "../../../components/Filterbox";
 import stateLocalGovts from "../../../utils/stateandlgas";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardIndicators = () => {
   const [selectedDateTo, setSelectedDateTo] = useState(new Date());
@@ -25,6 +26,12 @@ const DashboardIndicators = () => {
     state: "",
     lga: "",
   });
+  const [anc, setAnc] = useState("2");
+
+  const handleANC = (e) => {
+    console.log(e.target.value);
+    setAnc(e.target.value);
+  };
 
   //navigation
   const [navigatorSlide, setNavigatorSlide] = useState(1);
@@ -39,17 +46,20 @@ const DashboardIndicators = () => {
   const getAllStates = async () => {
     const result = await axiosInstance.get("/admin/state/data/find/states");
     setStateAccounts(result.data);
+    return result.data;
   };
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get("/admin/national/data/general");
       setDatainfo(Object.keys(res.data));
+      return Object.keys(res.data);
     } catch (error) {}
   };
   const getAllPatients = async () => {
     try {
       const res = await axiosInstance.get("/patients/find");
       setPatients(res.data.result.length);
+      return res.data.result.length;
     } catch (err) {}
   };
   const getAllStatePatients = async () => {
@@ -58,6 +68,7 @@ const DashboardIndicators = () => {
         `/patients/state/find?state=${statesearch}`
       );
       setPatients(res.data.result.length);
+      return res.data.result.length;
     } catch (err) {}
   };
   const getAllLgaPatients = async () => {
@@ -66,6 +77,7 @@ const DashboardIndicators = () => {
         `/patients/lga/find?lga=${lgasearch}`
       );
       setPatients(res.data.result.length);
+      return res.data.result.length;
     } catch (err) {}
   };
   const getAllLga = async (state) => {
@@ -73,13 +85,15 @@ const DashboardIndicators = () => {
       `/admin/lga/data/find/lga?state=${state}`
     );
     setLgaAccounts(result.data);
+    return result.data;
   };
   const getIndicatordatareturn = async () => {
     try {
       const res = await axiosInstance.get(
-        "/admin/national/data/general/return"
+        `/admin/national/data/general/return?anc=${anc}`
       );
       setDatainforeturn(Object.keys(res.data));
+      return Object.keys(res.data);
     } catch (error) {}
   };
 
@@ -123,13 +137,16 @@ const DashboardIndicators = () => {
       <option value={"schedule"}>{capitalizeFirstLetter("Schedule")}</option>
     </>
   );
-
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["returnvisit", anc],
+    queryFn: getIndicatordatareturn,
+  });
   //:::UseEffect calls:::///
   useEffect(() => {
     getAllStates();
     getIndicatordata();
     getAllPatients();
-    getIndicatordatareturn();
+    // getIndicatordatareturn();
   }, []);
 
   //:::sort states alphabetically::://
@@ -159,6 +176,7 @@ const DashboardIndicators = () => {
         <IndicatorNavigatorScreen3
           param={indicatorsearchparam}
           chart={chartParam}
+          anc={anc}
         />
       );
       optionToRender = <Returnvisitoption />;
@@ -398,13 +416,22 @@ const DashboardIndicators = () => {
                 {/* <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div> */}
                 <div
                   onClick={() => setNavigatorSlide(3)}
-                  className={`cursor-pointer text-center ${
+                  className={`cursor-pointer flex items-center gap-2 text-center ${
                     navigatorSlide === 3
                       ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
                       : "text-light90 pb-2 font-[500]"
                   }`}
                 >
-                  Return Visit
+                  <p>Return Visit</p>
+                  <select onChange={handleANC} className="outline-0">
+                    <option value="2">ANC 2</option>
+                    <option value={"3"}>ANC 3</option>
+                    <option value={"4"}>ANC 4</option>
+                    <option value={"5"}>ANC 5</option>
+                    <option value={"6"}>ANC 6</option>
+                    <option value={"7"}>ANC 7</option>
+                    <option value={"8"}>ANC 8</option>
+                  </select>
                 </div>
                 <div
                   onClick={() => setNavigatorSlide(4)}
@@ -427,10 +454,10 @@ const DashboardIndicators = () => {
                   Antenatal Schedule
                 </div>
               </div>
-              <div className="font-[500] flex-1 text-center">
+              {/* <div className="font-[500] flex-1 text-center">
                 <span className="text-primary70">{patients} </span>Patient{" "}
                 {patients > 1 ? "Records" : "Record"}
-              </div>
+              </div> */}
             </div>
             {/* navigator screen slides */}
             {componentToRender}

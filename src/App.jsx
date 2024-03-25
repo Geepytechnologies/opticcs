@@ -1,35 +1,40 @@
-import './App.css';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
-import LoadPage from './screens/LoadPage';
-import Login from './screens/Login';
-import Registration from './screens/Registration';
+import "./App.css";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import LoadPage from "./screens/LoadPage";
+import Login from "./screens/Login";
+import Registration from "./screens/Registration";
 import RequireAuth from "./utils/RequireAuth";
-import PersistLogin from './utils/PersistLogin';
-import { useAuth } from './utils/hooks/useAuth';
-import RequireIsSignedIn from './utils/RequireIsSignedIn';
-import StateApp from './screens/state/StateApp';
-import NationalApp from './screens/national/NationalApp';
-import HealthFacilityApp from './screens/healthFacility/HealthFacilityApp';
-import LgaApp from './screens/lga/LgaApp';
-import Loader from './components/Loader';
-import LandingPage from './components/LandingPage';
-import StateLogin from './screens/state/pages/StateLogin';
-import RequireStateAuth from './utils/RequireStateAuth';
-import PersistStateLogin from './utils/PersistStateLogin';
-import RequireNationalAuth from './utils/RequireNationalAuth';
-import PersistNationalLogin from './utils/PersistNationalLogin';
-import NationalLogin from './screens/national/pages/NationalLogin';
-import LgaLogin from './screens/lga/pages/LgaLogin';
-import RequireLgaAuth from './utils/RequireLgaAuth';
-import PersistLgaLogin from './utils/PersistLgaLogin';
-import RequireHealthfacilityAuth from './utils/RequireHealthfacilityAuth';
-import PersistHealthfacilityLogin from './utils/PersistHealthfacilityLogin';
-import HealthfacilityLogin from './screens/healthFacility/pages/HealthfacilityLogin';
-import NationalLoginRecovery from './screens/national/pages/NationalLoginRecovery';
-import NationalRecoveryConfirm from './screens/national/pages/NationalRecoveryConfirm';
-import NationalResetPassword from './screens/national/pages/NationalResetPassword';
-
-
+import PersistLogin from "./utils/PersistLogin";
+import { useAuth } from "./utils/hooks/useAuth";
+import RequireIsSignedIn from "./utils/RequireIsSignedIn";
+import StateApp from "./screens/state/StateApp";
+import NationalApp from "./screens/national/NationalApp";
+import HealthFacilityApp from "./screens/healthFacility/HealthFacilityApp";
+import LgaApp from "./screens/lga/LgaApp";
+import Loader from "./components/Loader";
+import LandingPage from "./components/LandingPage";
+import StateLogin from "./screens/state/pages/StateLogin";
+import RequireStateAuth from "./utils/RequireStateAuth";
+import PersistStateLogin from "./utils/PersistStateLogin";
+import RequireNationalAuth from "./utils/RequireNationalAuth";
+import PersistNationalLogin from "./utils/PersistNationalLogin";
+import NationalLogin from "./screens/national/pages/NationalLogin";
+import LgaLogin from "./screens/lga/pages/LgaLogin";
+import RequireLgaAuth from "./utils/RequireLgaAuth";
+import PersistLgaLogin from "./utils/PersistLgaLogin";
+import RequireHealthfacilityAuth from "./utils/RequireHealthfacilityAuth";
+import PersistHealthfacilityLogin from "./utils/PersistHealthfacilityLogin";
+import HealthfacilityLogin from "./screens/healthFacility/pages/HealthfacilityLogin";
+import NationalLoginRecovery from "./screens/national/pages/NationalLoginRecovery";
+import NationalRecoveryConfirm from "./screens/national/pages/NationalRecoveryConfirm";
+import NationalResetPassword from "./screens/national/pages/NationalResetPassword";
 
 function App() {
   const { auth } = useAuth();
@@ -54,9 +59,18 @@ function App() {
           </Route>
         </Route>
         <Route path="/national/login" element={<NationalLogin />}></Route>
-        <Route path="/national/forgotpassword" element={<NationalLoginRecovery />}></Route>
-        <Route path="/national/resetpassword" element={<NationalResetPassword />}></Route>
-        <Route path="/national/confirmOTP" element={<NationalRecoveryConfirm />}></Route>
+        <Route
+          path="/national/forgotpassword"
+          element={<NationalLoginRecovery />}
+        ></Route>
+        <Route
+          path="/national/resetpassword"
+          element={<NationalResetPassword />}
+        ></Route>
+        <Route
+          path="/national/confirmOTP"
+          element={<NationalRecoveryConfirm />}
+        ></Route>
         <Route element={<PersistStateLogin />}>
           <Route element={<RequireStateAuth />}>
             <Route path="/state/*" element={<StateApp />}></Route>
@@ -70,13 +84,18 @@ function App() {
         </Route>
         <Route element={<PersistHealthfacilityLogin />}>
           <Route element={<RequireHealthfacilityAuth />}>
-            <Route path="/healthfacility/*" element={<HealthFacilityApp />}></Route>
+            <Route
+              path="/healthfacility/*"
+              element={<HealthFacilityApp />}
+            ></Route>
           </Route>
         </Route>
 
         <Route path="/lga/login" element={<LgaLogin />}></Route>
-        <Route path="/healthfacility/login" element={<HealthfacilityLogin />}></Route>
-
+        <Route
+          path="/healthfacility/login"
+          element={<HealthfacilityLogin />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
