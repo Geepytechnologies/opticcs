@@ -29,6 +29,22 @@ export function downloadTable(tableRef, filename) {
   }
 }
 
+import jsPDF from "jspdf";
+
+export const handleDownload = (divid, docname) => {
+  // Create a new jsPDF instance
+  const doc = new jsPDF();
+
+  // Get the content of the div
+  const content = document.getElementById(divid);
+
+  // Add the content to the PDF
+  doc.text(content.innerText, 10, 10); // Example: add text content
+
+  // Save the PDF
+  doc.save(docname);
+};
+
 export const capitalizeFirstLetter = (word) => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };

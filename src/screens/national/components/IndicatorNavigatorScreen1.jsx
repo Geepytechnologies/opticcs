@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 const IndicatorNavigatorScreen1 = ({ param, chart }) => {
   const [datainfo, setDatainfo] = useState();
 
+  console.log(datainfo);
+
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get("/admin/national/data/general");
@@ -41,31 +43,35 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
   const { data: nationalData, refetch: refetchNationalData } = useQuery({
     queryKey: ["national"],
     queryFn: getIndicatordata,
+    enabled: false,
   });
   const { data: stateData, refetch: refetchStateData } = useQuery({
     queryKey: ["state"],
     queryFn: getIndicatordataforstate,
+    enabled: false,
   });
   const { data: lgaData, refetch: refetchLgaData } = useQuery({
     queryKey: ["lga"],
     queryFn: getIndicatordataforlga,
+    enabled: false,
   });
 
+  console.log(param.query);
   useEffect(() => {
     if (param.query == "lga") {
-      refetchLgaData();
+      getIndicatordataforlga();
     }
     if (param.query == "state") {
-      refetchStateData();
+      getIndicatordataforstate();
     }
     if (param.query == "national") {
-      refetchNationalData();
+      getIndicatordata();
     }
   }, [param]);
 
   useEffect(() => {
     if (param.query == "") {
-      refetchNationalData();
+      getIndicatordata();
     }
   }, []);
   return (

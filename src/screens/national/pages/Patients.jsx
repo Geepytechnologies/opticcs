@@ -15,12 +15,15 @@ import { useNavigate } from "react-router-dom";
 import { downloadTable } from "../../../utils/helpers";
 import { useRef } from "react";
 import { MdDelete, MdDeleteOutline } from "react-icons/md";
+import usePatients from "../hooks/usePatients";
 
 const Patients = () => {
+  const tableRef = useRef();
+
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["all", "firstname", "state", "lga", "HealthFacility"];
+  const filterdata = ["all", "state", "lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
   const [searchitem, setSearchitem] = useState({
     state: "all",
@@ -29,138 +32,25 @@ const Patients = () => {
     datefrom: "",
     dateto: "",
   });
-
+  console.log(
+    searchitem,
+    moment(selectedDateFrom).format("YYYY-MM-DD"),
+    selectedDateTo
+  );
   //
-  const [patients, setPatients] = useState();
-  const [totalpatients, setTotalPatients] = useState();
   const [isActive, setIsActive] = useState(1);
   const [currentpage, setCurrentpage] = useState({
     value: 1,
     isPagination: false,
   });
 
-  const getIndicatordata = async () => {
-    try {
-      const res = await axiosInstance.get("/admin/national/data/general");
-      setData(res.data);
-    } catch (error) {}
-  };
-  useEffect(() => {
-    getIndicatordata();
-  }, []);
+  const { patients, totalPatients } = usePatients(
+    searchitem,
+    filter,
+    currentpage
+  );
 
-  const getAllPatients = async () => {
-    try {
-      const res = await axiosInstance.get(
-        `/patients/findwithworkers?page=${currentpage.value}`
-      );
-      const result = res.data.result;
-      setPatients(result);
-      setTotalPatients(res.data.count);
-    } catch (err) {}
-  };
-  const getAllPatientsForState = async () => {
-    try {
-      const res = await axiosInstance.get(
-        `/patients/findwithworkers?page=${currentpage.value}&state=${searchitem.state}`
-      );
-      const result = res.data.result;
-      setPatients(result);
-      setTotalPatients(res.data.count);
-    } catch (err) {}
-  };
-  const getAllPatientsForLga = async () => {
-    try {
-      const res = await axiosInstance.get(
-        `/patients/findwithworkers?page=${currentpage.value}&lga=${searchitem.lga}`
-      );
-      const result = res.data.result;
-      setPatients(result);
-      setTotalPatients(res.data.count);
-    } catch (err) {}
-  };
-  const getAllPatientsForHealthfacility = async () => {
-    try {
-      const res = await axiosInstance.get(
-        `/patients/findwithworkers?page=${currentpage.value}&healthfacility=${searchitem.healthFacility}`
-      );
-      const result = res.data.result;
-      setPatients(result);
-      setTotalPatients(res.data.count);
-    } catch (err) {}
-  };
-  useEffect(() => {
-    if (
-      searchitem.state == "all" &&
-      searchitem.datefrom == "" &&
-      searchitem.dateto
-    ) {
-      getAllPatients();
-    }
-    if (
-      searchitem.state !== "all" &&
-      searchitem.datefrom == "" &&
-      searchitem.dateto == ""
-    ) {
-      getAllPatientsForState();
-    }
-    if (
-      searchitem.lga !== "all" &&
-      searchitem.datefrom == "" &&
-      searchitem.dateto == ""
-    ) {
-      getAllPatientsForLga();
-    }
-    if (
-      searchitem.healthFacility !== "" &&
-      searchitem.datefrom == "" &&
-      searchitem.dateto == ""
-    ) {
-      getAllPatientsForHealthfacility();
-    }
-    if (
-      searchitem.healthFacility == "all" &&
-      searchitem.lga == "all" &&
-      searchitem.state == "all" &&
-      searchitem.datefrom == "" &&
-      searchitem.dateto == ""
-    ) {
-      getAllPatients();
-    }
-  }, [currentpage.value, searchitem]);
-  // console.log(patients);
-  // const filterPatients = (patients, searchitem, filter) => {
-  //   if (!patients) return [];
-  //   let filteredpage;
-  //   if (searchitem && selectedDateFrom && selectedDateTo) {
-  //     filteredpage = patients.filter(
-  //       (item) =>
-  //         item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-  //         new Date(item.createdat).getTime() >=
-  //           new Date(selectedDateFrom).getTime() &&
-  //         new Date(item.createdat).getTime() <=
-  //           new Date(selectedDateTo).getTime()
-  //     );
-  //     return filteredpage;
-  //   } else if (searchitem) {
-  //     filteredpage = patients.filter((item) =>
-  //       item[filter].toLowerCase().includes(searchitem.toLowerCase())
-  //     );
-  //     return filteredpage;
-  //   } else if (selectedDateFrom && selectedDateTo) {
-  //     filteredpage = patients.filter(
-  //       (item) =>
-  //         new Date(item.createdat).getTime() >=
-  //           new Date(selectedDateFrom).getTime() &&
-  //         new Date(item.createdat).getTime() <=
-  //           new Date(selectedDateTo).getTime()
-  //     );
-  //     return filteredpage;
-  //   } else {
-  //     return patients;
-  //   }
-  // };
-  // const filteredPatients = filterPatients(patients, searchitem, filter);
+  console.log(patients);
 
   const navigate = useNavigate();
 
@@ -168,7 +58,6 @@ const Patients = () => {
     navigate(`/national/patients/${itemId}`);
   };
 
-  const tableRef = useRef();
   return (
     <div>
       <div className="bg-primary10 flex flex-col min-h-screen">
@@ -247,7 +136,7 @@ const Patients = () => {
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={totalpatients / 20}
+              pages={totalPatients / 20}
             />
           </div>
         </div>

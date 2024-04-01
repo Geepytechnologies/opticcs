@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axiosInstance from "../utils/axios";
+import moment from "moment";
 
 const Filterbox = ({
   selectedDateTo,
@@ -14,14 +15,49 @@ const Filterbox = ({
   setFilter,
   setSearchitem,
 }) => {
-  const [statesearch, setStatesearch] = useState("all");
-  const [lgasearch, setLgasearch] = useState("all");
-  const [hfsearch, setHfsearch] = useState("all");
+  const [search, setSearch] = useState({
+    state: "all",
+    lga: "all",
+    healthfacility: "all",
+  });
+
   const [stateAccounts, setStateAccounts] = useState();
   const [lgaAccounts, setLgaAccounts] = useState();
   const [hfAccounts, setHfAccounts] = useState();
-
   // console.log(lgaAccounts);
+
+  useEffect(() => {
+    if (filter == "state") {
+      setSearch({ state: "all", lga: "all", healthfacility: "all" });
+      setSearchitem({
+        state: "all",
+        lga: "",
+        healthFacility: "",
+        datefrom: "",
+        dateto: "",
+      });
+    }
+    if (filter == "lga") {
+      setSearch({ state: "", lga: "all", healthfacility: "" });
+      setSearchitem({
+        state: "",
+        lga: "all",
+        healthFacility: "",
+        datefrom: "",
+        dateto: "",
+      });
+    }
+    if (filter == "HealthFacility") {
+      setSearch({ state: "", lga: "", healthfacility: "all" });
+      setSearchitem({
+        state: "",
+        lga: "",
+        healthFacility: "all",
+        datefrom: "",
+        dateto: "",
+      });
+    }
+  }, [filter]);
 
   const {} = useQuery({
     queryKey: ["stateAccounts"],
@@ -64,26 +100,62 @@ const Filterbox = ({
   const sortedhf = hfAccounts?.sort((a, b) => a.state.localeCompare(b.state));
 
   const handlestate = (e) => {
-    setStatesearch(e.target.value);
-    setSearchitem((prev) => ({
-      ...prev,
+    setSearchitem({
       state: e.target.value,
-    }));
+      lga: "",
+      healthFacility: "",
+      datefrom: "",
+      dateto: "",
+    });
+    setSearch({
+      state: e.target.value,
+      lga: "",
+      healthFacility: "",
+      datefrom: "",
+      dateto: "",
+    });
     // getAllLga(e.target.value);
   };
   const handlelgasearch = (e) => {
-    setLgasearch(e.target.value);
-    setSearchitem((prev) => ({
-      ...prev,
+    const selectedOption = e.target.options[e.target.selectedIndex];
+
+    const state = selectedOption.getAttribute("data-state");
+
+    setSearch({
+      state: "",
       lga: e.target.value,
-    }));
+      healthFacility: "",
+      datefrom: "",
+      dateto: "",
+    });
+    setSearchitem({
+      state: "",
+      lga: e.target.value + "/" + state,
+      healthFacility: "",
+      datefrom: "",
+      dateto: "",
+    });
   };
   const handlehfsearch = (e) => {
-    setHfsearch(e.target.value);
-    setSearchitem((prev) => ({
-      ...prev,
+    const selectedOption = e.target.options[e.target.selectedIndex];
+
+    const state = selectedOption.getAttribute("data-state");
+    const lga = selectedOption.getAttribute("data-lga");
+
+    setSearch({
+      state: "",
+      lga: "",
       healthFacility: e.target.value,
-    }));
+      datefrom: "",
+      dateto: "",
+    });
+    setSearchitem({
+      state: "",
+      lga: "",
+      healthFacility: e.target.value + "/" + state + "/" + lga,
+      datefrom: "",
+      dateto: "",
+    });
   };
 
   const handleDateToChange = (date) => {
@@ -91,17 +163,18 @@ const Filterbox = ({
       setSelectedDateTo(date);
       setSearchitem((prev) => ({
         ...prev,
-        dateto: date,
+        dateto: moment(date).format("YYYY-MM-DD"),
+        datefrom: moment(selectedDateFrom).format("YYYY-MM-DD"),
       }));
     }
   };
   const handleDateFromChange = (date) => {
     if (date <= Date.now()) {
       setSelectedDateFrom(date);
-      setSearchitem((prev) => ({
-        ...prev,
-        datefrom: date,
-      }));
+      // setSearchitem((prev) => ({
+      //   ...prev,
+      //   datefrom: date,
+      // }));
     }
   };
   const capitalizeFirstLetter = (word) => {
@@ -121,7 +194,7 @@ const Filterbox = ({
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+            className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-primary70"
           >
             {filterdata?.map((item, index) => (
               <option key={index} value={item}>
@@ -130,7 +203,7 @@ const Filterbox = ({
             ))}
           </select>
         </div>
-        {filter == "firstname" && (
+        {/* {filter == "firstname" && (
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Value</label>
             <input
@@ -139,16 +212,16 @@ const Filterbox = ({
               className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
             ></input>
           </div>
-        )}
+        )} */}
         {filter == "state" && (
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Value</label>
 
             <select
               name="state"
-              value={statesearch}
+              value={search.state}
               onChange={(e) => handlestate(e)}
-              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-white outline-none rounded-[8px] border border-primary70"
             >
               <option value="all">All states</option>
               {stateAccounts?.length &&
@@ -167,12 +240,16 @@ const Filterbox = ({
             <select
               name="lga"
               onChange={handlelgasearch}
-              value={lgasearch}
-              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              value={search.lga}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary70"
             >
               <option value="all">All LGA</option>
               {sortedlga?.map((localGovt, index) => (
-                <option key={index} value={localGovt.lga}>
+                <option
+                  data-state={localGovt.state}
+                  key={index}
+                  value={localGovt.lga}
+                >
                   {localGovt.lga} ({capitalizeFirstLetter(localGovt.state)}{" "}
                   State)
                 </option>
@@ -187,12 +264,17 @@ const Filterbox = ({
             <select
               name="HealthFacility"
               onChange={handlehfsearch}
-              value={hfsearch}
-              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              value={search.healthfacility}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-primary70"
             >
               <option value="all">All Health Facility</option>
               {sortedhf?.map((h, index) => (
-                <option key={index} value={h.healthfacilityname}>
+                <option
+                  data-state={h.state}
+                  data-lga={h.lga}
+                  key={index}
+                  value={h.healthfacilityname}
+                >
                   {h.healthfacilityname} ({capitalizeFirstLetter(h.state)}{" "}
                   State)
                 </option>
@@ -204,8 +286,8 @@ const Filterbox = ({
         <div className="flex flex-col">
           <label className="text-primary90 font-[400]">Date From</label>
           <DatePicker
-            className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
-            placeholderText="choose Date"
+            className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-primary70"
+            placeholderText="Choose Date"
             selected={selectedDateFrom}
             onChange={(date) => handleDateFromChange(date)}
             dateFormat="yyyy-MM-dd"
@@ -216,8 +298,8 @@ const Filterbox = ({
         <div className="flex flex-col">
           <label className="text-primary90 font-[400]">Date To</label>
           <DatePicker
-            className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
-            placeholderText="choose Date"
+            className="custom-datepicker p-[16px]  text-secondary30 outline-none min-w-[180px] rounded-[8px] border border-primary70"
+            placeholderText="Choose Date"
             selected={selectedDateTo}
             onChange={(date) => handleDateToChange(date)}
             dateFormat="yyyy-MM-dd"

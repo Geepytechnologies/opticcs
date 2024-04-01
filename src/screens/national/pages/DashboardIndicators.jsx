@@ -141,13 +141,35 @@ const DashboardIndicators = () => {
     queryKey: ["returnvisit", anc],
     queryFn: getIndicatordatareturn,
   });
+  const { refetch: IndicatorData } = useQuery({
+    queryKey: ["indicatordata"],
+    queryFn: getIndicatordata,
+  });
+  const { refetch: AllStates } = useQuery({
+    queryKey: ["states"],
+    queryFn: getAllStates,
+  });
+  const { refetch: getNationalPatients } = useQuery({
+    queryKey: ["nationalpatients"],
+    queryFn: getAllPatients,
+  });
+  const { refetch: getStatePatients } = useQuery({
+    queryKey: ["statepatients"],
+    queryFn: getAllStatePatients,
+    enabled: false,
+  });
+  const { refetch: getLgaPatients } = useQuery({
+    queryKey: ["lgapatients"],
+    queryFn: getAllLgaPatients,
+    enabled: false,
+  });
   //:::UseEffect calls:::///
-  useEffect(() => {
-    getAllStates();
-    getIndicatordata();
-    getAllPatients();
-    // getIndicatordatareturn();
-  }, []);
+  // useEffect(() => {
+  //   getAllStates();
+  //   getIndicatordata();
+  //   getAllPatients();
+  //   // getIndicatordatareturn();
+  // }, []);
 
   //:::sort states alphabetically::://
   const sortedstates = stateAccounts?.sort((a, b) =>
@@ -229,7 +251,7 @@ const DashboardIndicators = () => {
           state: statesearch,
           lga: lgasearch,
         });
-        getAllPatients();
+        getNationalPatients();
       }
       if (statesearch !== "all" && lgasearch == "all") {
         searchquery = "state";
@@ -238,7 +260,7 @@ const DashboardIndicators = () => {
           state: statesearch,
           lga: lgasearch,
         });
-        getAllStatePatients();
+        getStatePatients();
       }
       if (statesearch !== "all" && lgasearch !== "all") {
         searchquery = "lga";
@@ -247,7 +269,7 @@ const DashboardIndicators = () => {
           state: statesearch,
           lga: lgasearch,
         });
-        getAllLgaPatients();
+        getLgaPatients();
       }
       setChartParam(chart);
       // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
@@ -287,9 +309,7 @@ const DashboardIndicators = () => {
               onChange={(e) => handlestate(e)}
               className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
             >
-              <option value="all" disabled>
-                All states
-              </option>
+              <option value="all">All states</option>
               {stateAccounts?.length &&
                 sortedstates.map((item, index) => (
                   <option key={index} value={item.state}>

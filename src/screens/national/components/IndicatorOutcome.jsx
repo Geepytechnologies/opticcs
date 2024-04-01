@@ -2,19 +2,33 @@ import React, { useEffect, useState } from "react";
 import { LuCalendarDays } from "react-icons/lu";
 import { motion } from "framer-motion";
 import axiosInstance from "../../../utils/axios";
+import { useQuery } from "@tanstack/react-query";
+import useFilterSearchParams from "../hooks/useFilterSearchParams";
 
-const IndicatorOutcome = ({ patients }) => {
+const IndicatorOutcome = ({ patients, searchitem, filter }) => {
+  console.log(searchitem);
   const [patients4visits, setPatients4visits] = useState(0);
+  const { state, lga, healthfacility } = useFilterSearchParams(searchitem);
+  console.log({ state1: state, lga2: lga, healthfacility3: healthfacility });
 
   const numberOfWomen4visits = async () => {
     try {
-      const res = await axiosInstance.get("/admin/national/data/find/4visits");
-      setPatients4visits(res.data[0].patient_count);
+      const res = await axiosInstance.get(
+        `/admin/national/data/find/4visits?state=${state}&lga=${lga}&healthfacility=${healthfacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}`
+      );
+      console.log(res.data);
+      setPatients4visits(res.data[0].count);
     } catch (err) {}
   };
+
+  // const {} = useQuery({
+  //   queryKey: ["patients4visits"],
+  //   queryFn: () => numberOfWomen4visits(),
+  // });
   useEffect(() => {
     numberOfWomen4visits();
-  }, []);
+  }, [searchitem, filter]);
+
   const womenwhovisithf = () => {
     let result;
     if (patients4visits !== 0 && patients !== 0) {

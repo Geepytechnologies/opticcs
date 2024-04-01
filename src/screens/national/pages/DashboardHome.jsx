@@ -10,21 +10,27 @@ import { useRef } from "react";
 import Filterbox from "../../../components/Filterbox";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { handleDownload } from "../../../utils/helpers";
+import IntermediateResult3 from "../components/IntermediateResult3";
 
 const DashboardHome = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "HealthFacility"];
+  const filterdata = ["state", "lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
-  //pagination
+  const [searchitem, setSearchitem] = useState({
+    state: "all",
+    lga: "all",
+    healthFacility: "all",
+    datefrom: "",
+    dateto: "",
+  }); //pagination
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   const [healthWorkers, setHealthWorkers] = useState(0);
   const [patients, setPatients] = useState(0);
   const [statenumbers, setStatenumbers] = useState(0);
   const [hfnumbers, setHfnumbers] = useState(0);
-
   const getAllHealthWorkers = async () => {
     try {
       const res = await axiosInstance.get("/users/find");
@@ -43,7 +49,6 @@ const DashboardHome = () => {
     queryKey: ["patients"],
     queryFn: getAllPatients,
   });
-  console.log("query", data);
   const getAllstates = async () => {
     try {
       const res = await axiosInstance.get("/admin/state/find");
@@ -56,7 +61,9 @@ const DashboardHome = () => {
       setHfnumbers(res.data.length);
     } catch (err) {}
   };
-
+  useEffect(() => {
+    console.log(searchitem);
+  }, [searchitem]);
   useEffect(() => {
     // Load MathJax when the component mounts
     const script = document.createElement("script");
@@ -77,51 +84,50 @@ const DashboardHome = () => {
     getAllstates();
     getHealthfacilities();
   }, []);
-  function downloadTable() {
-    const table = tableRef.current;
-
-    if (table) {
-      const rows = Array.from(table.rows);
-      const headers = Array.from(rows.shift()?.cells || []).map(
-        (cell) => cell.textContent
-      );
-      const csv = [headers.join(",")];
-
-      for (const row of rows) {
-        const cells = Array.from(row.cells).map((cell) => cell.textContent);
-        csv.push(cells.join(","));
-      }
-
-      const blob = new Blob([csv.join("\n")], {
-        type: "text/csv;charset=utf-8;",
-      });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", "mytable.csv");
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      alert("Table downloaded as CSV!");
-    }
-  }
 
   let componentToRender;
 
   switch (navigatorSlide) {
     case 1:
-      componentToRender = <IndicatorOutcome patients={patients} />;
+      componentToRender = (
+        <IndicatorOutcome
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+        />
+      );
       break;
     case 2:
-      componentToRender = <IntermediateResult1 patients={patients} />;
+      componentToRender = (
+        <IntermediateResult1
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+        />
+      );
       break;
     case 3:
-      componentToRender = <IntermediateResult2 />;
+      componentToRender = (
+        <IntermediateResult2
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+        />
+      );
       break;
     case 4:
-      componentToRender = <Activity />;
+      componentToRender = (
+        <IntermediateResult3
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+        />
+      );
+      break;
+    case 5:
+      componentToRender = (
+        <Activity patients={patients} searchitem={searchitem} />
+      );
       break;
     default:
       componentToRender = null;
@@ -185,12 +191,22 @@ const DashboardHome = () => {
         {/* download csv */}
         <div className="flex items-center justify-end mt-[40px] pr-4">
           <button
-            onClick={downloadTable}
+            onClick={() => handleDownload("indicator", "indicator.pdf")}
             className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
           >
-            Download CSV
+            Download PDF
           </button>
         </div>
+        <Filterbox
+          filterdata={filterdata}
+          selectedDateTo={selectedDateTo}
+          setSearchitem={setSearchitem}
+          setSelectedDateTo={setSelectedDateTo}
+          selectedDateFrom={selectedDateFrom}
+          setSelectedDateFrom={setSelectedDateFrom}
+          setFilter={setFilter}
+          filter={filter}
+        />
         {/* selectbox1 */}
         {/* <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} /> */}
         {/* indicator outcome */}
@@ -236,11 +252,21 @@ const DashboardHome = () => {
                     : "text-light90 pb-2 font-[500]"
                 }`}
               >
-                Activity 1-3
+                Intermediate Result 3
+              </div>
+              <div
+                onClick={() => setNavigatorSlide(5)}
+                className={`cursor-pointer text-center ${
+                  navigatorSlide === 5
+                    ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                    : "text-light90 pb-2 font-[500]"
+                }`}
+              >
+                Activity 1-2
               </div>
             </div>
             {/* outcome analysis */}
-            {componentToRender}
+            <div id="indicator">{componentToRender}</div>
           </div>
         </div>
       </div>
