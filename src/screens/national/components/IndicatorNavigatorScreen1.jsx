@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 const IndicatorNavigatorScreen1 = ({ param, chart }) => {
   const [datainfo, setDatainfo] = useState();
 
-  console.log(datainfo);
+  // console.log(datainfo);
 
   const getIndicatordata = async () => {
     try {
@@ -56,7 +56,7 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
     enabled: false,
   });
 
-  console.log(param.query);
+  // console.log(param);
   useEffect(() => {
     if (param.query == "lga") {
       getIndicatordataforlga();

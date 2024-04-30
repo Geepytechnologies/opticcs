@@ -38,6 +38,7 @@ const IndicatorOutcome = ({ patients, searchitem, filter }) => {
     }
     return result;
   };
+
   return (
     <motion.div
       initial={{
