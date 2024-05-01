@@ -50,14 +50,22 @@ const CreateStateUserAccount = () => {
     });
   }
 
-  const gethealthfacilities = async () => {
+  // const gethealthfacilities = async () => {
+  //   try {
+  //     const result = await axiosInstance.get("/admin/healthfacility/find");
+  //     setHealthfacilities(result.data);
+  //   } catch (error) {}
+  // };
+  const gethealthfacilitiesForLGA = async () => {
     try {
-      const result = await axiosInstance.get("/admin/healthfacility/find");
+      const result = await axiosInstance.get(
+        `/admin/healthfacility/find/lga?lga=${lga}`
+      );
       setHealthfacilities(result.data);
     } catch (error) {}
   };
   useEffect(() => {
-    gethealthfacilities();
+    gethealthfacilitiesForLGA();
   }, []);
   const loadToast = (myMessage, status) => {
     scrollToTop();
@@ -162,13 +170,13 @@ const CreateStateUserAccount = () => {
       setCadreError({ status: true, message: "This field is required" });
       noErrors = false;
     }
-    if (values.healthfacilityid === "") {
-      sethealthfacilityidError({
-        status: true,
-        message: "This field is required",
-      });
-      noErrors = false;
-    }
+    // if (values.healthfacilityid === "") {
+    //   sethealthfacilityidError({
+    //     status: true,
+    //     message: "This field is required",
+    //   });
+    //   noErrors = false;
+    // }
 
     return noErrors;
   };
@@ -217,7 +225,7 @@ const CreateStateUserAccount = () => {
       setCadreError({ status: true, message: "This field is required" });
     }
   };
-  const handlehealthfacilityidBlur = () => {
+  const handlewardBlur = () => {
     if (values.healthfacilityid === "") {
       sethealthfacilityidError({
         status: true,
@@ -253,7 +261,7 @@ const CreateStateUserAccount = () => {
           cadre: values.cadre,
           phone: values.phone,
           email: values.email,
-          healthfacilityid: values.healthfacilityid,
+          healthfacilityid: "",
           userid: values.userid,
           password: values.password,
         });
@@ -268,7 +276,7 @@ const CreateStateUserAccount = () => {
           userid: "",
           password: "",
           cadre: "",
-          healthfacilityid: "National",
+          // healthfacilityid: "National",
         });
       }
     } catch (error) {
@@ -304,20 +312,36 @@ const CreateStateUserAccount = () => {
                 <label className="text-[16px] font-[500] text-dark90">
                   Select Ward<span className="ml-2 text-red-500">*</span>
                 </label>
-                {wardError.status && (
-                  <span className="text-[12px] font-[500] italic text-red-500">
-                    {wardError.message}
-                  </span>
-                )}
               </div>
-              <input
+              <select
+                name="ward"
+                value={values.ward}
+                onChange={handleChange2}
+                onBlur={handlewardBlur}
+                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              >
+                <option value="" disabled>
+                  Choose a value
+                </option>
+                {healthfacilities?.map((item, index) => (
+                  <option key={index} value={item.healthfacilityname}>
+                    {item.healthfacilityname}
+                  </option>
+                ))}
+              </select>
+              {wardError.status && (
+                <span className="text-[12px] font-[500] italic text-red-500">
+                  {wardError.message}
+                </span>
+              )}
+              {/* <input
                 value={values.ward}
                 type="text"
                 name="ward"
                 onChange={handleChange2}
                 onBlur={handleStateBlur}
                 className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              />
+              /> */}
             </div>
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">
@@ -451,7 +475,8 @@ const CreateStateUserAccount = () => {
                 placeholder="Enter Cadre"
               />
             </div>
-            <div className="flex flex-col">
+            {/* healthfacilityID */}
+            {/* <div className="flex flex-col">
               <div className="flex gap-3 items-center">
                 <label className="text-[16px] font-[500] text-dark90">
                   Health Facility ID<span className="ml-2 text-red-500">*</span>
@@ -478,7 +503,7 @@ const CreateStateUserAccount = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col">
             <div

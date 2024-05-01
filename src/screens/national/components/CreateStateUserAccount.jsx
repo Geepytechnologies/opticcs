@@ -219,7 +219,8 @@ const CreateStateUserAccount = ({ states }) => {
         });
       }
     } catch (error) {
-      showError(error?.data.message || "An Error Occurred");
+      console.log(error);
+      showError(error?.response.data || "An Error Occurred");
     } finally {
       setLoading(false);
     }

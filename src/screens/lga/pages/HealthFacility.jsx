@@ -41,39 +41,39 @@ const HealthFacility = () => {
   useEffect(() => {
     getHealthfacilities();
   }, []);
-  const filterhealthfacility = (healthFacilities, searchitem, filter) => {
-    if (!healthFacilities) return []; // Return an empty array if patients is falsy
+  // const filterhealthfacility = (healthFacilities, searchitem, filter) => {
+  //   if (!healthFacilities) return []; // Return an empty array if patients is falsy
 
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return healthFacilities.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return healthFacilities;
-    }
-  };
-  const filteredHealthfacilities = filterhealthfacility(
-    healthFacilities,
-    searchitem,
-    filter
-  );
+  //   if (searchitem && selectedDateFrom && selectedDateTo) {
+  //     return healthFacilities.filter(
+  //       (item) =>
+  //         item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
+  //         new Date(item.createdat).getTime() >=
+  //           new Date(selectedDateFrom).getTime() &&
+  //         new Date(item.createdat).getTime() <=
+  //           new Date(selectedDateTo).getTime()
+  //     );
+  //   } else if (searchitem) {
+  //     return healthFacilities.filter((item) =>
+  //       item[filter].toLowerCase().includes(searchitem.toLowerCase())
+  //     );
+  //   } else if (selectedDateFrom && selectedDateTo) {
+  //     return healthFacilities.filter(
+  //       (item) =>
+  //         new Date(item.createdat).getTime() >=
+  //           new Date(selectedDateFrom).getTime() &&
+  //         new Date(item.createdat).getTime() <=
+  //           new Date(selectedDateTo).getTime()
+  //     );
+  //   } else {
+  //     return healthFacilities;
+  //   }
+  // };
+  // const filteredHealthfacilities = filterhealthfacility(
+  //   healthFacilities,
+  //   searchitem,
+  //   filter
+  // );
   const tableRef = useRef();
   return (
     <div>
@@ -121,7 +121,7 @@ const HealthFacility = () => {
               <tbody>
                 {healthFacilities
                   ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredHealthfacilities
+                      ? healthFacilities
                       : healthFacilities
                     )
                       .slice(
@@ -145,14 +145,14 @@ const HealthFacility = () => {
                   : null}
               </tbody>
             </table>
-            {!filteredHealthfacilities.length && <Notfound />}
+            {!healthFacilities?.length && <Notfound />}
 
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={filteredHealthfacilities?.length / 10}
+              pages={healthFacilities?.length / 10}
             />
           </div>
         </div>

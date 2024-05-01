@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { LuCalendarDays } from "react-icons/lu";
 import { useState } from "react";
@@ -22,6 +22,7 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
   useEffect(() => {
     getIntermediateResult1(searchitem);
   }, []);
+
   useEffect(() => {
     getIntermediateResult1(searchitem);
   }, [searchitem]);
