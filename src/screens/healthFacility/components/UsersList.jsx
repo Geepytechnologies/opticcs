@@ -40,6 +40,7 @@ const UsersList = () => {
   const getAllUnverifiedworkers = async () => {
     try {
       const res = await axiosInstance.get("/users/find/unverified");
+      console.log(res.data);
       const filtered = res.data.result.filter(
         (item) => item.healthfacility == healthfacilityid
       );
