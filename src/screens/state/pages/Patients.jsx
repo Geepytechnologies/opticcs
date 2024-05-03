@@ -1,101 +1,101 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import {
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+  AiOutlineFileSearch,
+} from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import Filterbox from "../../../components/Filterbox";
 import axiosInstance from "../../../utils/axios";
+import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import moment from "moment";
-import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import Csvbutton from "../../../components/Csvbutton";
-import { useRef } from "react";
 import Notfound from "../../../components/Notfound";
+import Patientview from "../components/Patientview";
+import { useNavigate } from "react-router-dom";
+import { downloadTable } from "../../../utils/helpers";
+import { useRef } from "react";
+import { MdDelete, MdDeleteOutline } from "react-icons/md";
+import StateFilterBox from "../components/StateFilterBox";
 
 const Patients = () => {
-  const { stateAuth } = useAuth();
-  const { state } = stateAuth.others;
+  const tableRef = useRef();
+  const [patients, setPatients] = useState();
+  const [totalPatients, setTotalPatients] = useState();
+
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "HealthFacility"];
+  const filterdata = ["lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
-  const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
-  const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
+  const [filteritem, setFilteritem] = useState();
+
+  const [searchitem, setSearchitem] = useState({
+    state: "all",
+    lga: "all",
+    healthFacility: "all",
+    datefrom: "",
+    dateto: "",
+  });
+  // console.log(
+  //   searchitem,
+  //   moment(selectedDateFrom).format("YYYY-MM-DD"),
+  //   selectedDateTo
+  // );
   //
-  const [patients, setPatients] = useState();
+  console.log(filteritem, ": ", "filteritem");
+
   const [isActive, setIsActive] = useState(1);
   const [currentpage, setCurrentpage] = useState({
     value: 1,
     isPagination: false,
   });
-  // if (new Date(patients && patients[0]?.createdat).getTime() > new Date(selectedDateFrom).getTime()) {
-  //     console.log("greater")
-  // } else {
-  //     console.log("less than")
-  // }
-  const getAllPatients = async () => {
+
+  // const { patients, totalPatients } = usePatients(
+  //   searchitem,
+  //   filter,
+  //   currentpage
+  // );
+  const getPatients = async () => {
     try {
-      const res = await axiosInstance.get("/patients/findwithworkers");
-      const statepatients = res.data.result.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}&state=${searchitem.state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
       );
-
-      setPatients(statepatients);
-    } catch (err) {}
+      const result = res.data.result;
+      console.log(res.data.count);
+      setPatients(result);
+      setTotalPatients(res.data.count);
+    } catch (error) {}
   };
+
   useEffect(() => {
-    getAllPatients();
-  }, []);
+    getPatients();
+  }, [currentpage.value, filteritem, searchitem]);
 
-  const filterPatients = (patients, searchitem, filter) => {
-    if (!patients) return []; // Return an empty array if patients is falsy
-
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return patients.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return patients.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return patients.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return patients;
-    }
-  };
-  const filteredPatients = filterPatients(patients, searchitem, filter);
+  console.log(patients);
 
   const navigate = useNavigate();
+
   const handleItemClick = (itemId) => {
-    navigate(`/state/patients/${itemId}`);
+    navigate(`/national/patients/${itemId}`);
   };
-  const tableRef = useRef();
+
   return (
     <div>
-      <div className="bg-primary10">
+      <div className="bg-primary10 flex flex-col min-h-screen">
         {/* dashboard */}
         <div className="flex w-full items-center justify-between px-3 py-3">
           <div className="flex gap-2 items-center p-2">
             <HiOutlineUserGroup />
             <p className="text-secondary400 text-[18px] font-[600]">Patients</p>
           </div>
+          {/* <div className='flex gap-2 justify-end'>
+                        <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
+                        <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
+                    </div> */}
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <StateFilterBox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -104,12 +104,21 @@ const Patients = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
-
-        <Csvbutton tableRef={tableRef} tableName={"Patients"} />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Patients")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
-        <div className="w-full flex items-center justify-center font-inter my-5">
-          <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
+        <div className="w-full flex-1 flex items-center justify-center font-inter my-5">
+          <div className="bg-white min-h-[500px] w-[95%] flex flex-col items-center justify-between pl-6 py-4">
             <table ref={tableRef} className="cursor-default w-full">
               <thead>
                 <tr>
@@ -123,45 +132,34 @@ const Patients = () => {
                 </tr>
               </thead>
               <tbody>
-                {patients
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredPatients
-                      : patients
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          onClick={() => handleItemClick(item.id)}
-                          key={item.id}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>
-                            {currentpage.value == 1
-                              ? index + 1
-                              : 10 * currentpage.value + (index + 1) - 10}
-                          </td>
-                          <td>{item.firstname}</td>
-                          <td>{item.id}</td>
-                          <td>{item.state}</td>
-                          <td>{item.lga}</td>
-                          <td>{item.healthFacility}</td>
-                          <td>{moment(item.last_visit).fromNow()}</td>
-                        </tr>
-                      ))
-                  : null}
+                {patients?.map((item, index) => (
+                  <tr
+                    onClick={() => handleItemClick(item.id)}
+                    key={item.id}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>
+                      {currentpage.value == 1
+                        ? index + 1
+                        : 20 * currentpage.value + (index + 1) - 20}
+                    </td>
+                    <td>{item.firstname}</td>
+                    <td>{item.id}</td>
+                    <td>{item.state}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.healthFacility}</td>
+                    <td>{moment(item.last_visit).fromNow()}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {!filteredPatients.length && <Notfound />}
-
+            {!patients?.length && <Notfound />}
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
-              pages={filteredPatients?.length / 10}
               displaynum={10}
+              pages={totalPatients / 20}
             />
           </div>
         </div>

@@ -6,10 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import useFilterSearchParams from "../hooks/useFilterSearchParams";
 
 const IndicatorOutcome = ({ patients, searchitem, filter }) => {
-  console.log(searchitem);
+  // console.log(searchitem);
   const [patients4visits, setPatients4visits] = useState(0);
   const { state, lga, healthfacility } = useFilterSearchParams(searchitem);
-  console.log({ state1: state, lga2: lga, healthfacility3: healthfacility });
+  // console.log({ state1: state, lga2: lga, healthfacility3: healthfacility });
 
   const numberOfWomen4visits = async () => {
     try {

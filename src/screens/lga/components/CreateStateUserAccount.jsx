@@ -64,6 +64,14 @@ const CreateStateUserAccount = () => {
       setHealthfacilities(result.data);
     } catch (error) {}
   };
+  const getwardsCreatedForLGA = async () => {
+    try {
+      const result = await axiosInstance.get(
+        `/admin/healthfacility/find/lga?lga=${lga}`
+      );
+      setHealthfacilities(result.data);
+    } catch (error) {}
+  };
   useEffect(() => {
     gethealthfacilitiesForLGA();
   }, []);
@@ -77,6 +85,7 @@ const CreateStateUserAccount = () => {
     setShowToast(false);
   };
   const [values, setValues] = useState({
+    healthfacility: "",
     ward: "",
     staffname: "",
     staffid: "",
@@ -112,7 +121,8 @@ const CreateStateUserAccount = () => {
     message: "",
   });
   const [cadreError, setCadreError] = useState({ status: false, message: "" });
-  const [healthfacilityidError, sethealthfacilityidError] = useState({
+
+  const [healthfacilityError, setHealthfacilityError] = useState({
     status: false,
     message: "",
   });
@@ -129,6 +139,8 @@ const CreateStateUserAccount = () => {
     name == "cadre" && setCadreError({ status: false, message: "" });
     name == "healthfacilityid" &&
       sethealthfacilityidError({ status: false, message: "" });
+    name == "healthfacility" &&
+      setHealthfacilityError({ status: false, message: "" });
     setValues({ ...values, [name]: value });
   };
   const validateValues = () => {
@@ -168,6 +180,13 @@ const CreateStateUserAccount = () => {
     }
     if (values.cadre === "") {
       setCadreError({ status: true, message: "This field is required" });
+      noErrors = false;
+    }
+    if (values.healthfacility === "") {
+      setHealthfacilityError({
+        status: true,
+        message: "This field is required",
+      });
       noErrors = false;
     }
     // if (values.healthfacilityid === "") {
@@ -220,6 +239,14 @@ const CreateStateUserAccount = () => {
       setPasswordError({ status: true, message: "This field is required" });
     }
   };
+  const handleHealthfacilityBlur = () => {
+    if (values.healthfacility === "") {
+      setHealthfacilityError({
+        status: true,
+        message: "This field is required",
+      });
+    }
+  };
   const handleCadreBlur = () => {
     if (values.cadre === "") {
       setCadreError({ status: true, message: "This field is required" });
@@ -254,6 +281,7 @@ const CreateStateUserAccount = () => {
         const res = await axiosInstance.post("/admin/healthfacility/users", {
           lga: lga,
           state: state,
+          healthfacility: values.healthfacility,
           ward: values.ward,
           staffname: values.staffname,
           staffid: values.staffid,
@@ -261,27 +289,15 @@ const CreateStateUserAccount = () => {
           cadre: values.cadre,
           phone: values.phone,
           email: values.email,
-          healthfacilityid: "",
           userid: values.userid,
           password: values.password,
         });
         res.data && loadToast("Health Facility User created", "success");
-        setValues({
-          ward: "",
-          staffname: "",
-          staffid: "",
-          gender: "male",
-          phone: "",
-          email: "",
-          userid: "",
-          password: "",
-          cadre: "",
-          // healthfacilityid: "National",
-        });
       }
     } catch (error) {
     } finally {
       setValues({
+        healthfacility: "",
         ward: "",
         staffname: "",
         staffid: "",
@@ -291,7 +307,6 @@ const CreateStateUserAccount = () => {
         userid: "",
         password: "",
         cadre: "",
-        healthfacilityid: "",
       });
     }
   };
@@ -310,14 +325,15 @@ const CreateStateUserAccount = () => {
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">
                 <label className="text-[16px] font-[500] text-dark90">
-                  Select Ward<span className="ml-2 text-red-500">*</span>
+                  Select Health Facility
+                  <span className="ml-2 text-red-500">*</span>
                 </label>
               </div>
               <select
-                name="ward"
-                value={values.ward}
+                name="healthfacility"
+                value={values.healthfacility}
                 onChange={handleChange2}
-                onBlur={handlewardBlur}
+                onBlur={handleHealthfacilityBlur}
                 className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
               >
                 <option value="" disabled>
@@ -329,20 +345,13 @@ const CreateStateUserAccount = () => {
                   </option>
                 ))}
               </select>
-              {wardError.status && (
+              {healthfacilityError.status && (
                 <span className="text-[12px] font-[500] italic text-red-500">
-                  {wardError.message}
+                  {healthfacilityError.message}
                 </span>
               )}
-              {/* <input
-                value={values.ward}
-                type="text"
-                name="ward"
-                onChange={handleChange2}
-                onBlur={handleStateBlur}
-                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              /> */}
             </div>
+
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">
                 <label className="text-[16px] font-[500] text-dark90">

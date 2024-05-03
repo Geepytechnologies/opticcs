@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axios";
 import CustomToast from "../../../components/CustomToast";
 import { useAuth } from "../hooks/useAuth";
@@ -11,6 +11,7 @@ const CreateStateAccount = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastmessage, setToastmessage] = useState("");
   const [toastStatus, setToastStatus] = useState("");
+  const [wards, setWards] = useState();
 
   function scrollToTop() {
     window.scrollTo({
@@ -28,6 +29,17 @@ const CreateStateAccount = () => {
   const handleToastClose = () => {
     setShowToast(false);
   };
+  const getwardsForLGA = async () => {
+    try {
+      const result = await axiosInstance.get(
+        `/admin/healthfacility/find/lga?lga=${lga}`
+      );
+      setWards(result.data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    // getwardsForLGA();
+  }, []);
   const [values, setValues] = useState({
     ward: "",
     healthfacilityname: "",
@@ -132,6 +144,14 @@ const CreateStateAccount = () => {
       setEmailError({ status: true, message: "This field is required" });
     }
   };
+  const handlewardBlur = () => {
+    if (values.ward === "") {
+      setwardError({
+        status: true,
+        message: "This field is required",
+      });
+    }
+  };
   const handlePhoneBlur = () => {
     if (values.phone === "") {
       setPhoneError({ status: true, message: "This field is required" });
@@ -230,23 +250,38 @@ const CreateStateAccount = () => {
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">
                 <label className="text-[16px] font-[500] text-dark90">
-                  Ward<span className="ml-2 text-red-500">*</span>
+                  Select Ward<span className="ml-2 text-red-500">*</span>
                 </label>
-                {wardError.status && (
-                  <span className="text-[12px] font-[500] italic text-red-500">
-                    {wardError.message}
-                  </span>
-                )}
               </div>
-              <input
+              <select
+                name="ward"
                 value={values.ward}
-                placeholder="Enter ward"
+                onChange={handleChange2}
+                onBlur={handlewardBlur}
+                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              >
+                <option value="" disabled>
+                  Choose a value
+                </option>
+                {wards?.map((item, index) => (
+                  <option key={index} value={item.healthfacilityname}>
+                    {item.healthfacilityname}
+                  </option>
+                ))}
+              </select>
+              {wardError.status && (
+                <span className="text-[12px] font-[500] italic text-red-500">
+                  {wardError.message}
+                </span>
+              )}
+              {/* <input
+                value={values.ward}
                 type="text"
                 name="ward"
                 onChange={handleChange2}
                 onBlur={handleStateBlur}
                 className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              />
+              /> */}
             </div>
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">

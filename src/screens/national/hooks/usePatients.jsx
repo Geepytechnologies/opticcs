@@ -6,7 +6,7 @@ const usePatients = (searchitem, filter, currentpage) => {
   const [totalPatients, setTotalPatients] = useState();
 
   useEffect(() => {
-    if (searchitem.state == "all") {
+    if (searchitem?.state == "all") {
       ApiCalls.getAllPatients(
         currentpage,
         searchitem,
@@ -15,7 +15,7 @@ const usePatients = (searchitem, filter, currentpage) => {
       );
     }
 
-    if (searchitem.state !== "" && searchitem.state !== "all") {
+    if (searchitem?.state !== "" && searchitem?.state !== "all") {
       ApiCalls.getAllPatientsForState(
         currentpage,
         searchitem,
@@ -24,7 +24,7 @@ const usePatients = (searchitem, filter, currentpage) => {
       );
     }
 
-    if (searchitem.lga !== "" && searchitem.lga !== "all") {
+    if (searchitem?.lga !== "" && searchitem?.lga !== "all") {
       ApiCalls.getAllPatientsForLga(
         currentpage,
         searchitem,
@@ -34,8 +34,8 @@ const usePatients = (searchitem, filter, currentpage) => {
     }
 
     if (
-      searchitem.healthFacility !== "" &&
-      searchitem.healthFacility !== "all"
+      searchitem?.healthFacility !== "" &&
+      searchitem?.healthFacility !== "all"
     ) {
       ApiCalls.getAllPatientsForHealthfacility(
         currentpage,
@@ -45,9 +45,9 @@ const usePatients = (searchitem, filter, currentpage) => {
       );
     }
     if (
-      searchitem.healthFacility == "all" ||
-      searchitem.lga == "all" ||
-      searchitem.state == "all"
+      searchitem?.healthFacility == "all" ||
+      searchitem?.lga == "all" ||
+      searchitem?.state == "all"
     ) {
       ApiCalls.getAllPatients(
         currentpage,
@@ -57,9 +57,9 @@ const usePatients = (searchitem, filter, currentpage) => {
       );
     }
     if (
-      searchitem.healthFacility == "all" &&
-      searchitem.lga == "all" &&
-      searchitem.state == "all"
+      searchitem?.healthFacility == "all" &&
+      searchitem?.lga == "all" &&
+      searchitem?.state == "all"
     ) {
       ApiCalls.getAllPatients(
         currentpage,

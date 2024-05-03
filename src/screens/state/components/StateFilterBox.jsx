@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axiosInstance from "../utils/axios";
 import moment from "moment";
+import { useAuth } from "../hooks/useAuth";
+import axiosInstance from "../../../utils/axios";
 
-const Filterbox = ({
+const StateFilterBox = ({
   selectedDateTo,
   filterdata,
   setSelectedDateTo,
@@ -14,44 +15,50 @@ const Filterbox = ({
   filter,
   setFilter,
   setSearchitem,
+  setFilteritem,
+  filteritem,
 }) => {
+  const { stateAuth } = useAuth();
+  const { state } = stateAuth.others;
+
   const [search, setSearch] = useState({
-    state: "all",
+    state: state,
     lga: "all",
     healthfacility: "all",
   });
+  useEffect(() => {
+    if (search.lga == "all") {
+      setFilteritem("state");
+    }
+    if (search.healthfacility == "all") {
+      setFilteritem("state");
+    }
+  }, [search]);
 
-  const [stateAccounts, setStateAccounts] = useState();
   const [lgaAccounts, setLgaAccounts] = useState();
   const [hfAccounts, setHfAccounts] = useState();
   // console.log(lgaAccounts);
-
+  //   useEffect(() => {
+  //     if (search.lga == "all") {
+  //       setFilter("state");
+  //     }
+  //   }, []);
   useEffect(() => {
-    if (filter == "state") {
-      setSearch({ state: "all", lga: "all", healthfacility: "all" });
-      setSearchitem({
-        state: "all",
-        lga: "",
-        healthFacility: "",
-        datefrom: "",
-        dateto: "",
-      });
-    }
     if (filter == "lga") {
-      setSearch({ state: "", lga: "all", healthfacility: "" });
+      setSearch({ state: state, lga: "all", healthfacility: "all" });
       setSearchitem({
-        state: "",
+        state: state,
         lga: "all",
-        healthFacility: "",
+        healthFacility: "all",
         datefrom: "",
         dateto: "",
       });
     }
     if (filter == "HealthFacility") {
-      setSearch({ state: "", lga: "", healthfacility: "all" });
+      setSearch({ state: state, lga: "all", healthfacility: "all" });
       setSearchitem({
-        state: "",
-        lga: "",
+        state: state,
+        lga: "all",
         healthFacility: "all",
         datefrom: "",
         dateto: "",
@@ -59,10 +66,6 @@ const Filterbox = ({
     }
   }, [filter]);
 
-  const {} = useQuery({
-    queryKey: ["stateAccounts"],
-    queryFn: () => getAllStates(),
-  });
   const {} = useQuery({
     queryKey: ["lgaAccounts"],
     queryFn: () => getAllLga(),
@@ -73,64 +76,46 @@ const Filterbox = ({
   });
 
   //::::API CALL FUNCTIONS --start::://
-  const getAllStates = async () => {
-    const result = await axiosInstance.get("/admin/state/data/find/states");
-    setStateAccounts(result.data);
-    return result.data;
-  };
+
   const getAllLga = async () => {
-    const result = await axiosInstance.get(`/admin/lga/data/find/lga`);
+    const result = await axiosInstance.get(
+      `/admin/lga/data/find/lga?state=${state}`
+    );
     setLgaAccounts(result.data);
     return result.data;
   };
   const getAllHealthFacility = async () => {
     const result = await axiosInstance.get(
-      `/admin/healthfacility/data/find/healthfacility`
+      `/admin/healthfacility/data/find/healthfacility?state=${state}`
     );
     setHfAccounts(result.data);
     return result.data;
   };
 
-  //:::sort states alphabetically::://
-  const sortedstates = stateAccounts?.sort((a, b) =>
-    a.state.localeCompare(b.state)
-  );
   //:::sort lga alphabetically according to state::://
   const sortedlga = lgaAccounts?.sort((a, b) => a.state.localeCompare(b.state));
   //:::sort hf alphabetically according to state::://
   const sortedhf = hfAccounts?.sort((a, b) => a.state.localeCompare(b.state));
 
-  const handlestate = (e) => {
-    setSearchitem({
-      state: e.target.value,
-      lga: "",
-      healthFacility: "",
-      datefrom: "",
-      dateto: "",
-    });
-    setSearch({
-      state: e.target.value,
-      lga: "",
-      healthFacility: "",
-      datefrom: "",
-      dateto: "",
-    });
-    // getAllLga(e.target.value);
-  };
   const handlelgasearch = (e) => {
     const selectedOption = e.target.options[e.target.selectedIndex];
 
     const state = selectedOption.getAttribute("data-state");
+    if (e.target.value !== "all") {
+      setFilteritem("lga");
+    } else {
+      setFilteritem("state");
+    }
 
     setSearch({
-      state: "",
+      state: state,
       lga: e.target.value,
       healthFacility: "",
       datefrom: "",
       dateto: "",
     });
     setSearchitem({
-      state: "",
+      state: state,
       lga: e.target.value + "/" + state,
       healthFacility: "",
       datefrom: "",
@@ -142,7 +127,11 @@ const Filterbox = ({
 
     const state = selectedOption.getAttribute("data-state");
     const lga = selectedOption.getAttribute("data-lga");
-
+    if (e.target.value !== "all") {
+      setFilteritem("state");
+    } else {
+      setFilteritem("healthfacility");
+    }
     setSearch({
       state: "",
       lga: "",
@@ -182,22 +171,17 @@ const Filterbox = ({
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
   const handleclearfilter = () => {
-    setSearch({ state: "all", lga: "all", healthfacility: "all" });
-    setSearchitem({
-      state: "all",
-      lga: "",
-      healthFacility: "",
-      datefrom: "",
-      dateto: "",
-    });
+    setSearchitem();
     setSelectedDateFrom();
     setSelectedDateTo();
   };
+  console.log(filteritem);
+  console.log(search);
   return (
     <div className="w-full flex items-center justify-center my-5">
-      <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row justify-around gap-3">
+      <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">
         {/* 1 */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <label className="text-primary90 font-[400]">Filter</label>
           <select
             value={filter}
@@ -211,27 +195,8 @@ const Filterbox = ({
             ))}
           </select>
         </div>
-        {filter == "state" && (
-          <div className="flex flex-col">
-            <label className="text-primary90 font-[400]">Value</label>
 
-            <select
-              name="state"
-              value={search.state}
-              onChange={(e) => handlestate(e)}
-              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-white outline-none rounded-[8px] border border-primary70"
-            >
-              <option value="all">All states</option>
-              {stateAccounts?.length &&
-                sortedstates.map((item, index) => (
-                  <option key={index} value={item.state}>
-                    {item.state}
-                  </option>
-                ))}
-            </select>
-          </div>
-        )}
-        {filter == "lga" && (
+        {(filter == "lga" || filter == "state") && (
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Value</label>
 
@@ -304,10 +269,18 @@ const Filterbox = ({
             defaultValue={selectedDateTo}
           />
         </div>
-        <div className=" mt-auto flex h-full">
+        <div>
           <button
             onClick={handleclearfilter}
-            className="bg-yellow-500 px-5 py-4 rounded-md text-white font-[500]"
+            className="bg-primary70 px-3 py-2 rounded-md text-white font-[500]"
+          >
+            Search
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={handleclearfilter}
+            className="bg-yellow-500 px-3 py-2 rounded-md text-white font-[500]"
           >
             Reset
           </button>
@@ -317,4 +290,4 @@ const Filterbox = ({
   );
 };
 
-export default Filterbox;
+export default StateFilterBox;

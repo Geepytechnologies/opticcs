@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axiosInstance from "../utils/axios";
 import moment from "moment";
+import axiosInstance from "../../../utils/axios";
 
-const Filterbox = ({
+const NationalFilterbox = ({
   selectedDateTo,
   filterdata,
   setSelectedDateTo,
@@ -14,12 +14,23 @@ const Filterbox = ({
   filter,
   setFilter,
   setSearchitem,
+  setFilteritem,
+  filteritem,
 }) => {
   const [search, setSearch] = useState({
     state: "all",
     lga: "all",
     healthfacility: "all",
   });
+  console.log(filteritem, " :", "myfilter");
+  useEffect(() => {
+    if (search.state == "all") {
+      setFilteritem("national");
+    }
+    if (search.lga == "all") {
+      setFilteritem("national");
+    }
+  }, [search]);
 
   const [stateAccounts, setStateAccounts] = useState();
   const [lgaAccounts, setLgaAccounts] = useState();
@@ -101,6 +112,11 @@ const Filterbox = ({
   const sortedhf = hfAccounts?.sort((a, b) => a.state.localeCompare(b.state));
 
   const handlestate = (e) => {
+    if (e.target.value !== "all") {
+      setFilteritem("state");
+    } else {
+      setFilteritem("national");
+    }
     setSearchitem({
       state: e.target.value,
       lga: "",
@@ -121,7 +137,11 @@ const Filterbox = ({
     const selectedOption = e.target.options[e.target.selectedIndex];
 
     const state = selectedOption.getAttribute("data-state");
-
+    if (e.target.value !== "all") {
+      setFilteritem("lga");
+    } else {
+      setFilteritem("national");
+    }
     setSearch({
       state: "",
       lga: e.target.value,
@@ -142,7 +162,11 @@ const Filterbox = ({
 
     const state = selectedOption.getAttribute("data-state");
     const lga = selectedOption.getAttribute("data-lga");
-
+    if (e.target.value !== "all") {
+      setFilteritem("healthfacility");
+    } else {
+      setFilteritem("national");
+    }
     setSearch({
       state: "",
       lga: "",
@@ -172,10 +196,6 @@ const Filterbox = ({
   const handleDateFromChange = (date) => {
     if (date <= Date.now()) {
       setSelectedDateFrom(date);
-      // setSearchitem((prev) => ({
-      //   ...prev,
-      //   datefrom: date,
-      // }));
     }
   };
   const capitalizeFirstLetter = (word) => {
@@ -185,8 +205,8 @@ const Filterbox = ({
     setSearch({ state: "all", lga: "all", healthfacility: "all" });
     setSearchitem({
       state: "all",
-      lga: "",
-      healthFacility: "",
+      lga: "all",
+      healthFacility: "all",
       datefrom: "",
       dateto: "",
     });
@@ -197,7 +217,7 @@ const Filterbox = ({
     <div className="w-full flex items-center justify-center my-5">
       <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row justify-around gap-3">
         {/* 1 */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <label className="text-primary90 font-[400]">Filter</label>
           <select
             value={filter}
@@ -211,6 +231,16 @@ const Filterbox = ({
             ))}
           </select>
         </div>
+        {/* {filter == "firstname" && (
+          <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Value</label>
+            <input
+              placeholder="Type name..."
+              onChange={(e) => setSearchitem(e.target.value)}
+              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
+            ></input>
+          </div>
+        )} */}
         {filter == "state" && (
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Value</label>
@@ -304,7 +334,15 @@ const Filterbox = ({
             defaultValue={selectedDateTo}
           />
         </div>
-        <div className=" mt-auto flex h-full">
+        {/* <div>
+          <button
+            onClick={handleclearfilter}
+            className="bg-primary70 px-3 py-2 rounded-md text-white font-[500]"
+          >
+            Search
+          </button>
+        </div> */}
+        <div className="flex mt-auto">
           <button
             onClick={handleclearfilter}
             className="bg-yellow-500 px-5 py-4 rounded-md text-white font-[500]"
@@ -317,4 +355,4 @@ const Filterbox = ({
   );
 };
 
-export default Filterbox;
+export default NationalFilterbox;

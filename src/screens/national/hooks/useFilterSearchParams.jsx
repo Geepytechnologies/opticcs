@@ -10,7 +10,7 @@ const useFilterSearchParams = (searchitem) => {
       searchitem.healthFacility == "all")
   ) {
     //National
-    console.log("national condition");
+    // console.log("national condition");
 
     lga = searchitem.lga;
     state = searchitem.state;
@@ -22,7 +22,7 @@ const useFilterSearchParams = (searchitem) => {
     searchitem.healthFacility !== "all"
   ) {
     //healthfacility
-    console.log("hf condition");
+    // console.log("hf condition");
 
     const search = searchitem.healthFacility;
     lga = search.split("/")[2];
@@ -31,7 +31,7 @@ const useFilterSearchParams = (searchitem) => {
   }
   if (searchitem.state !== "all" && searchitem.state !== "") {
     //state
-    console.log("state condition");
+    // console.log("state condition");
 
     state = searchitem.state;
     lga = searchitem.lga;

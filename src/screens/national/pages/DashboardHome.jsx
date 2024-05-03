@@ -12,6 +12,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { handleDownload } from "../../../utils/helpers";
 import IntermediateResult3 from "../components/IntermediateResult3";
+import NationalFilterbox from "../components/NationalFilterbox";
 
 const DashboardHome = () => {
   //filter
@@ -19,6 +20,7 @@ const DashboardHome = () => {
   const [selectedDateFrom, setSelectedDateFrom] = useState();
   const filterdata = ["state", "lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState();
   const [searchitem, setSearchitem] = useState({
     state: "all",
     lga: "all",
@@ -103,6 +105,7 @@ const DashboardHome = () => {
           patients={patients}
           searchitem={searchitem}
           filter={filter}
+          filteritem={filteritem}
         />
       );
       break;
@@ -112,6 +115,7 @@ const DashboardHome = () => {
           patients={patients}
           searchitem={searchitem}
           filter={filter}
+          filteritem={filteritem}
         />
       );
       break;
@@ -121,12 +125,17 @@ const DashboardHome = () => {
           patients={patients}
           searchitem={searchitem}
           filter={filter}
+          filteritem={filteritem}
         />
       );
       break;
     case 5:
       componentToRender = (
-        <Activity patients={patients} searchitem={searchitem} />
+        <Activity
+          patients={patients}
+          searchitem={searchitem}
+          filteritem={filteritem}
+        />
       );
       break;
     default:
@@ -197,7 +206,7 @@ const DashboardHome = () => {
             Download PDF
           </button>
         </div>
-        <Filterbox
+        <NationalFilterbox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -206,6 +215,8 @@ const DashboardHome = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
         {/* selectbox1 */}
         {/* <Filterbox filterdata={filterdata} selectedDateTo={selectedDateTo} setSearchitem={setSearchitem} setSelectedDateTo={setSelectedDateTo} selectedDateFrom={selectedDateFrom} setSelectedDateFrom={setSelectedDateFrom} setFilter={setFilter} filter={filter} /> */}

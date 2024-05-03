@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import axiosInstance from "../../../utils/axios";
 import { useAuth } from "../hooks/useAuth";
 
-const IndicatorOutcome = ({ patients }) => {
+const IndicatorOutcome = ({ patients, searchitem }) => {
+  console.log(searchitem);
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
   const [patients4visits, setPatients4visits] = useState(0);

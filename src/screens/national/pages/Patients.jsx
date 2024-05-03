@@ -16,15 +16,20 @@ import { downloadTable } from "../../../utils/helpers";
 import { useRef } from "react";
 import { MdDelete, MdDeleteOutline } from "react-icons/md";
 import usePatients from "../hooks/usePatients";
+import NationalFilterbox from "../components/NationalFilterbox";
 
 const Patients = () => {
   const tableRef = useRef();
+  const [patients, setPatients] = useState();
+  const [totalPatients, setTotalPatients] = useState();
 
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["all", "state", "lga", "HealthFacility"];
+  const filterdata = ["state", "lga", "HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState();
+
   const [searchitem, setSearchitem] = useState({
     state: "all",
     lga: "all",
@@ -32,24 +37,37 @@ const Patients = () => {
     datefrom: "",
     dateto: "",
   });
-  console.log(
-    searchitem,
-    moment(selectedDateFrom).format("YYYY-MM-DD"),
-    selectedDateTo
-  );
+  // console.log(
+  //   searchitem,
+  //   moment(selectedDateFrom).format("YYYY-MM-DD"),
+  //   selectedDateTo
+  // );
   //
+  console.log(filteritem, ": ", "filteritem");
   const [isActive, setIsActive] = useState(1);
   const [currentpage, setCurrentpage] = useState({
     value: 1,
     isPagination: false,
   });
 
-  const { patients, totalPatients } = usePatients(
-    searchitem,
-    filter,
-    currentpage
-  );
-
+  // const { patients, totalPatients } = usePatients(
+  //   searchitem,
+  //   filter,
+  //   currentpage
+  // );
+  const getPatients = async () => {
+    try {
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?page=${currentpage.value}&state=${searchitem.state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
+      );
+      const result = res.data.result;
+      setPatients(result);
+      setTotalPatients(res.data.count);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getPatients();
+  }, [currentpage.value, filteritem, searchitem]);
   console.log(patients);
 
   const navigate = useNavigate();
@@ -74,7 +92,7 @@ const Patients = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <NationalFilterbox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -83,6 +101,8 @@ const Patients = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
         <div className="pl-6">
           {/* download csv */}

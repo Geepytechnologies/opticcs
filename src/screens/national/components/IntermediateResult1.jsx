@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import axiosInstance from "../../../utils/axios";
 
-const IntermediateResult1 = ({ patients, searchitem, filter }) => {
+const IntermediateResult1 = ({ patients, searchitem, filter, filteritem }) => {
   const [data, setData] = useState();
 
   const getIntermediateResult1 = async (searchitem) => {
     try {
       const res = await axiosInstance.get(
-        `/admin/indicators/intermediateresult1?state=${searchitem?.state}&lga=${searchitem?.lga}&healthfacility=${searchitem?.healthFacility}&from=${searchitem?.datefrom}&to=${searchitem?.dateto}`
+        `/admin/indicators/intermediateresult1?state=${searchitem?.state}&lga=${searchitem?.lga}&healthfacility=${searchitem?.healthFacility}&from=${searchitem?.datefrom}&to=${searchitem?.dateto}&filter=${filteritem}`
       );
       console.log(res.data);
       setData(res.data);
@@ -23,7 +23,7 @@ const IntermediateResult1 = ({ patients, searchitem, filter }) => {
   }, []);
   useEffect(() => {
     getIntermediateResult1(searchitem);
-  }, [searchitem]);
+  }, [searchitem, filteritem]);
 
   const getFraction = (numerator, denominator) => {
     let result;

@@ -8,10 +8,10 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
   console.log(searchitem);
   const [data, setData] = useState();
 
-  const getIntermediateResult1 = async (searchitem) => {
+  const getIntermediateResult2 = async (searchitem) => {
     try {
       const res = await axiosInstance.get(
-        `/admin/indicators/intermediateresult1?state=${searchitem?.state}&lga=${searchitem?.lga}&healthfacility=${searchitem?.healthFacility}&from=${searchitem?.datefrom}&to=${searchitem?.dateto}`
+        `/admin/indicators/intermediateresult2?state=${searchitem?.state}&lga=${searchitem?.lga}&healthfacility=${searchitem?.healthFacility}&from=${searchitem?.datefrom}&to=${searchitem?.dateto}&filter=${filter}`
       );
       console.log(res.data);
       setData(res.data);
@@ -20,11 +20,11 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
     }
   };
   useEffect(() => {
-    getIntermediateResult1(searchitem);
+    getIntermediateResult2(searchitem);
   }, []);
 
   useEffect(() => {
-    getIntermediateResult1(searchitem);
+    getIntermediateResult2(searchitem);
   }, [searchitem]);
 
   const getFraction = (numerator, denominator) => {
@@ -72,7 +72,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2A.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women that delivered at hf and received
                   post partum IUD.
@@ -84,7 +86,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2A.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of pregnant women that delivered at health
                   facility
@@ -100,7 +104,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2A.numerator[0].total,
+                    data?.intermediateResult2A.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -121,7 +130,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2B.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   {" "}
                   Number of pregnant women with a under 5 child tested for
@@ -134,7 +145,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2B.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of pregnant women who attended antenatal clinic
                 </h2>
@@ -148,7 +161,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2B.numerator[0].total,
+                    data?.intermediateResult2B.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -170,7 +188,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2C.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women with a under 5 child tested for
                   malaria and received treatment
@@ -182,7 +202,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2C.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total Number of pregnant women with a under 5 child tested for
                   malaria
@@ -197,7 +219,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2C.numerator[0].total,
+                    data?.intermediateResult2C.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -217,7 +244,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2D.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women screened or tested for HIV
                 </h2>
@@ -228,7 +257,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2D.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of pregnant women who attended antenatal clinic
                 </h2>
@@ -242,7 +273,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2D.numerator[0].total,
+                    data?.intermediateResult2D.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -263,7 +299,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2E.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women vaccinated for Covid-19
                 </h2>
@@ -274,7 +312,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2E.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of pregnant women who visited hf with no prior
                   Covid-19 vaccination
@@ -289,7 +329,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2E.numerator[0].total,
+                    data?.intermediateResult2E.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -310,7 +355,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2F.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women with an unimmunized under 5 child
                   that received immunization
@@ -322,7 +369,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2F.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of pregnant women with an unimmunized under 5
                   child
@@ -337,7 +386,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2F.numerator[0].total,
+                    data?.intermediateResult2F.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>
@@ -358,7 +412,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2G.numerator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Number of pregnant women with a Under 5 child screened for
                   malnutrition
@@ -370,7 +426,9 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-dark50" />
               </div>
               <div className="flex flex-col text-dark50">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {data?.intermediateResult2G.denominator[0].total}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Total number of Pregnant women who attended antenatal clinic
                   with a Under 5 child
@@ -385,7 +443,12 @@ const IntermediateResult2 = ({ patients, searchitem, filter }) => {
                 <LuCalendarDays className="text-white" />
               </div>
               <div className="flex flex-col text-white">
-                <h2 className="text-[20px] font-[600]">0</h2>
+                <h2 className="text-[20px] font-[600]">
+                  {getFraction(
+                    data?.intermediateResult2G.numerator[0].total,
+                    data?.intermediateResult2G.denominator[0].total
+                  )}
+                </h2>
                 <h2 className="text-[10px] font-[400]">
                   Numerator/Denominator
                 </h2>

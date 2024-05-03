@@ -9,7 +9,8 @@ import Notfound from "../../../components/Notfound";
 
 const UsersList = () => {
   const { healthfacilityAuth } = useAuth();
-  const { healthfacilityid } = healthfacilityAuth.others;
+  const { healthfacility } = healthfacilityAuth.others;
+  // console.log(healthfacilityAuth.others);
   const [healthworkers, setHealthworkers] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -39,12 +40,11 @@ const UsersList = () => {
 
   const getAllUnverifiedworkers = async () => {
     try {
-      const res = await axiosInstance.get("/users/find/unverified");
-      console.log(res.data);
-      const filtered = res.data.result.filter(
-        (item) => item.healthfacility == healthfacilityid
+      const res = await axiosInstance.get(
+        `/users/find/unverified?healthfacility=${healthfacility}`
       );
-      setHealthworkers(filtered);
+
+      setHealthworkers(res.data.result);
     } catch (error) {}
   };
   const approveWorker = async (id) => {
@@ -89,27 +89,28 @@ const UsersList = () => {
             </tr>
           </thead>
           <tbody>
-            {healthworkers
-              ?.slice(10 * currentpage.value - 10, 10 * currentpage.value)
-              .map((item, index) => (
-                <tr
-                  key={index}
-                  className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                >
-                  <td>{item.id}</td>
-                  <td>{item.healthworker}</td>
-                  <td>{item.lga}</td>
-                  <td>{item.ward}</td>
-                  <td>{moment(item.createdat).format("yyyy-MM-DD")}</td>
-                  <td
-                    onClick={() => approveWorker(item.id)}
-                    className="text-[#027D52] cursor-pointer"
+            {healthworkers &&
+              healthworkers
+                ?.slice(10 * currentpage.value - 10, 10 * currentpage.value)
+                .map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
                   >
-                    Approve
-                  </td>
-                  <td className="text-[#B02A37] cursor-pointer">Decline</td>
-                </tr>
-              ))}
+                    <td>{item.id}</td>
+                    <td>{item.healthworker}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.ward}</td>
+                    <td>{moment(item.createdat).format("yyyy-MM-DD")}</td>
+                    <td
+                      onClick={() => approveWorker(item.id)}
+                      className="text-[#027D52] cursor-pointer"
+                    >
+                      Approve
+                    </td>
+                    <td className="text-[#B02A37] cursor-pointer">Decline</td>
+                  </tr>
+                ))}
           </tbody>
         </table>
         {!healthworkers?.length && <Notfound />}
