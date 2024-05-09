@@ -6,6 +6,7 @@ import CreateStateAccount from "../components/CreateStateAccount";
 import CreateStateUserAccount from "../components/CreateStateUserAccount";
 import StateList from "../components/StateList";
 import axiosInstance from "../../../utils/axios";
+import CreateWards from "../components/CreateWards";
 
 const Accounts = () => {
   const [stateAccounts, setStateAccounts] = useState();
@@ -33,6 +34,9 @@ const Accounts = () => {
       break;
     case 4:
       componentToRender = <StateList />;
+      break;
+    case 5:
+      componentToRender = <CreateWards />;
       break;
     default:
       componentToRender = null;
@@ -93,6 +97,16 @@ const Accounts = () => {
                 }`}
               >
                 State List
+              </div>
+              <div
+                onClick={() => setNavigatorSlide(5)}
+                className={`cursor-pointer text-center ${
+                  navigatorSlide === 5
+                    ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                    : "text-light90 pb-2 font-[500]"
+                }`}
+              >
+                Create Wards
               </div>
             </div>
 

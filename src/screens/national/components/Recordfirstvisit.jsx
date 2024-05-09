@@ -107,12 +107,12 @@ const Recordfirstvisit = ({
         ) : (
           <table
             ref={tableRef}
-            className="cursor-default w-full whitespace-nowrap overflow-scroll"
+            className="cursor-default w-full whitespace-nowrap overflow-scroll border-separate border-spacing-3 border border-primary90 rounded-lg"
           >
             <thead>
               <tr className="">
                 {sortedArray?.map((header) => (
-                  <th className="" key={header}>
+                  <th className="border" key={header}>
                     {header}
                   </th>
                 ))}
@@ -127,9 +127,11 @@ const Recordfirstvisit = ({
                   )
                     .slice(20 * currentpage.value - 20, 20 * currentpage.value)
                     .map((item, index) => (
-                      <tr key={index}>
+                      <tr className="" key={index}>
                         {sortedArray?.map((header) => (
-                          <td key={header}>{item[header]}</td>
+                          <td className="border" key={header}>
+                            {item[header]}
+                          </td>
                         ))}
                       </tr>
                     ))

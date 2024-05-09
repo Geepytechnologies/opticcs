@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
+import { useAuth } from "../hooks/useAuth";
 import axiosInstance from "../../../utils/axios";
 
-const NationalFilterbox = ({
+const LgaFilterBox = ({
   selectedDateTo,
   filterdata,
   setSelectedDateTo,
@@ -17,52 +18,48 @@ const NationalFilterbox = ({
   setFilteritem,
   filteritem,
 }) => {
+  const { lgaAuth } = useAuth();
+  const { lga, state } = lgaAuth.others;
+
   const [search, setSearch] = useState({
-    state: "all",
-    lga: "all",
+    state: state,
+    lga: lga,
+    ward: "all",
     healthfacility: "all",
   });
-  //   console.log(filteritem, " :", "myfilter");
   useEffect(() => {
-    if (search.state == "all") {
-      setFilteritem("national");
+    if (search.ward == "all") {
+      setFilteritem("lga");
     }
-    if (search.lga == "all") {
-      setFilteritem("national");
+    if (search.healthfacility == "all") {
+      setFilteritem("lga");
     }
   }, [search]);
 
-  const [stateAccounts, setStateAccounts] = useState();
   const [lgaAccounts, setLgaAccounts] = useState();
   const [hfAccounts, setHfAccounts] = useState();
   // console.log(lgaAccounts);
-
+  //   useEffect(() => {
+  //     if (search.lga == "all") {
+  //       setFilter("state");
+  //     }
+  //   }, []);
   useEffect(() => {
-    if (filter == "state" || filter == "national") {
-      setSearch({ state: "all", lga: "all", healthfacility: "all" });
-      setSearchitem({
-        state: "all",
-        lga: "",
-        healthFacility: "",
-        datefrom: "",
-        dateto: "",
-      });
-    }
     if (filter == "lga") {
-      setSearch({ state: "", lga: "all", healthfacility: "" });
+      setSearch({ state: state, lga: "all", healthfacility: "all" });
       setSearchitem({
-        state: "",
+        state: state,
         lga: "all",
-        healthFacility: "",
+        healthFacility: "all",
         datefrom: "",
         dateto: "",
       });
     }
     if (filter == "HealthFacility") {
-      setSearch({ state: "", lga: "", healthfacility: "all" });
+      setSearch({ state: state, lga: "all", healthfacility: "all" });
       setSearchitem({
-        state: "",
-        lga: "",
+        state: state,
+        lga: "all",
         healthFacility: "all",
         datefrom: "",
         dateto: "",
@@ -70,10 +67,6 @@ const NationalFilterbox = ({
     }
   }, [filter]);
 
-  const {} = useQuery({
-    queryKey: ["stateAccounts"],
-    queryFn: () => getAllStates(),
-  });
   const {} = useQuery({
     queryKey: ["lgaAccounts"],
     queryFn: () => getAllLga(),
@@ -84,55 +77,27 @@ const NationalFilterbox = ({
   });
 
   //::::API CALL FUNCTIONS --start::://
-  const getAllStates = async () => {
-    const result = await axiosInstance.get("/admin/state/data/find/states");
-    setStateAccounts(result.data);
-    return result.data;
-  };
+
   const getAllLga = async () => {
-    const result = await axiosInstance.get(`/admin/lga/data/find/lga`);
+    const result = await axiosInstance.get(
+      `/admin/lga/data/find/lga?state=${state}`
+    );
     setLgaAccounts(result.data);
     return result.data;
   };
   const getAllHealthFacility = async () => {
     const result = await axiosInstance.get(
-      `/admin/healthfacility/data/find/healthfacility`
+      `/admin/healthfacility/data/find/healthfacility?state=${state}`
     );
     setHfAccounts(result.data);
     return result.data;
   };
 
-  //:::sort states alphabetically::://
-  const sortedstates = stateAccounts?.sort((a, b) =>
-    a.state.localeCompare(b.state)
-  );
   //:::sort lga alphabetically according to state::://
   const sortedlga = lgaAccounts?.sort((a, b) => a.state.localeCompare(b.state));
   //:::sort hf alphabetically according to state::://
   const sortedhf = hfAccounts?.sort((a, b) => a.state.localeCompare(b.state));
 
-  const handlestate = (e) => {
-    if (e.target.value !== "all") {
-      setFilteritem("state");
-    } else {
-      setFilteritem("national");
-    }
-    setSearchitem({
-      state: e.target.value,
-      lga: "",
-      healthFacility: "",
-      datefrom: "",
-      dateto: "",
-    });
-    setSearch({
-      state: e.target.value,
-      lga: "",
-      healthFacility: "",
-      datefrom: "",
-      dateto: "",
-    });
-    // getAllLga(e.target.value);
-  };
   const handlelgasearch = (e) => {
     const selectedOption = e.target.options[e.target.selectedIndex];
 
@@ -140,17 +105,18 @@ const NationalFilterbox = ({
     if (e.target.value !== "all") {
       setFilteritem("lga");
     } else {
-      setFilteritem("national");
+      setFilteritem("state");
     }
+
     setSearch({
-      state: "",
+      state: state,
       lga: e.target.value,
       healthFacility: "",
       datefrom: "",
       dateto: "",
     });
     setSearchitem({
-      state: "",
+      state: state,
       lga: e.target.value + "/" + state,
       healthFacility: "",
       datefrom: "",
@@ -163,9 +129,9 @@ const NationalFilterbox = ({
     const state = selectedOption.getAttribute("data-state");
     const lga = selectedOption.getAttribute("data-lga");
     if (e.target.value !== "all") {
-      setFilteritem("healthfacility");
+      setFilteritem("state");
     } else {
-      setFilteritem("national");
+      setFilteritem("healthfacility");
     }
     setSearch({
       state: "",
@@ -196,26 +162,25 @@ const NationalFilterbox = ({
   const handleDateFromChange = (date) => {
     if (date <= Date.now()) {
       setSelectedDateFrom(date);
+      // setSearchitem((prev) => ({
+      //   ...prev,
+      //   datefrom: date,
+      // }));
     }
   };
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
   const handleclearfilter = () => {
-    setSearch({ state: "all", lga: "all", healthfacility: "all" });
-    setSearchitem({
-      state: "all",
-      lga: "all",
-      healthFacility: "all",
-      datefrom: "",
-      dateto: "",
-    });
+    setSearchitem();
     setSelectedDateFrom();
     setSelectedDateTo();
   };
+  //   console.log(filteritem);
+  //   console.log(search);
   return (
     <div className="w-full flex items-center justify-center my-5">
-      <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row justify-around gap-3">
+      <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">
         {/* 1 */}
         <div className="flex flex-col">
           <label className="text-primary90 font-[400]">Filter</label>
@@ -231,37 +196,8 @@ const NationalFilterbox = ({
             ))}
           </select>
         </div>
-        {/* {filter == "firstname" && (
-          <div className="flex flex-col">
-            <label className="text-primary90 font-[400]">Value</label>
-            <input
-              placeholder="Type name..."
-              onChange={(e) => setSearchitem(e.target.value)}
-              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
-            ></input>
-          </div>
-        )} */}
-        {filter == "state" && (
-          <div className="flex flex-col">
-            <label className="text-primary90 font-[400]">Value</label>
 
-            <select
-              name="state"
-              value={search.state}
-              onChange={(e) => handlestate(e)}
-              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-white outline-none rounded-[8px] border border-primary70"
-            >
-              <option value="all">All states</option>
-              {stateAccounts?.length &&
-                sortedstates.map((item, index) => (
-                  <option key={index} value={item.state}>
-                    {item.state}
-                  </option>
-                ))}
-            </select>
-          </div>
-        )}
-        {filter == "lga" && (
+        {(filter == "lga" || filter == "state") && (
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Value</label>
 
@@ -334,18 +270,18 @@ const NationalFilterbox = ({
             defaultValue={selectedDateTo}
           />
         </div>
-        {/* <div>
+        <div>
           <button
             onClick={handleclearfilter}
             className="bg-primary70 px-3 py-2 rounded-md text-white font-[500]"
           >
             Search
           </button>
-        </div> */}
-        <div className="flex mt-auto">
+        </div>
+        <div>
           <button
             onClick={handleclearfilter}
-            className="bg-yellow-500 px-5 py-4 rounded-md text-white font-[500]"
+            className="bg-yellow-500 px-3 py-2 rounded-md text-white font-[500]"
           >
             Reset
           </button>
@@ -355,4 +291,4 @@ const NationalFilterbox = ({
   );
 };
 
-export default NationalFilterbox;
+export default LgaFilterBox;

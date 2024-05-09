@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { IoBagAddOutline } from "react-icons/io5";
@@ -7,9 +7,11 @@ import { LuCalendarDays } from "react-icons/lu";
 import axiosInstance from "../../../utils/axios";
 import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
-import { useAuth } from "../hooks/useAuth";
-import Csvbutton from "../../../components/Csvbutton";
+import { downloadTable } from "../../../utils/helpers";
+import { useRef } from "react";
 import Notfound from "../../../components/Notfound";
+import StateFilterBox from "../components/StateFilterBox";
+import { useAuth } from "../hooks/useAuth";
 
 const HealthFacility = () => {
   const { stateAuth } = useAuth();
@@ -17,12 +19,14 @@ const HealthFacility = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["healthfacilityname", "healthfacilityID", "ward"];
+  const filterdata = ["lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState("state");
   const [searchitem, setSearchitem] = useState();
   const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
   const [healthFacilities, setHealthfacilities] = useState();
+  const [healthFacilitiesCount, setHealthfacilitiesCount] = useState();
   //pagination
   const [currentpage, setCurrentpage] = useState({
     value: 1,
@@ -30,50 +34,18 @@ const HealthFacility = () => {
   });
   const getHealthfacilities = async () => {
     try {
-      const res = await axiosInstance.get("/admin/healthfacility/find");
-      const statehealthfacilities = res.data.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/admin/healthfacility/find/all?page=${currentpage.value}&state=${state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
       );
-
-      setHealthfacilities(statehealthfacilities);
+      console.log(res.data);
+      setHealthfacilities(res.data.result);
+      setHealthfacilitiesCount(res.data.count);
     } catch (err) {}
   };
   useEffect(() => {
     getHealthfacilities();
-  }, []);
-  const filterhealthfacility = (healthFacilities, searchitem, filter) => {
-    if (!healthFacilities) return []; // Return an empty array if patients is falsy
+  }, [currentpage.value, filteritem, searchitem]);
 
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return healthFacilities.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return healthFacilities;
-    }
-  };
-  const filteredHealthfacilities = filterhealthfacility(
-    healthFacilities,
-    searchitem,
-    filter
-  );
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
@@ -96,7 +68,7 @@ const HealthFacility = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <StateFilterBox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -105,9 +77,18 @@ const HealthFacility = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
-
-        <Csvbutton tableName={"Health Facilities"} tableRef={tableRef} />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Health Facility")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
@@ -123,46 +104,30 @@ const HealthFacility = () => {
                 </tr>
               </thead>
               <tbody>
-                {healthFacilities
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredHealthfacilities
-                      : healthFacilities
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>{item.id}</td>
-                          <td>
-                            {capitalizeFirstLetter(item.healthfacilityname)}
-                          </td>
-                          <td>{item.healthfacilityID}</td>
-                          <td>{item.ward}</td>
-                          <td>{moment(item.createdat).fromNow()}</td>
-                          {/* <td className='text-primary90'>Message</td> */}
-                          <td className="text-[#B02A37]">Deactivate</td>
-                        </tr>
-                      ))
-                  : null}
+                {healthFacilities?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{item.id}</td>
+                    <td>{capitalizeFirstLetter(item.healthfacilityname)}</td>
+                    <td>{item.healthfacilityID}</td>
+                    <td>{item.ward}</td>
+                    <td>{moment(item.createdat).fromNow()}</td>
+                    {/* <td className='text-primary90'>Message</td> */}
+                    <td className="text-[#B02A37]">Deactivate</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {!filteredHealthfacilities.length && <Notfound />}
+            {!healthFacilities?.length && <Notfound />}
 
             {/* pagination */}
             <Pagination
-              currentpage={currentpage.value}
+              currentpage={currentpage}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                healthFacilities?.length / 10 ||
-                (filteredHealthfacilities &&
-                  filteredHealthfacilities?.length / 10)
-              }
+              pages={healthFacilitiesCount / 10}
             />
           </div>
         </div>

@@ -7,20 +7,17 @@ import Pagination from "../../../components/Pagination";
 import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
 import { downloadTable } from "../../../utils/helpers";
+import NationalFilterbox from "../components/NationalFilterbox";
 
 const HealthWorker = () => {
   const [workers, setWorkers] = useState();
+  const [workerscount, setWorkerscount] = useState();
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = [
-    "healthworker",
-    "state",
-    "lga",
-    "HealthFacility",
-    "cadre",
-  ];
+  const filterdata = ["state", "lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState("national");
   const [searchitem, setSearchitem] = useState();
   const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
@@ -31,45 +28,17 @@ const HealthWorker = () => {
   });
   const getworkers = async () => {
     try {
-      const res = await axiosInstance.get("/users/find");
+      const res = await axiosInstance.get(
+        `/users/find/filtered?page=${currentpage.value}&state=${searchitem.state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
+      );
       setWorkers(res.data.result);
+      setWorkerscount(res.data.count);
     } catch (error) {}
   };
   useEffect(() => {
     getworkers();
-  }, []);
-  const filterworkers = (workers, searchitem, filter) => {
-    if (!workers) return []; // Return an empty array if patients is false
-    let filteredpage;
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      filteredpage = workers.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else if (searchitem) {
-      filteredpage = workers.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-      return filteredpage;
-    } else if (selectedDateFrom && selectedDateTo) {
-      filteredpage = workers.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else {
-      return workers;
-    }
-  };
-  const filteredworkers = filterworkers(workers, searchitem, filter);
+  }, [currentpage.value, filteritem, searchitem]);
+
   const tableRef = React.useRef();
   return (
     <div>
@@ -89,7 +58,7 @@ const HealthWorker = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <NationalFilterbox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -98,6 +67,8 @@ const HealthWorker = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
         <div className="pl-6">
           {/* download csv */}
@@ -125,31 +96,21 @@ const HealthWorker = () => {
                 </tr>
               </thead>
               <tbody>
-                {workers
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredworkers
-                      : workers
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>{item.id}</td>
-                          <td>{item.healthworker}</td>
-                          <td>{item.id}</td>
-                          <td>{item.cadre}</td>
-                          <td>{item.state}</td>
-                          <td>{item.lga}</td>
-                          <td>{item.healthfacility}</td>
-                          <td>{item.phone}</td>
-                        </tr>
-                      ))
-                  : null}
+                {workers?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{item.id}</td>
+                    <td>{item.healthworker}</td>
+                    <td>{item.id}</td>
+                    <td>{item.cadre}</td>
+                    <td>{item.state}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.healthfacility}</td>
+                    <td>{item.phone}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             {/* pagination */}
@@ -157,11 +118,7 @@ const HealthWorker = () => {
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                filteredworkers
-                  ? filteredworkers.length / 10
-                  : workers?.length / 10
-              }
+              pages={workerscount / 10}
             />
           </div>
         </div>

@@ -41,7 +41,6 @@ const IndicatorNavigatorScreen5 = ({ param }) => {
   useEffect(() => {
     getallschedule();
   }, []);
-  console.log(schedule);
   return (
     <div>
       {/* chart 1 */}
@@ -61,10 +60,10 @@ const IndicatorNavigatorScreen5 = ({ param }) => {
           {/* The pie chart diagram */}
           <GenericPie
             series={[
-              schedule?.completed,
-              schedule?.upcoming,
-              schedule?.missed,
-              schedule?.flagged,
+              Number(schedule?.completed),
+              Number(schedule?.upcoming),
+              Number(schedule?.missed),
+              Number(schedule?.flagged),
             ]}
             colors={["#14A673", "#EAB308", "#0000FF", "#FF0000"]}
           />

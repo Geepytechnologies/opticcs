@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { MdOutlineGroup } from "react-icons/md";
@@ -6,25 +6,22 @@ import axiosInstance from "../../../utils/axios";
 import Pagination from "../../../components/Pagination";
 import Filterbox from "../../../components/Filterbox";
 import moment from "moment";
-import { useAuth } from "../hooks/useAuth";
-import Csvbutton from "../../../components/Csvbutton";
+import { downloadTable } from "../../../utils/helpers";
+import StateFilterBox from "../components/StateFilterBox";
 import Notfound from "../../../components/Notfound";
+import { useAuth } from "../hooks/useAuth";
 
 const HealthWorker = () => {
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
   const [workers, setWorkers] = useState();
+  const [workerscount, setWorkerscount] = useState();
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = [
-    "healthworker",
-    "state",
-    "lga",
-    "HealthFacility",
-    "cadre",
-  ];
+  const filterdata = ["lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState("state");
   const [searchitem, setSearchitem] = useState();
   const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
@@ -35,47 +32,18 @@ const HealthWorker = () => {
   });
   const getworkers = async () => {
     try {
-      const res = await axiosInstance.get("/users/find");
-      const stateworkers = res.data.result.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/users/find/filtered?page=${currentpage.value}&state=${state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
       );
-
-      setWorkers(stateworkers);
+      setWorkers(res.data.result);
+      setWorkerscount(res.data.count);
     } catch (error) {}
   };
   useEffect(() => {
     getworkers();
-  }, []);
-  const filterworkers = (workers, searchitem, filter) => {
-    if (!workers) return []; // Return an empty array if patients is falsy
+  }, [currentpage.value, filteritem, searchitem]);
 
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return workers.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return workers.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return workers.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return workers;
-    }
-  };
-  const filteredworkers = filterworkers(workers, searchitem, filter);
-  const tableRef = useRef();
+  const tableRef = React.useRef();
   return (
     <div>
       <div className="bg-primary10">
@@ -94,7 +62,7 @@ const HealthWorker = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <StateFilterBox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -103,8 +71,18 @@ const HealthWorker = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
-        <Csvbutton tableName={"Health workers"} tableRef={tableRef} />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Health workers")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
@@ -122,45 +100,31 @@ const HealthWorker = () => {
                 </tr>
               </thead>
               <tbody>
-                {workers
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredworkers
-                      : workers
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>{item.id}</td>
-                          <td>{item.healthworker}</td>
-                          <td>{item.id}</td>
-                          <td>{item.cadre}</td>
-                          <td>{item.state}</td>
-                          <td>{item.lga}</td>
-                          <td>{item.healthfacility}</td>
-                          <td>{item.phone}</td>
-                        </tr>
-                      ))
-                  : null}
+                {workers?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{item.id}</td>
+                    <td>{item.healthworker}</td>
+                    <td>{item.id}</td>
+                    <td>{item.cadre}</td>
+                    <td>{item.state}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.healthfacility}</td>
+                    <td>{item.phone}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {!filteredworkers.length && <Notfound />}
+            {!workers?.length && <Notfound />}
 
             {/* pagination */}
             <Pagination
               currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                filteredworkers
-                  ? filteredworkers.length / 10
-                  : workers?.length / 10
-              }
+              pages={workerscount / 10}
             />
           </div>
         </div>

@@ -10,6 +10,8 @@ import { useRef } from "react";
 import Filterbox from "../../../components/Filterbox";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import LgaFilterBox from "../components/LgaFilterBox";
+import IntermediateResult3 from "../components/IntermediateResult3";
 
 const DashboardHome = () => {
   const { lgaAuth } = useAuth();
@@ -18,9 +20,11 @@ const DashboardHome = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "HealthFacility"];
+  const filterdata = ["HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState();
   const [searchitem, setSearchitem] = useState();
+
   //pagination
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   const [healthWorkers, setHealthWorkers] = useState(0);
@@ -111,16 +115,54 @@ const DashboardHome = () => {
 
   switch (navigatorSlide) {
     case 1:
-      componentToRender = <IndicatorOutcome patients={patients} />;
+      componentToRender = (
+        <IndicatorOutcome
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+          filteritem={filteritem}
+        />
+      );
       break;
     case 2:
-      componentToRender = <IntermediateResult1 patients={patients} />;
+      componentToRender = (
+        <IntermediateResult1
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+          filteritem={filteritem}
+        />
+      );
       break;
     case 3:
-      componentToRender = <IntermediateResult2 />;
+      componentToRender = (
+        <IntermediateResult2
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+          filteritem={filteritem}
+        />
+      );
       break;
     case 4:
-      componentToRender = <Activity />;
+      componentToRender = (
+        <IntermediateResult3
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+          filteritem={filteritem}
+        />
+      );
+      break;
+    case 5:
+      componentToRender = (
+        <Activity
+          patients={patients}
+          searchitem={searchitem}
+          filter={filter}
+          filteritem={filteritem}
+        />
+      );
       break;
     default:
       componentToRender = null;
@@ -181,6 +223,18 @@ const DashboardHome = () => {
           </button>
         </div>
         {/* selectbox1 */}
+        <LgaFilterBox
+          filterdata={filterdata}
+          selectedDateTo={selectedDateTo}
+          setSearchitem={setSearchitem}
+          setSelectedDateTo={setSelectedDateTo}
+          selectedDateFrom={selectedDateFrom}
+          setSelectedDateFrom={setSelectedDateFrom}
+          setFilter={setFilter}
+          filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
+        />
         {/* indicator outcome */}
         <div className="w-full flex items-center justify-center my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
@@ -224,7 +278,17 @@ const DashboardHome = () => {
                     : "text-light90 pb-2 font-[500]"
                 }`}
               >
-                Activity 1-3
+                Intermediate Result 3
+              </div>
+              <div
+                onClick={() => setNavigatorSlide(5)}
+                className={`cursor-pointer text-center ${
+                  navigatorSlide === 5
+                    ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                    : "text-light90 pb-2 font-[500]"
+                }`}
+              >
+                Activity 1-2
               </div>
             </div>
             {/* outcome analysis */}

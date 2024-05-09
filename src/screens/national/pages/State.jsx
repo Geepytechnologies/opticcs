@@ -7,57 +7,50 @@ import moment from "moment";
 import axiosInstance from "../../../utils/axios";
 import { downloadTable } from "../../../utils/helpers";
 import { useRef } from "react";
+import NationalFilterbox from "../components/NationalFilterbox";
+import Notfound from "../../../components/Notfound";
 
 const State = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["stateid"];
+  const filterdata = ["national"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
+  const [filteritem, setFilteritem] = useState("national");
+
+  const [searchitem, setSearchitem] = useState({
+    state: "all",
+    lga: "",
+    healthFacility: "",
+    datefrom: "",
+    dateto: "",
+  });
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
+  console.log(searchitem);
   // page state
   const [states, setStates] = useState();
+  const [statescount, setStatescount] = useState();
   const array = [1, 2, 3, 4];
   const getAllStates = async () => {
     try {
-      const res = await axiosInstance.get("/admin/state/find");
+      const res = await axiosInstance.get(
+        `/admin/state/find/filtered?page=${currentpage.value}&state=${searchitem.state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
+      );
+      console.log(res.data);
       setStates(res.data.result);
-    } catch (error) {}
+      setStatescount(res.data.count);
+    } catch (error) {
+      throw new Error(error);
+    }
   };
   useEffect(() => {
     getAllStates();
-  }, []);
-  const filterstates = (states, searchitem, filter) => {
-    if (!states) return []; // Return an empty array if patients is falsy
+  }, [currentpage.value]);
 
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return states.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return states.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return states.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return states;
-    }
-  };
-  const filteredStates = filterstates(states, searchitem, filter);
   const tableRef = useRef();
   return (
     <div>
@@ -80,7 +73,7 @@ const State = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <NationalFilterbox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -89,6 +82,8 @@ const State = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
         <div className="pl-6">
           {/* download csv */}
@@ -114,36 +109,30 @@ const State = () => {
                 </tr>
               </thead>
               <tbody>
-                {states
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredStates
-                      : states
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{index + 1}</td>
-                        <td>{item.boardname}</td>
-                        <td>{item.stateid}</td>
-                        <td>{item.officeaddress}</td>
-                        <td>{moment(item.createdat).fromNow()}</td>
-                        {/* <td className='text-primary90'>Message</td> */}
-                        <td className="text-[#B02A37]">Deactivate</td>
-                      </tr>
-                    ))
-                  : null}
+                {states?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{index + 1}</td>
+                    <td>{item.boardname}</td>
+                    <td>{item.stateid}</td>
+                    <td>{item.officeaddress}</td>
+                    <td>{moment(item.createdat).fromNow()}</td>
+                    {/* <td className='text-primary90'>Message</td> */}
+                    <td className="text-[#B02A37]">Deactivate</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+            {!states?.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                states?.length / 10 ||
-                (filteredStates && filteredStates?.length / 10)
-              }
+              pages={statescount / 10}
             />
           </div>
         </div>

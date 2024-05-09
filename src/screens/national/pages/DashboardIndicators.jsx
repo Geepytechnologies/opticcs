@@ -22,7 +22,7 @@ const DashboardIndicators = () => {
   const [chart, setChart] = useState("all");
   const [chartParam, setChartParam] = useState("all");
   const [indicatorsearchparam, setindicatorsearchparam] = useState({
-    query: "",
+    query: "national",
     state: "",
     lga: "",
   });

@@ -9,61 +9,40 @@ import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import { downloadTable } from "../../../utils/helpers";
 import { useRef } from "react";
+import NationalFilterbox from "../components/NationalFilterbox";
+import Notfound from "../../../components/Notfound";
 
 const HealthFacility = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["healthfacilityname", "healthfacilityID", "ward"];
+  const filterdata = ["state", "lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
+  const [filteritem, setFilteritem] = useState("national");
   const [searchitem, setSearchitem] = useState();
   const formattedDateFrom = moment(selectedDateFrom).format("yyyy-MM-DD");
   const formattedDateTo = moment(selectedDateTo).format("yyyy-MM-DD");
   const [healthFacilities, setHealthfacilities] = useState();
+  const [healthFacilitiesCount, setHealthfacilitiesCount] = useState();
   //pagination
-  const [currentpage, setCurrentpage] = useState(1);
+  const [currentpage, setCurrentpage] = useState({
+    value: 1,
+    isPagination: false,
+  });
   const getHealthfacilities = async () => {
     try {
-      const res = await axiosInstance.get("/admin/healthfacility/find");
-      setHealthfacilities(res.data);
+      const res = await axiosInstance.get(
+        `/admin/healthfacility/find/all?page=${currentpage.value}&state=${searchitem.state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
+      );
+      console.log(res.data);
+      setHealthfacilities(res.data.result);
+      setHealthfacilitiesCount(res.data.count);
     } catch (err) {}
   };
   useEffect(() => {
     getHealthfacilities();
-  }, []);
-  const filterhealthfacility = (healthFacilities, searchitem, filter) => {
-    if (!healthFacilities) return []; // Return an empty array if patients is falsy
+  }, [currentpage.value, filteritem, searchitem]);
 
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else if (searchitem) {
-      return healthFacilities.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-    } else if (selectedDateFrom && selectedDateTo) {
-      return healthFacilities.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-    } else {
-      return healthFacilities;
-    }
-  };
-  const filteredHealthfacilities = filterhealthfacility(
-    healthFacilities,
-    searchitem,
-    filter
-  );
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
@@ -86,7 +65,7 @@ const HealthFacility = () => {
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <NationalFilterbox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -95,6 +74,8 @@ const HealthFacility = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
         <div className="pl-6">
           {/* download csv */}
@@ -120,39 +101,30 @@ const HealthFacility = () => {
                 </tr>
               </thead>
               <tbody>
-                {healthFacilities
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredHealthfacilities
-                      : healthFacilities
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                      >
-                        <td>{item.id}</td>
-                        <td>
-                          {capitalizeFirstLetter(item.healthfacilityname)}
-                        </td>
-                        <td>{item.healthfacilityID}</td>
-                        <td>{item.ward}</td>
-                        <td>{moment(item.createdat).fromNow()}</td>
-                        {/* <td className='text-primary90'>Message</td> */}
-                        <td className="text-[#B02A37]">Deactivate</td>
-                      </tr>
-                    ))
-                  : null}
+                {healthFacilities?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{item.id}</td>
+                    <td>{capitalizeFirstLetter(item.healthfacilityname)}</td>
+                    <td>{item.healthfacilityID}</td>
+                    <td>{item.ward}</td>
+                    <td>{moment(item.createdat).fromNow()}</td>
+                    {/* <td className='text-primary90'>Message</td> */}
+                    <td className="text-[#B02A37]">Deactivate</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+            {!healthFacilities?.length && <Notfound />}
+
             {/* pagination */}
             <Pagination
               currentpage={currentpage}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                healthFacilities?.length / 10 ||
-                (filteredHealthfacilities &&
-                  filteredHealthfacilities?.length / 10)
-              }
+              pages={healthFacilitiesCount / 10}
             />
           </div>
         </div>

@@ -57,7 +57,10 @@ const IndicatorNavigatorScreen4 = ({ param }) => {
           {/* The bar chart diagram */}
           <GenericPie
             colors={["#F3722C", "#14A673"]}
-            series={[testresult?.hiv?.positive, testresult?.hiv?.negative]}
+            series={[
+              Number(testresult?.hiv?.positive),
+              Number(testresult?.hiv?.negative),
+            ]}
           />
           {/* info about chart */}
           <div className="flex gap-7 px-2">
@@ -89,8 +92,8 @@ const IndicatorNavigatorScreen4 = ({ param }) => {
           <GenericPie
             colors={["#F3722C", "#14A673"]}
             series={[
-              testresult?.malariarapid?.positive,
-              testresult?.malariarapid?.negative,
+              Number(testresult?.malariarapid?.positive),
+              Number(testresult?.malariarapid?.negative),
             ]}
           />
           {/* info about chart */}

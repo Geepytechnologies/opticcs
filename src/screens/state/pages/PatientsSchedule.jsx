@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 import { LuCalendarDays } from "react-icons/lu";
 import Filterbox from "../../../components/Filterbox";
 import Pagination from "../../../components/Pagination";
 import axiosInstance from "../../../utils/axios";
-import { useAuth } from "../hooks/useAuth";
 import moment from "moment";
-import Csvbutton from "../../../components/Csvbutton";
+import { downloadTable } from "../../../utils/helpers";
 import Notfound from "../../../components/Notfound";
+import { useAuth } from "../hooks/useAuth";
+import StateFilterBox from "../components/StateFilterBox";
 
 const PatientsSchedule = () => {
   const { stateAuth } = useAuth();
@@ -14,62 +17,43 @@ const PatientsSchedule = () => {
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
-  const filterdata = ["firstname", "state", "lga", "healthFacility"];
+  const filterdata = ["lga", "healthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [searchitem, setSearchitem] = useState();
+  const [filteritem, setFilteritem] = useState("state");
+
+  const [searchitem, setSearchitem] = useState({
+    state: "all",
+    lga: "all",
+    healthFacility: "all",
+    datefrom: "",
+    dateto: "",
+  });
   //pagination
   const [currentpage, setCurrentpage] = useState({
     value: 1,
     isPagination: false,
   });
   const [patientsSchedule, setPatientsSchedule] = useState();
-  const array = [1, 2, 3, 4];
+  const [totalPatientsSchedule, setTotalPatientsSchedule] = useState();
+
   const getAllPatientschedule = async () => {
     try {
-      const res = await axiosInstance.get("/users/schedule/find/all");
-      const statepatientschedule = res.data.result.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/admin/schedule/getAllSchedule?page=${currentpage.value}&state=${state}&lga=${searchitem.lga}&healthfacility=${searchitem.healthFacility}&from=${searchitem.datefrom}&to=${searchitem.dateto}&filter=${filteritem}`
       );
-
-      setPatientsSchedule(statepatientschedule);
-    } catch (error) {}
+      console.log(res.data);
+      setPatientsSchedule(res.data.result);
+      setTotalPatientsSchedule(res.data.count);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getAllPatientschedule();
-  }, []);
+  }, [currentpage.value, filteritem, searchitem]);
+
   const tableRef = useRef();
-  const filterPatients = (patientsSchedule, searchitem, filter) => {
-    if (!patientsSchedule) return [];
-    let filteredpage;
-    if (searchitem && selectedDateFrom && selectedDateTo) {
-      filteredpage = patients.filter(
-        (item) =>
-          item[filter].toLowerCase().includes(searchitem.toLowerCase()) &&
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else if (searchitem) {
-      filteredpage = patientsSchedule.filter((item) =>
-        item[filter].toLowerCase().includes(searchitem.toLowerCase())
-      );
-      return filteredpage;
-    } else if (selectedDateFrom && selectedDateTo) {
-      filteredpage = patientsSchedule.filter(
-        (item) =>
-          new Date(item.createdat).getTime() >=
-            new Date(selectedDateFrom).getTime() &&
-          new Date(item.createdat).getTime() <=
-            new Date(selectedDateTo).getTime()
-      );
-      return filteredpage;
-    } else {
-      return patientsSchedule;
-    }
-  };
-  const filteredPatients = filterPatients(patientsSchedule, searchitem, filter);
+
   return (
     <div>
       <div className="bg-primary10">
@@ -81,14 +65,10 @@ const PatientsSchedule = () => {
               Patients Schedule
             </p>
           </div>
-          {/* <div className='flex gap-2 justify-end'>
-                        <input className='outline-0 bg-transparent text-[14px] font-[400] rounded-[8px] border-secondary30 border p-2' placeholder="Patient, or SPHC or CLGA" />
-                        <button className="bg-primary90 p-2 text-light10 rounded-[8px]">Search</button>
-                    </div> */}
         </div>
 
         {/* selectbox1 */}
-        <Filterbox
+        <StateFilterBox
           filterdata={filterdata}
           selectedDateTo={selectedDateTo}
           setSearchitem={setSearchitem}
@@ -97,9 +77,18 @@ const PatientsSchedule = () => {
           setSelectedDateFrom={setSelectedDateFrom}
           setFilter={setFilter}
           filter={filter}
+          filteritem={filteritem}
+          setFilteritem={setFilteritem}
         />
-
-        <Csvbutton tableName={"Patients Schedule"} tableRef={tableRef} />
+        <div className="pl-6">
+          {/* download csv */}
+          <button
+            onClick={() => downloadTable(tableRef, "Patients Schedule")}
+            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
+          >
+            Download CSV
+          </button>
+        </div>
         {/* patients table */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">
@@ -115,51 +104,35 @@ const PatientsSchedule = () => {
                 </tr>
               </thead>
               <tbody>
-                {patientsSchedule
-                  ? (searchitem || (selectedDateTo && selectedDateFrom)
-                      ? filteredPatients
-                      : patientsSchedule
-                    )
-                      .slice(
-                        10 * currentpage.value - 10,
-                        10 * currentpage.value
-                      )
-                      .map((item, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                        >
-                          <td>{index + 1}</td>
-                          <td>{item.firstname}</td>
-                          <td>{item.patient_id}</td>
-                          <td>{item.healthFacility}</td>
-                          <td>{`from ${moment(item.datefrom).format(
-                            "yyyy-MM-DD"
-                          )} to ${moment(item.dateto).format(
-                            "yyyy-MM-DD"
-                          )}`}</td>
-                          {item.completed == 1 ? (
-                            <td className="text-primary70">{`Completed`}</td>
-                          ) : (
-                            <td className="text-[#CC9A06]">{` Not Completed`}</td>
-                          )}
-                        </tr>
-                      ))
-                  : null}
+                {patientsSchedule?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{index + 1}</td>
+                    <td>{item.firstname}</td>
+                    <td>{item.patient_id}</td>
+                    <td>{item.healthfacility}</td>
+                    <td>{`from ${moment(item.datefrom).format(
+                      "yyyy-MM-DD"
+                    )} to ${moment(item.dateto).format("yyyy-MM-DD")}`}</td>
+                    {item.completed == 1 ? (
+                      <td className="text-primary70">{`Completed`}</td>
+                    ) : (
+                      <td className="text-[#CC9A06]">{` Not Completed`}</td>
+                    )}
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {!filteredPatients.length && <Notfound />}
+            {!patientsSchedule?.length && <Notfound />}
 
             {/* pagination */}
             <Pagination
-              currentpage={currentpage}
+              currentpage={currentpage.value}
               setCurrentpage={setCurrentpage}
               displaynum={10}
-              pages={
-                filteredPatients
-                  ? filteredPatients.length / 10
-                  : patientsSchedule?.length / 10
-              }
+              pages={totalPatientsSchedule / 10}
             />
           </div>
         </div>

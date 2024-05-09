@@ -10,54 +10,68 @@ import "react-datepicker/dist/react-datepicker.css";
 import axiosInstance from "../../../utils/axios";
 import Filterbox from "../../../components/Filterbox";
 import stateLocalGovts from "../../../utils/stateandlgas";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../hooks/useAuth";
 
 const DashboardIndicators = () => {
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
+  const [selectedDateTo, setSelectedDateTo] = useState(new Date());
+  const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
   const [localGovts, setLocalGovts] = useState([]);
-  const [statesearch, setStatesearch] = useState("all");
+  const [statesearch, setStatesearch] = useState("");
   const [lgasearch, setLgasearch] = useState("all");
   const [ward, setWard] = useState("all");
-  const [lgaAccounts, setLgaAccounts] = useState();
-  const [chartParam, setChartParam] = useState("all");
   const [chart, setChart] = useState("all");
-
+  const [chartParam, setChartParam] = useState("all");
   const [indicatorsearchparam, setindicatorsearchparam] = useState({
-    query: "",
+    query: "state",
     state: "",
     lga: "",
   });
+  const [anc, setAnc] = useState("2");
+
+  const handleANC = (e) => {
+    console.log(e.target.value);
+    setAnc(e.target.value);
+  };
 
   //navigation
   const [navigatorSlide, setNavigatorSlide] = useState(1);
   //data
   const [patients, setPatients] = useState(0);
+  const [stateAccounts, setStateAccounts] = useState();
+  const [lgaAccounts, setLgaAccounts] = useState();
   const [datainfo, setDatainfo] = useState();
   const [datainforeturn, setDatainforeturn] = useState([]);
 
-  //:::utility functions::://
+  //::::API CALL FUNCTIONS --start::://
+  const getAllStates = async () => {
+    const result = await axiosInstance.get("/admin/state/data/find/states");
+    setStateAccounts(result.data);
+    return result.data;
+  };
   const getIndicatordata = async () => {
     try {
-      const res = await axiosInstance.get(
-        `/admin/state/data/general?state=${state}`
-      );
+      const res = await axiosInstance.get("/admin/national/data/general");
       setDatainfo(Object.keys(res.data));
+      return Object.keys(res.data);
     } catch (error) {}
   };
-  const getAllLga = async (state) => {
-    const result = await axiosInstance.get(
-      `/admin/lga/data/find/lga?state=${state}`
-    );
-    setLgaAccounts(result.data);
+  const getAllPatients = async () => {
+    try {
+      const res = await axiosInstance.get("/patients/find");
+      setPatients(res.data.result.length);
+      return res.data.result.length;
+    } catch (err) {}
   };
-
   const getAllStatePatients = async () => {
     try {
       const res = await axiosInstance.get(
-        `/patients/state/find?state=${state}`
+        `/patients/state/find?state=${statesearch}`
       );
       setPatients(res.data.result.length);
+      return res.data.result.length;
     } catch (err) {}
   };
   const getAllLgaPatients = async () => {
@@ -66,17 +80,30 @@ const DashboardIndicators = () => {
         `/patients/lga/find?lga=${lgasearch}`
       );
       setPatients(res.data.result.length);
+      return res.data.result.length;
     } catch (err) {}
   };
+  const getAllLga = async () => {
+    const result = await axiosInstance.get(
+      `/admin/lga/data/find/lga?state=${state}`
+    );
+    setLgaAccounts(result.data);
+    return result.data;
+  };
+  useEffect(() => {
+    getAllLga();
+  }, []);
   const getIndicatordatareturn = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/national/data/general/return?state=${state}`
+        `/admin/national/data/general/return?anc=${anc}`
       );
       setDatainforeturn(Object.keys(res.data));
+      return Object.keys(res.data);
     } catch (error) {}
   };
-  //:::utility functions end::://
+
+  //::::API CALL FUNCTIONS --end::://
 
   //:::Filter Box options:::///
   const Firstvisitoption = () => {
@@ -116,18 +143,49 @@ const DashboardIndicators = () => {
       <option value={"schedule"}>{capitalizeFirstLetter("Schedule")}</option>
     </>
   );
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["returnvisit", anc],
+    queryFn: getIndicatordatareturn,
+  });
+  const { refetch: IndicatorData } = useQuery({
+    queryKey: ["indicatordata"],
+    queryFn: getIndicatordata,
+  });
+  const { refetch: AllStates } = useQuery({
+    queryKey: ["states"],
+    queryFn: getAllStates,
+  });
+  const { refetch: getNationalPatients } = useQuery({
+    queryKey: ["nationalpatients"],
+    queryFn: getAllPatients,
+  });
+  const { refetch: getStatePatients } = useQuery({
+    queryKey: ["statepatients"],
+    queryFn: getAllStatePatients,
+    enabled: false,
+  });
+  const { refetch: getLgaPatients } = useQuery({
+    queryKey: ["lgapatients"],
+    queryFn: getAllLgaPatients,
+    enabled: false,
+  });
+  //:::UseEffect calls:::///
+  // useEffect(() => {
+  //   getAllStates();
+  //   getIndicatordata();
+  //   getAllPatients();
+  //   // getIndicatordatareturn();
+  // }, []);
 
-  //::::API CALLS:::://
-  useEffect(() => {
-    getAllLga(state);
-    getAllStatePatients();
-    getIndicatordata();
-    getIndicatordatareturn();
-  }, []);
+  //:::sort states alphabetically::://
+  const sortedstates = stateAccounts?.sort((a, b) =>
+    a.state.localeCompare(b.state)
+  );
 
   let componentToRender;
   let optionToRender;
 
+  //::::Navigator switch:::://
   switch (navigatorSlide) {
     case 1:
       componentToRender = (
@@ -146,6 +204,7 @@ const DashboardIndicators = () => {
         <IndicatorNavigatorScreen3
           param={indicatorsearchparam}
           chart={chartParam}
+          anc={anc}
         />
       );
       optionToRender = <Returnvisitoption />;
@@ -170,9 +229,20 @@ const DashboardIndicators = () => {
       break;
   }
 
-  //:::form handlers::://
+  //:::::form handlers:::://
+  const handleDateToChange = (date) => {
+    if (date >= selectedDateFrom) {
+      setSelectedDateTo(date);
+    }
+  };
+  const handleDateFromChange = (date) => {
+    if (date <= Date.now()) {
+      setSelectedDateFrom(date);
+    }
+  };
   const handlestate = (e) => {
     setStatesearch(e.target.value);
+    getAllLga(e.target.value);
   };
   const handlelgasearch = (e) => {
     setLgasearch(e.target.value);
@@ -180,67 +250,87 @@ const DashboardIndicators = () => {
   const handlesearchsubmit = async () => {
     let searchquery;
     try {
-      if (lgasearch == "all") {
+      if (statesearch == "all") {
+        searchquery = "national";
+        setindicatorsearchparam({
+          query: searchquery,
+          state: statesearch,
+          lga: lgasearch,
+        });
+        getNationalPatients();
+      }
+      if (statesearch !== "all" && lgasearch == "all") {
         searchquery = "state";
         setindicatorsearchparam({
           query: searchquery,
-          state: "",
+          state: statesearch,
           lga: lgasearch,
         });
-        getAllStatePatients();
+        getStatePatients();
       }
-      if (lgasearch !== "all") {
+      if (statesearch !== "all" && lgasearch !== "all") {
         searchquery = "lga";
         setindicatorsearchparam({
           query: searchquery,
-          state: "",
+          state: statesearch,
           lga: lgasearch,
         });
-        getAllLgaPatients();
+        getLgaPatients();
       }
-      // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
       setChartParam(chart);
+      // setindicatorsearchparam({ query: searchquery, state: statesearch, lga: lgasearch })
     } catch (error) {}
   };
-  //::end:://
 
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
   useEffect(() => {
-    setLocalGovts(stateLocalGovts[capitalizeFirstLetter(state)]);
-  }, []);
+    if (statesearch !== "all") {
+      setLocalGovts(stateLocalGovts[capitalizeFirstLetter(statesearch)]);
+    }
+  }, [statesearch]);
 
-  //::searchbox:://
+  //:::SEARCH BOX::://
   const Mysearchbox = () => {
     return (
       <div className="w-full flex items-center justify-center my-5">
         <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row  items-center justify-center gap-6">
           {/* 1 */}
-
-          {/* 2 */}
-          {/* {statesearch !== 'all' && */}
           <div className="flex flex-col">
-            {/* <label className='text-primary90 font-[400]'>LGA</label> */}
+            <label className="text-primary90 font-[400]">Filter</label>
             <select
-              name="lga"
-              onChange={handlelgasearch}
-              value={lgasearch}
-              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              defaultValue=""
+              onChange={(e) => setFilter(e.target.value)}
+              className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] min-w-[180px] border border-[#C6C7C880]"
             >
-              <option value="all">All LGA</option>
-              {lgaAccounts?.map((localGovt, index) => (
-                <option key={index} value={localGovt.lga}>
-                  {localGovt.lga}
-                </option>
-              ))}
+              <option>{"Lga"}</option>
             </select>
           </div>
-          {/* } */}
+
+          {/* 2 */}
+          {statesearch !== "all" && (
+            <div className="flex flex-col">
+              <label className="text-primary90 font-[400]">LGA</label>
+              <select
+                name="lga"
+                onChange={handlelgasearch}
+                value={lgasearch}
+                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              >
+                <option value="">All LGA</option>
+                {lgaAccounts?.map((localGovt, index) => (
+                  <option key={index} value={localGovt.lga}>
+                    {localGovt.lga}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           {/* 3 */}
           {lgasearch !== "all" && (
             <div className="flex flex-col">
-              {/* <label className='text-primary90 font-[400]'>Ward</label> */}
+              <label className="text-primary90 font-[400]">Ward</label>
               <select
                 defaultValue=""
                 onChange={(e) => setWard(e.target.value)}
@@ -250,6 +340,30 @@ const DashboardIndicators = () => {
               </select>
             </div>
           )}
+          {/* date from */}
+          {/* <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Date From</label>
+            <DatePicker
+              className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+              placeholderText="choose Date"
+              selected={selectedDateFrom}
+              onChange={(date) => handleDateFromChange(date)}
+              dateFormat="yyyy-MM-dd"
+              defaultValue={selectedDateFrom}
+            />
+          </div> */}
+          {/* date to */}
+          {/* <div className="flex flex-col">
+            <label className="text-primary90 font-[400]">Date To</label>
+            <DatePicker
+              className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880]"
+              placeholderText="choose Date"
+              selected={selectedDateTo}
+              onChange={(date) => handleDateToChange(date)}
+              dateFormat="yyyy-MM-dd"
+              defaultValue={selectedDateTo}
+            />
+          </div> */}
           {/* 4 */}
           <div className="flex flex-col">
             <label className="text-primary90 font-[400]">Chart</label>
@@ -263,6 +377,7 @@ const DashboardIndicators = () => {
               {optionToRender}
             </select>
           </div>
+          {/* 5 button */}
           <div className="flex gap-2 justify-end ml-6">
             <button
               onClick={handlesearchsubmit}
@@ -311,13 +426,22 @@ const DashboardIndicators = () => {
                 {/* <div onClick={() => setNavigatorSlide(2)} className={`cursor-pointer text-center ${navigatorSlide === 2 ? 'text-primary70 border-b-4 font-[500] pb-2 border-primary70' : "text-light90 pb-2 font-[500]"}`}>First Visit</div> */}
                 <div
                   onClick={() => setNavigatorSlide(3)}
-                  className={`cursor-pointer text-center ${
+                  className={`cursor-pointer flex items-center gap-2 text-center ${
                     navigatorSlide === 3
                       ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
                       : "text-light90 pb-2 font-[500]"
                   }`}
                 >
-                  Return Visit
+                  <p>Return Visit</p>
+                  <select onChange={handleANC} className="outline-0">
+                    <option value="2">ANC 2</option>
+                    <option value={"3"}>ANC 3</option>
+                    <option value={"4"}>ANC 4</option>
+                    <option value={"5"}>ANC 5</option>
+                    <option value={"6"}>ANC 6</option>
+                    <option value={"7"}>ANC 7</option>
+                    <option value={"8"}>ANC 8</option>
+                  </select>
                 </div>
                 <div
                   onClick={() => setNavigatorSlide(4)}
@@ -339,10 +463,6 @@ const DashboardIndicators = () => {
                 >
                   Antenatal Schedule
                 </div>
-              </div>
-              <div className="font-[500] flex-1 text-center">
-                <span className="text-primary70">{patients} </span>Patient{" "}
-                {patients > 1 ? "Records" : "Record"}
               </div>
             </div>
             {/* navigator screen slides */}

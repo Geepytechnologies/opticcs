@@ -50,7 +50,7 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
       {/* {param.query == "state" && <p className="text-primary90 m-3 text-center font-[500] text-[14px]">Showing results for National...</p>} */}
       {param.query == "" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for State...
+          {`Showing results for ${state} state...`}
         </p>
       )}
       {param.query == "state" && (

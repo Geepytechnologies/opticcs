@@ -29,16 +29,19 @@ const CreateStateAccount = () => {
   const handleToastClose = () => {
     setShowToast(false);
   };
-  const getwardsForLGA = async () => {
+  const getAllWards = async () => {
     try {
       const result = await axiosInstance.get(
-        `/admin/healthfacility/find/lga?lga=${lga}`
+        `/admin/wards/getAllWardsForLga?lga=${lga}`
       );
-      setWards(result.data);
-    } catch (error) {}
+      setWards(result.data.result);
+    } catch (error) {
+      throw new Error(error);
+    }
   };
+
   useEffect(() => {
-    // getwardsForLGA();
+    getAllWards();
   }, []);
   const [values, setValues] = useState({
     ward: "",
@@ -121,21 +124,6 @@ const CreateStateAccount = () => {
       setPhoneError({ status: true, message: "This field is required" });
       noErrors = false;
     }
-    // if (values.email === "") {
-    //     setEmailError({ status: true, message: "This field is required" });
-    //     noErrors = false;
-    // }
-    // if (values.userid === "") {
-    //     setUseridError({ status: true, message: "This field is required" });
-    //     noErrors = false;
-    // }
-    // if (values.password === "") {
-    //     setPasswordError({ status: true, message: "This field is required" });
-    //     noErrors = false;
-    // }
-    // if (!valuesofficeaddressmatch) {
-    //     noErrors = false;
-    // }
 
     return noErrors;
   };
@@ -264,8 +252,8 @@ const CreateStateAccount = () => {
                   Choose a value
                 </option>
                 {wards?.map((item, index) => (
-                  <option key={index} value={item.healthfacilityname}>
-                    {item.healthfacilityname}
+                  <option key={index} value={item.id}>
+                    {item.ward}
                   </option>
                 ))}
               </select>

@@ -36,7 +36,6 @@ const IndicatorNavigatorScreen5 = ({ param }) => {
   useEffect(() => {
     getstateschedule();
   }, []);
-  console.log(schedule);
   return (
     <div>
       {/* chart 1 */}

@@ -34,21 +34,22 @@ const DashboardHome = () => {
   //   console.log(filter, " ", "from dashboard state");
   const getAllHealthWorkers = async () => {
     try {
-      const res = await axiosInstance.get("/users/find");
-      const stateworkers = res.data.result.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/users/find/filtered?filter=${filteritem}&state=${state}`
       );
-      setHealthWorkers(stateworkers.length);
+      setHealthWorkers(res.data.count);
     } catch (err) {}
   };
   const getAllPatients = async () => {
     try {
-      const res = await axiosInstance.get("/patients/findwithworkers");
-      const statepatients = res.data.result.filter(
-        (obj) => obj.state.toLowerCase() == stateAuth.others.state.toLowerCase()
+      const res = await axiosInstance.get(
+        `/patients/findwithworkers?filter=${filteritem}&state=${state}`
       );
-      setPatients(statepatients.length);
-    } catch (err) {}
+
+      setPatients(res.data.count);
+    } catch (err) {
+      throw new Error(err);
+    }
   };
   const getAllLGAs = async () => {
     try {
@@ -271,6 +272,16 @@ const DashboardHome = () => {
                 onClick={() => setNavigatorSlide(4)}
                 className={`cursor-pointer text-center ${
                   navigatorSlide === 4
+                    ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                    : "text-light90 pb-2 font-[500]"
+                }`}
+              >
+                Intermediate Result 3
+              </div>
+              <div
+                onClick={() => setNavigatorSlide(5)}
+                className={`cursor-pointer text-center ${
+                  navigatorSlide === 5
                     ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
                     : "text-light90 pb-2 font-[500]"
                 }`}
