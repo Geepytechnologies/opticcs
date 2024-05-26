@@ -35,6 +35,7 @@ import HealthfacilityLogin from "./screens/healthFacility/pages/HealthfacilityLo
 import NationalLoginRecovery from "./screens/national/pages/NationalLoginRecovery";
 import NationalRecoveryConfirm from "./screens/national/pages/NationalRecoveryConfirm";
 import NationalResetPassword from "./screens/national/pages/NationalResetPassword";
+import DeletingAnAccount from "./components/DeletingAnAccount";
 
 function App() {
   const { auth } = useAuth();
@@ -53,6 +54,10 @@ function App() {
           </Route>
         </Route>
         <Route path="/" element={<LandingPage />}></Route>
+        <Route
+          path="/deleting-an-account"
+          element={<DeletingAnAccount />}
+        ></Route>
         <Route element={<PersistNationalLogin />}>
           <Route element={<RequireNationalAuth />}>
             <Route path="/national/*" element={<NationalApp />}></Route>

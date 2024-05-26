@@ -93,7 +93,7 @@ const StateLogin = () => {
           >
             <img src="/images/ED-(1).png" className="h-[30px] md:h-[40px]" />
             <span className="text-[#027D52] font-popp text-[25px] md:text-[43.441px] font-[700]">
-              OptiCCS
+              iANC
             </span>
           </Link>
           <img src="/images/partnerlogo.svg" />
