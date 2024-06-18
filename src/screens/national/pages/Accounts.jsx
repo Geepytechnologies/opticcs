@@ -35,9 +35,7 @@ const Accounts = () => {
     case 4:
       componentToRender = <StateList />;
       break;
-    case 5:
-      componentToRender = <CreateWards />;
-      break;
+
     default:
       componentToRender = null;
       break;
@@ -97,16 +95,6 @@ const Accounts = () => {
                 }`}
               >
                 State List
-              </div>
-              <div
-                onClick={() => setNavigatorSlide(5)}
-                className={`cursor-pointer text-center ${
-                  navigatorSlide === 5
-                    ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
-                    : "text-light90 pb-2 font-[500]"
-                }`}
-              >
-                Create Wards
               </div>
             </div>
 

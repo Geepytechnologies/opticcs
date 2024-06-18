@@ -38,12 +38,7 @@ const LgaFilterBox = ({
 
   const [lgaAccounts, setLgaAccounts] = useState();
   const [hfAccounts, setHfAccounts] = useState();
-  // console.log(lgaAccounts);
-  //   useEffect(() => {
-  //     if (search.lga == "all") {
-  //       setFilter("state");
-  //     }
-  //   }, []);
+
   useEffect(() => {
     if (filter == "lga") {
       setSearch({ state: state, lga: "all", healthfacility: "all" });
@@ -150,13 +145,15 @@ const LgaFilterBox = ({
   };
 
   const handleDateToChange = (date) => {
-    if (date >= selectedDateFrom) {
+    if (date <= Date.now()) {
       setSelectedDateTo(date);
       setSearchitem((prev) => ({
         ...prev,
         dateto: moment(date).format("YYYY-MM-DD"),
         datefrom: moment(selectedDateFrom).format("YYYY-MM-DD"),
       }));
+    } else {
+      alert("Please select a valid date");
     }
   };
   const handleDateFromChange = (date) => {
@@ -166,6 +163,8 @@ const LgaFilterBox = ({
       //   ...prev,
       //   datefrom: date,
       // }));
+    } else {
+      alert("Please select a valid date");
     }
   };
   const capitalizeFirstLetter = (word) => {

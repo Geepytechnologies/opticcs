@@ -49,7 +49,7 @@ const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
             className="w-[80px] h-[80px] flex items-center justify-center"
           >
             <img
-              src="/images/Logo.png"
+              src="/images/Logo.svg"
               alt="logo"
               className="max-w-full max-h-full"
             />

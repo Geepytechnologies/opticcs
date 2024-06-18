@@ -37,24 +37,13 @@ const Patients = () => {
     datefrom: "",
     dateto: "",
   });
-  // console.log(
-  //   searchitem,
-  //   moment(selectedDateFrom).format("YYYY-MM-DD"),
-  //   selectedDateTo
-  // );
-  //
-  console.log(filteritem, ": ", "filteritem");
+
   const [isActive, setIsActive] = useState(1);
   const [currentpage, setCurrentpage] = useState({
     value: 1,
     isPagination: false,
   });
 
-  // const { patients, totalPatients } = usePatients(
-  //   searchitem,
-  //   filter,
-  //   currentpage
-  // );
   const getPatients = async () => {
     try {
       const res = await axiosInstance.get(

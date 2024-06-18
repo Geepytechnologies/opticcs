@@ -11,6 +11,8 @@ import Filterbox from "../../../components/Filterbox";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import IntermediateResult3 from "../components/IntermediateResult3";
+import HealthfacilityFilterBox from "../components/HealthfacilityFilterBox";
+import { downloadTable } from "../../../utils/helpers";
 
 const DashboardHome = () => {
   const { healthfacilityAuth } = useAuth();
@@ -20,8 +22,8 @@ const DashboardHome = () => {
   const [selectedDateFrom, setSelectedDateFrom] = useState();
   const filterdata = ["HealthFacility"];
   const [filter, setFilter] = useState(filterdata[0]);
-  const [filteritem, setFilteritem] = useState();
-  const [searchitem, setSearchitem] = useState();
+  const [filteritem, setFilteritem] = useState("healthfacility");
+  const [searchitem, setSearchitem] = useState({ dateto: "", datefrom: "" });
 
   //pagination
   const [navigatorSlide, setNavigatorSlide] = useState(1);
@@ -66,55 +68,9 @@ const DashboardHome = () => {
   };
 
   useEffect(() => {
-    // Load MathJax when the component mounts
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML";
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      // Remove the MathJax script when the component unmounts
-      document.head.removeChild(script);
-    };
-  }, []);
-  useEffect(() => {
     getAllHealthWorkers();
     getAllPatients();
-    // getAllstates()
-    // getHealthfacilities()
   }, []);
-  function downloadTable() {
-    const table = tableRef.current;
-
-    if (table) {
-      const rows = Array.from(table.rows);
-      const headers = Array.from(rows.shift()?.cells || []).map(
-        (cell) => cell.textContent
-      );
-      const csv = [headers.join(",")];
-
-      for (const row of rows) {
-        const cells = Array.from(row.cells).map((cell) => cell.textContent);
-        csv.push(cells.join(","));
-      }
-
-      const blob = new Blob([csv.join("\n")], {
-        type: "text/csv;charset=utf-8;",
-      });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", "mytable.csv");
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      alert("Table downloaded as CSV!");
-    }
-  }
 
   let componentToRender;
 
@@ -211,13 +167,21 @@ const DashboardHome = () => {
         {/* download csv */}
         <div className="flex items-center justify-end mt-[40px] pr-4">
           <button
-            onClick={downloadTable}
+            onClick={() => downloadTable(tableRef, "Health facility Data")}
             className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
           >
             Download CSV
           </button>
         </div>
         {/* selectbox1 */}
+        <HealthfacilityFilterBox
+          filterdata={filterdata}
+          selectedDateTo={selectedDateTo}
+          setSearchitem={setSearchitem}
+          setSelectedDateTo={setSelectedDateTo}
+          selectedDateFrom={selectedDateFrom}
+          setSelectedDateFrom={setSelectedDateFrom}
+        />
         {/* indicator outcome */}
         <div className="w-full flex items-center justify-center my-5">
           <div className="bg-white w-[95%] flex flex-col items-center justify-start pl-6 py-4">

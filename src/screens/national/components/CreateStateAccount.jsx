@@ -3,6 +3,7 @@ import axiosInstance from "../../../utils/axios";
 import LoaderSmall from "../../../components/LoaderSmall";
 import axios from "axios";
 import { showError, showSuccess } from "../../../utils/Toastmessage";
+import ToastBox from "../../../utils/ToastBox";
 
 const CreateStateAccount = () => {
   const [loading, setLoading] = useState(false);
@@ -155,6 +156,7 @@ const CreateStateAccount = () => {
   };
   return (
     <div>
+      <ToastBox />
       <form onSubmit={createAccount} className="mt-12">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
           <div className="flex flex-col">

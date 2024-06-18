@@ -17,6 +17,7 @@ const IndicatorNavigatorScreen1 = ({ param, chart }) => {
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get("/admin/national/data/general");
+      console.log(res.data);
       setDatainfo(res.data);
       return res.data;
     } catch (error) {}

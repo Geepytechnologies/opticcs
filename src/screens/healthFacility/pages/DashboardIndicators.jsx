@@ -21,6 +21,12 @@ const DashboardIndicators = () => {
   const [chartParam, setChartParam] = useState("all");
   const [chart, setChart] = useState("all");
 
+  const [anc, setAnc] = useState("2");
+
+  const handleANC = (e) => {
+    setAnc(e.target.value);
+  };
+
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get(
@@ -90,7 +96,9 @@ const DashboardIndicators = () => {
       componentToRender = <IndicatorNavigatorScreen2 chart={chartParam} />;
       break;
     case 3:
-      componentToRender = <IndicatorNavigatorScreen3 chart={chartParam} />;
+      componentToRender = (
+        <IndicatorNavigatorScreen3 chart={chartParam} anc={anc} />
+      );
       optionToRender = <Returnvisitoption />;
       break;
     case 4:
@@ -203,6 +211,15 @@ const DashboardIndicators = () => {
                   }`}
                 >
                   Return Visit
+                  <select onChange={handleANC} className="outline-0">
+                    <option value="2">ANC 2</option>
+                    <option value={"3"}>ANC 3</option>
+                    <option value={"4"}>ANC 4</option>
+                    <option value={"5"}>ANC 5</option>
+                    <option value={"6"}>ANC 6</option>
+                    <option value={"7"}>ANC 7</option>
+                    <option value={"8"}>ANC 8</option>
+                  </select>
                 </div>
                 <div
                   onClick={() => setNavigatorSlide(4)}

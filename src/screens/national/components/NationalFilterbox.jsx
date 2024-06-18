@@ -184,18 +184,22 @@ const NationalFilterbox = ({
   };
 
   const handleDateToChange = (date) => {
-    if (date >= selectedDateFrom) {
+    if (date <= Date.now()) {
       setSelectedDateTo(date);
       setSearchitem((prev) => ({
         ...prev,
         dateto: moment(date).format("YYYY-MM-DD"),
         datefrom: moment(selectedDateFrom).format("YYYY-MM-DD"),
       }));
+    } else {
+      alert("Please select a valid date");
     }
   };
   const handleDateFromChange = (date) => {
     if (date <= Date.now()) {
       setSelectedDateFrom(date);
+    } else {
+      alert("Please select a valid date");
     }
   };
   const capitalizeFirstLetter = (word) => {

@@ -4,6 +4,8 @@ import { useAuth } from "../hooks/useAuth";
 import axiosInstance from "../../../utils/axios";
 import LoaderSmall from "../../../components/LoaderSmall";
 import CustomToast from "../../../components/CustomToast";
+import { showError, showSuccess } from "../../../utils/Toastmessage";
+import ToastBox from "../../../utils/ToastBox";
 
 const CreateStateAccount = () => {
   const [localGovts, setLocalGovts] = useState([]);
@@ -181,7 +183,7 @@ const CreateStateAccount = () => {
         email: values.email,
       });
       if (res.data) {
-        alert("LGA Account has been created");
+        showSuccess("LGA Account has been created");
         setValues({
           lga: "",
           lgaboard: "",
@@ -194,19 +196,14 @@ const CreateStateAccount = () => {
         });
       }
     } catch (error) {
+      showError("An Error occurred");
     } finally {
       setLoading(false);
     }
   };
   return (
     <>
-      {showToast && (
-        <CustomToast
-          toastmessage={toastmessage}
-          onClose={handleToastClose}
-          status={toastStatus}
-        />
-      )}
+      <ToastBox />
       <div>
         <form onSubmit={createAccount} className="mt-12">
           <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">

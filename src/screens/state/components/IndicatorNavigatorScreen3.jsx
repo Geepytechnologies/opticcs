@@ -6,9 +6,10 @@ import axiosInstance from "../../../utils/axios";
 import LoaderSmall from "../../../components/LoaderSmall";
 import { useAuth } from "../hooks/useAuth";
 
-const IndicatorNavigatorScreen3 = ({ param, chart }) => {
+const IndicatorNavigatorScreen3 = ({ param, chart, anc }) => {
   const { stateAuth } = useAuth();
   const { state } = stateAuth.others;
+  console.log(param);
   useEffect(() => {
     if (param.query == "lga") {
       getIndicatordataforlga();
@@ -19,13 +20,13 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
     // if (param.query == "national") {
     //     getIndicatordata()
     // }
-  }, [param]);
+  }, [param, anc]);
   const [datainfo, setDatainfo] = useState();
 
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/state/data/general/return?state=${state}`
+        `/admin/state/data/general/return?state=${state}&anc=${anc}`
       );
       setDatainfo(res.data);
     } catch (error) {}
@@ -33,15 +34,17 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
   const getIndicatordataforstate = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/state/data/general/return?state=${param.state}`
+        `/admin/state/data/general/return?state=${state}&anc=${anc}`
       );
+      console.log("i ran");
       setDatainfo(res.data);
+      console.log(res.data);
     } catch (error) {}
   };
   const getIndicatordataforlga = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/lga/data/general/return?lga=${param.lga}`
+        `/admin/lga/data/general/return?lga=${param.lga}&anc=${anc}`
       );
       setDatainfo(res.data);
     } catch (error) {}
@@ -56,14 +59,19 @@ const IndicatorNavigatorScreen3 = ({ param, chart }) => {
       {/* {param.query == "state" && <p className="text-primary90 m-3 text-center font-[500] text-[14px]">Showing results for National...</p>} */}
       {param.query == "" && (
         <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
-          Showing results for State...
+          Showing ANC{anc} results for State...
         </p>
       )}
       {param.query == "state" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
+          Showing ANC{anc} results for {state} state...
+        </p>
       )}
       {param.query == "lga" && (
-        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing results for ${param.lga} Local Government Area in ${state} state...`}</p>
+        <p className="text-primary90 m-3 text-center font-[500] text-[14px]">
+          Showing ANC{anc} results for {param.lga} Local Government Area in{" "}
+          {state} state...
+        </p>
       )}
       {datainfo ? (
         <>

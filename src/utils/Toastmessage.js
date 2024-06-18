@@ -2,8 +2,8 @@ import React from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const showSuccess = (err) =>
-  toast.success(err, {
+export const showSuccess = (message) =>
+  toast.success(message, {
     position: "top-center",
     autoClose: 5000,
     hideProgressBar: true,

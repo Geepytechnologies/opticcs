@@ -149,13 +149,15 @@ const StateFilterBox = ({
   };
 
   const handleDateToChange = (date) => {
-    if (date >= selectedDateFrom) {
+    if (date <= Date.now()) {
       setSelectedDateTo(date);
       setSearchitem((prev) => ({
         ...prev,
         dateto: moment(date).format("YYYY-MM-DD"),
         datefrom: moment(selectedDateFrom).format("YYYY-MM-DD"),
       }));
+    } else {
+      alert("Please select a valid date");
     }
   };
   const handleDateFromChange = (date) => {
@@ -165,6 +167,8 @@ const StateFilterBox = ({
       //   ...prev,
       //   datefrom: date,
       // }));
+    } else {
+      alert("Please select a valid date");
     }
   };
   const capitalizeFirstLetter = (word) => {
@@ -175,8 +179,7 @@ const StateFilterBox = ({
     setSelectedDateFrom();
     setSelectedDateTo();
   };
-  console.log(filteritem);
-  console.log(search);
+
   return (
     <div className="w-full flex items-center justify-center my-5">
       <div className="bg-white min-w-[95%] pl-2 py-2 flex flex-row items-center justify-around gap-3">

@@ -926,7 +926,7 @@ const IndicatorNavigatorScreen1 = ({ chart }) => {
                     {/* The chart diagram */}
                     <GenericPie
                       colors={["#14A673", "#D1FF60"]}
-                      series={[datainfo.dizziness.yes, datainfo.dizziness.no]}
+                      series={[datainfo?.dizziness.yes, datainfo?.dizziness.no]}
                     />
                     {/* info about chart */}
                     <div className="flex gap-7 px-2 py-4">

@@ -8,7 +8,7 @@ import LoaderSmall from "../../../components/LoaderSmall";
 import axiosInstance from "../../../utils/axios";
 import { motion } from "framer-motion";
 
-const IndicatorNavigatorScreen3 = ({ chart }) => {
+const IndicatorNavigatorScreen3 = ({ chart, anc }) => {
   const { lgaAuth } = useAuth();
   const { lga, state } = lgaAuth.others;
   const [datainfo, setDatainfo] = useState();
@@ -16,16 +16,17 @@ const IndicatorNavigatorScreen3 = ({ chart }) => {
   const getIndicatordata = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/lga/data/general/return?lga=${lga}`
+        `/admin/lga/data/general/return?lga=${lga}&anc=${anc}`
       );
       setDatainfo(res.data);
     } catch (error) {}
   };
   useEffect(() => {
     getIndicatordata();
-  }, []);
+  }, [anc]);
   return (
     <>
+      <p className="text-primary90 m-3 text-center font-[500] text-[14px]">{`Showing ANC${anc} results for ${lga} Local Government Area in ${state} state...`}</p>
       {datainfo ? (
         <>
           <motion.div

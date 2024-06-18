@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axios";
 import CustomToast from "../../../components/CustomToast";
-import { useAuth } from "../hooks/useAuth";
 import LoaderSmall from "../../../components/LoaderSmall";
+import stateLocalGovts from "../../../utils/stateandlgas";
+import { useAuth } from "../hooks/useAuth";
 
 const CreateWards = () => {
+  const [localGovts, setLocalGovts] = useState([]);
   const { lgaAuth } = useAuth();
   const { lga, state } = lgaAuth.others;
+
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastmessage, setToastmessage] = useState("");
   const [toastStatus, setToastStatus] = useState("");
-  const [wards, setWards] = useState();
 
   function scrollToTop() {
     window.scrollTo({
@@ -29,29 +31,10 @@ const CreateWards = () => {
   const handleToastClose = () => {
     setShowToast(false);
   };
-  const getAllWards = async () => {
-    try {
-      const result = await axiosInstance.get(`/admin/wards/getAllWards`);
-      setWards(result.data.result);
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-  const getwardsForLGA = async () => {
-    try {
-      const result = await axiosInstance.get(
-        `/admin/healthfacility/find/lga?lga=${lga}`
-      );
-      setWards(result.data);
-    } catch (error) {}
-  };
-  useEffect(() => {
-    // getwardsForLGA();
-    getAllWards();
-  }, []);
+
   const [values, setValues] = useState({
-    state: "",
-    lga: "",
+    state: state,
+    lga: lga,
     ward: "",
   });
   const [stateError, setStateError] = useState({ status: false, message: "" });
@@ -116,9 +99,9 @@ const CreateWards = () => {
     setIsLoading(true);
     try {
       const res = await axiosInstance.post("/admin/wards/create", {
-        state: state,
-        lga: lga,
-        ward: values.ward,
+        state: values.state,
+        lga: values.lga,
+        ward: values.ward.toUpperCase(),
       });
       if (res.data) {
         setIsLoading(false);
@@ -130,14 +113,17 @@ const CreateWards = () => {
     } finally {
       setValues({
         ward: "",
-        state: "",
-        lga: "",
+        state: state,
+        lga: lga,
       });
     }
   };
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
+  useEffect(() => {
+    setLocalGovts(stateLocalGovts[capitalizeFirstLetter(values?.state)]);
+  }, [values.state]);
   return (
     <>
       {showToast && (
@@ -153,25 +139,54 @@ const CreateWards = () => {
             <div className="flex flex-col">
               <div className="flex gap-3 items-center">
                 <label className="text-[16px] font-[500] text-dark90">
-                  Select Ward<span className="ml-2 text-red-500">*</span>
+                  State<span className="ml-2 text-red-500">*</span>
                 </label>
               </div>
-              <select
+              <input
+                disabled
+                value={values.state}
+                name="state"
+                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              />
+
+              {stateError.status && (
+                <span className="text-[12px] font-[500] italic text-red-500">
+                  {stateError.message}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <div className="flex gap-3 items-center">
+                <label className="text-[16px] font-[500] text-dark90">
+                  Lga<span className="ml-2 text-red-500">*</span>
+                </label>
+              </div>
+              <input
+                disabled
+                value={values.lga}
+                name="lga"
+                className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
+              />
+
+              {lgaError.status && (
+                <span className="text-[12px] font-[500] italic text-red-500">
+                  {lgaError.message}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <div className="flex gap-3 items-center">
+                <label className="text-[16px] font-[500] text-dark90">
+                  Ward<span className="ml-2 text-red-500">*</span>
+                </label>
+              </div>
+              <input
                 name="ward"
                 value={values.ward}
                 onChange={handleChange2}
                 onBlur={handlewardBlur}
                 className="p-[16px] myselect text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              >
-                <option value="" disabled>
-                  Choose a value
-                </option>
-                {wards?.map((item, index) => (
-                  <option key={index} value={item.healthfacilityname}>
-                    {item.healthfacilityname}
-                  </option>
-                ))}
-              </select>
+              />
               {wardError.status && (
                 <span className="text-[12px] font-[500] italic text-red-500">
                   {wardError.message}

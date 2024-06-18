@@ -5,6 +5,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { showError, showSuccess } from "../../../utils/Toastmessage";
 import { IoCopyOutline } from "react-icons/io5";
 import { ToastContainer } from "react-toastify";
+import ToastBox from "../../../utils/ToastBox";
 
 const CreateStateUserAccount = ({ states }) => {
   const [generatedusername, setGeneratedusername] = useState("");
@@ -191,6 +192,7 @@ const CreateStateUserAccount = ({ states }) => {
   const createAccount = async (e) => {
     e.preventDefault();
     validateValues();
+
     try {
       setLoading(true);
       const res = await axiosInstance.post("/admin/state/user", {
@@ -219,7 +221,6 @@ const CreateStateUserAccount = ({ states }) => {
         });
       }
     } catch (error) {
-      console.log(error);
       showError(error?.response.data || "An Error Occurred");
     } finally {
       setLoading(false);
@@ -228,6 +229,7 @@ const CreateStateUserAccount = ({ states }) => {
   const sortedstates = states.sort((a, b) => a.state.localeCompare(b.state));
   return (
     <div>
+      <ToastBox />
       <form onSubmit={createAccount} className="mt-12">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
           <div className="flex flex-col">

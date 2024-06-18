@@ -7,17 +7,24 @@ const useRefreshtoken = () => {
   const { setHealthfacilityAuth } = useAuth();
 
   const refresh = async () => {
-    const response = await axiosInstance.get("/admin/healthfacility/refresh", {
-      withCredentials: true,
-    });
-    setHealthfacilityAuth((prev) => {
-      return {
-        ...prev,
-        accessToken: response.data.accessToken,
-        others: response.data.others,
-      };
-    });
-    return response.data.accessToken;
+    try {
+      const response = await axiosInstance.get(
+        "/admin/healthfacility/refresh",
+        {
+          withCredentials: true,
+        }
+      );
+      setHealthfacilityAuth((prev) => {
+        return {
+          ...prev,
+          accessToken: response.data.accessToken,
+          others: response.data.others,
+        };
+      });
+      return response.data.accessToken;
+    } catch (error) {
+      return null;
+    }
   };
   return refresh;
 };

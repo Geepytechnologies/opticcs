@@ -3,9 +3,10 @@ import stateLocalGovts from "../../../utils/stateandlgas";
 import { useAuth } from "../hooks/useAuth";
 import axiosInstance from "../../../utils/axios";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { showSuccess } from "../../../utils/Toastmessage";
+import { showError, showSuccess } from "../../../utils/Toastmessage";
 import { ToastContainer } from "react-toastify";
 import { IoCopyOutline } from "react-icons/io5";
+import ToastBox from "../../../utils/ToastBox";
 
 const CreateStateUserAccount = () => {
   const [localGovts, setLocalGovts] = useState([]);
@@ -209,7 +210,7 @@ const CreateStateUserAccount = () => {
         accountType: values.accountType,
       });
       if (res.data) {
-        alert("LGA User account has been created");
+        showSuccess("LGA User account has been created");
         setValues({
           lga: "",
           staffname: "",
@@ -223,6 +224,7 @@ const CreateStateUserAccount = () => {
         });
       }
     } catch (error) {
+      showError("An Error Occurred");
     } finally {
       setLoading(false);
     }
@@ -248,7 +250,7 @@ const CreateStateUserAccount = () => {
   };
   return (
     <div>
-      <ToastContainer />
+      <ToastBox />
 
       <form onSubmit={createAccount} className="mt-12">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">

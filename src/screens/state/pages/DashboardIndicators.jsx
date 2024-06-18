@@ -32,7 +32,6 @@ const DashboardIndicators = () => {
   const [anc, setAnc] = useState("2");
 
   const handleANC = (e) => {
-    console.log(e.target.value);
     setAnc(e.target.value);
   };
 

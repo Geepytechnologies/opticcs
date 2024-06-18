@@ -17,7 +17,7 @@ const IndicatorNavigatorScreen3 = ({ param, chart, anc }) => {
     if (param.query == "national") {
       refetchNationalData();
     }
-  }, [param]);
+  }, [param, anc]);
   const [datainfo, setDatainfo] = useState();
 
   const getIndicatordata = async () => {
@@ -32,7 +32,7 @@ const IndicatorNavigatorScreen3 = ({ param, chart, anc }) => {
   const getIndicatordataforstate = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/state/data/general/return?state=${param.state}`
+        `/admin/state/data/general/return?state=${param.state}&anc=${anc}`
       );
       setDatainfo(res.data);
     } catch (error) {}
@@ -40,7 +40,7 @@ const IndicatorNavigatorScreen3 = ({ param, chart, anc }) => {
   const getIndicatordataforlga = async () => {
     try {
       const res = await axiosInstance.get(
-        `/admin/lga/data/general/return?lga=${param.lga}`
+        `/admin/lga/data/general/return?lga=${param.lga}$anc=${anc}`
       );
       setDatainfo(res.data);
     } catch (error) {}

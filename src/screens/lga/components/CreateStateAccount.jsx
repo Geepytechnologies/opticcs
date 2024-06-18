@@ -32,7 +32,7 @@ const CreateStateAccount = () => {
   const getAllWards = async () => {
     try {
       const result = await axiosInstance.get(
-        `/admin/wards/getAllWardsForLga?lga=${lga}`
+        `/admin/wards/getAllWardsForLga?state=${state}&lga=${lga}`
       );
       setWards(result.data.result);
     } catch (error) {

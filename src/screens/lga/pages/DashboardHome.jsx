@@ -16,7 +16,7 @@ import IntermediateResult3 from "../components/IntermediateResult3";
 const DashboardHome = () => {
   const { lgaAuth } = useAuth();
   const { lga } = lgaAuth.others;
-  console.log(lga);
+  // console.log(lga);
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
   const [selectedDateFrom, setSelectedDateFrom] = useState();
@@ -60,20 +60,6 @@ const DashboardHome = () => {
     } catch (err) {}
   };
 
-  useEffect(() => {
-    // Load MathJax when the component mounts
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML";
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      // Remove the MathJax script when the component unmounts
-      document.head.removeChild(script);
-    };
-  }, []);
   useEffect(() => {
     getAllHealthWorkers();
     getAllPatients();
