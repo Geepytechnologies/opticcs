@@ -5,6 +5,8 @@ import LoaderSmall from "../../../components/LoaderSmall";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../hooks/useAuth";
 import { IoCopyOutline } from "react-icons/io5";
+import ToastBox from "../../../utils/ToastBox";
+import { showSuccess } from "../../../utils/Toastmessage";
 
 const CreateStateUserAccount = () => {
   const { lgaAuth } = useAuth();
@@ -12,6 +14,8 @@ const CreateStateUserAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [healthfacilities, setHealthfacilities] = useState();
+  // tooltips
+  const [tooltipText, setTooltipText] = useState("Click to copy!!!");
 
   const [showToast, setShowToast] = useState(false);
   const [toastmessage, setToastmessage] = useState("");
@@ -145,11 +149,6 @@ const CreateStateUserAccount = () => {
   };
   const validateValues = () => {
     let noErrors = true;
-
-    if (values.ward === "") {
-      setwardError({ status: true, message: "This field is required" });
-      noErrors = false;
-    }
     if (values.staffname === "") {
       setstaffnameError({ status: true, message: "This field is required" });
       noErrors = false;
@@ -189,13 +188,6 @@ const CreateStateUserAccount = () => {
       });
       noErrors = false;
     }
-    // if (values.healthfacilityid === "") {
-    //   sethealthfacilityidError({
-    //     status: true,
-    //     message: "This field is required",
-    //   });
-    //   noErrors = false;
-    // }
 
     return noErrors;
   };
@@ -263,14 +255,16 @@ const CreateStateUserAccount = () => {
   const copyToClipboard = (inputRef) => {
     // Ensure the input element is not null
     if (inputRef.current) {
-      // Select the text in the input field
-      //   inputRef.current.select();
-      //   inputRef.current.setSelectionRange(0, 99999); // For mobile devices
+      setTooltipText("Text copied!!!");
+
+      // Reset the tooltip text after 2 seconds
+      setTimeout(() => {
+        setTooltipText("Click to Copy!!!");
+      }, 2000);
 
       // Use the Clipboard API to copy the selected text
       navigator.clipboard.writeText(inputRef.current.value);
       showSuccess("Text Copied");
-      //   inputRef.current.blur();
     }
   };
   const createAccount = async (e) => {
@@ -295,6 +289,7 @@ const CreateStateUserAccount = () => {
         res.data && loadToast("Health Facility User created", "success");
       }
     } catch (error) {
+      throw new Error(error);
     } finally {
       setValues({
         healthfacility: "",
@@ -319,6 +314,7 @@ const CreateStateUserAccount = () => {
           status={toastStatus}
         />
       )}
+      <ToastBox />
       <div>
         <form onSubmit={createAccount} className="mt-12">
           <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
@@ -548,8 +544,11 @@ const CreateStateUserAccount = () => {
                   placeholder="userID"
                 />
               </div>
-              <IoCopyOutline onClick={() => copyToClipboard(useridref)} />
-
+              <IoCopyOutline
+                title={tooltipText}
+                className="cursor-pointer"
+                onClick={() => copyToClipboard(useridref)}
+              />
               <div className="flex flex-col">
                 <div className="flex gap-3 items-center">
                   <label className="text-[16px] font-[500] text-dark90">
@@ -580,7 +579,11 @@ const CreateStateUserAccount = () => {
                   </div>
                 </div>
               </div>
-              <IoCopyOutline onClick={() => copyToClipboard(passwordref)} />
+              <IoCopyOutline
+                title={tooltipText}
+                className="cursor-pointer"
+                onClick={() => copyToClipboard(passwordref)}
+              />
             </div>
 
             <div className="flex items-center justify-center mt-8 w-full ">

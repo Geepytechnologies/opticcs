@@ -12,7 +12,7 @@ import Notfound from "../../../components/Notfound";
 
 const HealthWorker = () => {
   const { healthfacilityAuth } = useAuth();
-  const { healthfacilityid } = healthfacilityAuth.others;
+  const { healthfacility } = healthfacilityAuth.others;
   const [workers, setWorkers] = useState();
   //filter
   const [selectedDateTo, setSelectedDateTo] = useState();
@@ -37,7 +37,7 @@ const HealthWorker = () => {
     try {
       const res = await axiosInstance.get("/users/find");
       const filteredhealthworkers = res.data.result.filter(
-        (item) => item.healthfacility == healthfacilityid
+        (item) => item.healthfacility == healthfacility
       );
       setWorkers(filteredhealthworkers);
     } catch (error) {}

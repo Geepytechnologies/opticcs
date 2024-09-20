@@ -17,6 +17,7 @@ const CreateStateAccount = () => {
     userid: "",
     password: "",
   });
+
   const [phoneError, setPhoneError] = useState({ status: false, message: "" });
   const [emailError, setEmailError] = useState({ status: false, message: "" });
   const [stateError, setstateError] = useState({ status: false, message: "" });

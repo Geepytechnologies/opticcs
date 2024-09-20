@@ -22,12 +22,12 @@ const LandingPage = () => {
           <div className="h-full w-full z-[20] my-5 flex flex-col items-center justify-center">
             <div className="p-2 flex flex-col items-center justify-center">
               <p className="text-[56px] font-[600] text-center text-white">
-                Welcome to OptiCCS
+                Welcome to iANC
               </p>
               <div className="grid mt-8 grid-cols-1 md:grid-cols-2 gap-9">
                 <div className="bg-light10 rounded-[20px] py-[48px] flex flex-col items-center justify-center w-[350px] h-[200px]">
                   <div className="font-[600] text-[18px] text-primary90">
-                    National OptiCCS
+                    National iANC
                   </div>
                   <div className="text-[#7A7C7F] text-center mb-[35px] mt-[12px] text-[12px] font-[400]">
                     Embark on a transformative healthcare journey with our
@@ -42,7 +42,7 @@ const LandingPage = () => {
                 </div>
                 <div className="bg-light10 rounded-[20px] py-[48px] flex flex-col items-center justify-center w-[350px] h-[200px]">
                   <div className="font-[600] text-[18px] text-primary90">
-                    State OptiCCS
+                    State iANC
                   </div>
                   <div className="text-[#7A7C7F] text-center mb-[35px] mt-[12px] text-[12px] font-[400]">
                     Embark on a transformative healthcare journey with our
@@ -57,7 +57,7 @@ const LandingPage = () => {
                 </div>
                 <div className="bg-light10 rounded-[20px] py-[48px] flex flex-col items-center justify-center w-[350px] h-[200px]">
                   <div className="font-[600] text-[18px] text-primary90">
-                    LGA OptiCCS
+                    LGA iANC
                   </div>
                   <div className="text-[#7A7C7F] text-center mb-[35px] mt-[12px] text-[12px] font-[400]">
                     Embark on a transformative healthcare journey with our
@@ -72,7 +72,7 @@ const LandingPage = () => {
                 </div>
                 <div className="bg-light10 rounded-[20px] py-[48px] flex flex-col items-center justify-center w-[350px] h-[200px]">
                   <div className="font-[600] text-[18px] text-primary90">
-                    Health Facility OptiCCS
+                    Health Facility iANC
                   </div>
                   <div className="text-[#7A7C7F] text-center mb-[35px] mt-[12px] text-[12px] font-[400]">
                     Embark on a transformative healthcare journey with our
