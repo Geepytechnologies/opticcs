@@ -453,7 +453,8 @@ const CreateStateUserAccount = ({ states }) => {
                 ref={useridref}
                 type="text"
                 name="userid"
-                readOnly
+                onChange={handleChange2}
+                // readOnly
                 value={values.userid}
                 onBlur={handleUseridBlur}
                 className="p-[16px] bg-transparent text-secondary30 outline-none rounded-[8px] border border-[#C6C7C8]"
@@ -480,8 +481,9 @@ const CreateStateUserAccount = ({ states }) => {
                 <input
                   ref={passwordref}
                   type={`${showpassword ? "text" : "password"}`}
-                  readOnly
+                  // readOnly
                   value={values.password}
+                  onChange={handleChange2}
                   name="password"
                   onBlur={handlePasswordBlur}
                   className=" outline-none"

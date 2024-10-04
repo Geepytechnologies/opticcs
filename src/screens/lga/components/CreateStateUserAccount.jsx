@@ -564,7 +564,8 @@ const CreateStateUserAccount = () => {
                   <input
                     ref={passwordref}
                     type={`${showpassword ? "text" : "password"}`}
-                    readOnly
+                    // readOnly
+                    onChange={handleChange2}
                     value={values.password}
                     name="password"
                     onBlur={handlePasswordBlur}
