@@ -166,16 +166,17 @@ const DashboardMenu = ({ confirmlogout, setconfirmlogout }) => {
             <p>Accounts</p>
           </Link>
           {/* Message */}
-          {/* <Link
-                    to="/national/message"
-                    className={`flex gap-2 my-2 items-center rounded-md  p-2  ${currentPage.includes("message")
-                        ? "bg-primary90 text-white drop-shadow-xl"
-                        : " hover:text-[black] hover:bg-gray-200"
-                        }`}
-                >
-                    <HiOutlineChatBubbleOvalLeftEllipsis />
-                    <p>Message</p>
-                </Link> */}
+          <Link
+            to="/national/enumeration"
+            className={`flex gap-2 my-2 items-center rounded-md  p-2  ${
+              currentPage.includes("enumeration")
+                ? "bg-primary90 text-white drop-shadow-xl"
+                : " hover:text-[black] hover:bg-gray-200"
+            }`}
+          >
+            <HiOutlineChatBubbleOvalLeftEllipsis />
+            <p>Enumeration Module</p>
+          </Link>
           {/* Settings */}
           <Link
             to="/national/settings"

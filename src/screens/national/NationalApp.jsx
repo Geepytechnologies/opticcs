@@ -27,6 +27,7 @@ import useLogout from "./hooks/useLogout";
 import Activitymodal from "./components/Activitymodal";
 import { useModal } from "../../utils/hooks/useModal";
 import Records from "./pages/Records";
+import EnumerationModule from "./pages/EnumerationModule";
 
 const NationalApp = () => {
   const { showModal, toggleModal, modaldata } = useModal();
@@ -160,6 +161,11 @@ const NationalApp = () => {
                 <Route index path="/state" element={<State />}></Route>
                 <Route index path="/lga" element={<LGA />}></Route>
                 <Route index path="/accounts" element={<Accounts />}></Route>
+                <Route
+                  index
+                  path="/enumeration"
+                  element={<EnumerationModule />}
+                ></Route>
                 <Route index path="/usage" element={<UsageAnalytics />}></Route>
                 <Route index path="/settings" element={<Settings />}></Route>
                 <Route index path="/profile" element={<Profile />}></Route>
