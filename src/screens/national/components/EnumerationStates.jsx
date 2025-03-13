@@ -5,6 +5,7 @@ import moment from "moment";
 import Pagination from "../../../components/Pagination";
 import Csvbutton from "../../../components/Csvbutton";
 import { useGetActiveStates } from "../queries/enumeration";
+import NewPagination from "../../../components/NewPagination";
 
 const EnumerationStates = () => {
   const [states, setStates] = useState();
@@ -14,7 +15,12 @@ const EnumerationStates = () => {
 
   const tableRef = useRef();
 
-  const { activeStates, isLoading } = useGetActiveStates();
+  const { activeStates, isLoading } = useGetActiveStates({
+    pageNumber: currentpage,
+  });
+  const handlePageChange = (page) => {
+    setCurrentpage(page);
+  };
   return (
     <div className="w-full ">
       <div className="flex gap-2 my-8 justify-start">
@@ -42,13 +48,13 @@ const EnumerationStates = () => {
           </tr>
         </thead>
         <tbody>
-          {activeStates?.length > 0 ? (
-            activeStates.map((item, index) => (
+          {activeStates?.result?.length > 0 ? (
+            activeStates.result.map((item, index) => (
               <tr
                 key={index}
                 className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
               >
-                <td>{item.id}</td>
+                <td>{index + 1}</td>
                 <td>{item.state}</td>
                 <td>{item.stateid}</td>
                 <td>{item.officeaddress}</td>
@@ -72,12 +78,13 @@ const EnumerationStates = () => {
         </tbody>
       </table>
       {/* pagination */}
-      <Pagination
-        currentpage={currentpage}
-        setCurrentpage={setCurrentpage}
-        pages={states?.length / 10}
-        displaynum={10}
-      />
+      {/* <NewPagination
+        totalPages={
+          activeStates?.pagination?.totalCount /
+          activeStates?.pagination?.pageSize
+        }
+        onPageChange={handlePageChange}
+      /> */}
     </div>
   );
 };

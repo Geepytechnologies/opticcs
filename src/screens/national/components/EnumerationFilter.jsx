@@ -16,14 +16,6 @@ const EnumerationFilter = () => {
             Search
           </button>
         </div>
-        <div>
-          <button
-            onClick={() => downloadTable(tableRef, "Patients")}
-            className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2"
-          >
-            Download CSV
-          </button>
-        </div>
       </div>
       <div className="flex gap-[10px]">
         <div className="flex flex-col flex-1">

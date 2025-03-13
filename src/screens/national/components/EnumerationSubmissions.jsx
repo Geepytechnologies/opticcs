@@ -8,6 +8,8 @@ import Csvbutton from "../../../components/Csvbutton";
 import { useGetEnumerationData } from "../queries/enumeration";
 import ModalPopup from "./ui/ModalPopup";
 import SubmissionView from "./ui/view/SubmissionView";
+import NewPagination from "../../../components/NewPagination";
+import LoaderSmall from "../../../components/LoaderSmall";
 
 const EnumerationSubmissions = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,13 +26,23 @@ const EnumerationSubmissions = () => {
 
   const tableRef = useRef();
 
-  const { data: submissions, isLoading } = useGetEnumerationData();
+  const { data: submissions, isLoading } = useGetEnumerationData({
+    pageNumber: currentpage,
+  });
+  const getDaysDifference = (dateTime) => {
+    return moment().diff(moment(dateTime), "days");
+  };
   const handleOpen = (item) => {
     setModalItem(item);
     openModal();
   };
+  const handlePageChange = (page) => {
+    setCurrentpage(page);
+  };
   return (
     <div className="min-w-[1000px] w-full mt-9 ">
+      <Csvbutton tableRef={tableRef} tableName={"Enumeration Data"} />
+
       {/* patients table */}
       <div className="w-full flex items-center justify-center font-inter">
         <ModalPopup
@@ -41,49 +53,48 @@ const EnumerationSubmissions = () => {
           <SubmissionView item={modalItem} />
         </ModalPopup>
         <div className=" w-[95%] flex flex-col items-center justify-start pl-6 py-4">
-          <table ref={tableRef} className="cursor-default mt-7 w-full">
-            <thead>
-              <tr>
-                <th>SN</th>
-                <th>Client Name</th>
-                <th>Client Number</th>
-                <th>State</th>
-                <th>LGA</th>
-                <th>No. of ANC</th>
-                <th>Date Created</th>
-                <th>Phone Number</th>
-                <th>LMP</th>
-              </tr>
-            </thead>
-            <tbody>
-              {submissions.data?.map((item, index) => (
-                <tr
-                  onClick={() => handleOpen(item)}
-                  key={index}
-                  className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
-                >
-                  <td>{item.id}</td>
-                  <td>{item.firstName + " " + item.surName}</td>
-                  <td>{item.clientNumber}</td>
-                  <td>{item.state}</td>
-                  <td>{item.lga}</td>
-                  <td>{item.numberOfAncVisits}</td>
-                  <td>{moment(item.createdAt).fromNow()}</td>
-                  <td className="">{item.phone}</td>
-                  <td className="">{item.lmp}</td>
+          {!isLoading ? (
+            <table ref={tableRef} className="cursor-default mt-7 w-full">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Client Name</th>
+                  <th>Client Number</th>
+                  <th>State</th>
+                  <th>LGA</th>
+                  <th>No. of ANC</th>
+                  <th>Date Created</th>
+                  <th>Phone Number</th>
+                  <th>LMP</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {submissions?.data?.map((item, index) => (
+                  <tr
+                    onClick={() => handleOpen(item)}
+                    key={index}
+                    className="hover:bg-[#e5e5e5] text-[#636363] h-[50px]"
+                  >
+                    <td>{item.id}</td>
+                    <td>{item.firstName + " " + item.surName}</td>
+                    <td>{item.clientNumber}</td>
+                    <td>{item.state}</td>
+                    <td>{item.lga}</td>
+                    <td>{item.numberOfAncVisits}</td>
+                    <td>{moment(item.createdAt).fromNow()}</td>
+                    <td className="">{item.phone}</td>
+                    <td className="">{getDaysDifference(item.lmp)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <LoaderSmall />
+          )}
           {/* pagination */}
-          <Pagination
-            currentpage={currentpage}
-            setCurrentpage={setCurrentpage}
-            pages={
-              submissions.pagination?.totalCount /
-              submissions.pagination?.pageSize
-            }
-            displaynum={submissions.pagination?.pageSize}
+          <NewPagination
+            pagination={submissions?.pagination}
+            onPageChange={handlePageChange}
           />
         </div>
       </div>

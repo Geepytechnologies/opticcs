@@ -1,9 +1,11 @@
 import axiosInstance from "../../../utils/axios";
 
 class EnumerationService {
-  getSubmissions = async () => {
+  getSubmissions = async (pageNumber) => {
     try {
-      const res = await axiosInstance.get("/enumeration/data");
+      const res = await axiosInstance.get(
+        `/enumeration/data?pageNumber=${pageNumber}&pageSize=20`
+      );
       //   console.log(res.data);
       return res.data;
     } catch (error) {
@@ -11,19 +13,23 @@ class EnumerationService {
       throw new Error();
     }
   };
-  getActiveStates = async () => {
+  getActiveStates = async (pageNumber) => {
     try {
-      const res = await axiosInstance.get("/enumeration/activestates");
-      console.log(res.data);
-      return res.data.result;
+      const res = await axiosInstance.get(
+        `/enumeration/activestates?pageNumber=${pageNumber}&pageSize=20`
+      );
+      // console.log(res.data);
+      return res.data;
     } catch (error) {
       console.log(error);
       throw new Error();
     }
   };
-  getEnumerators = async () => {
+  getEnumerators = async (pageNumber) => {
     try {
-      const res = await axiosInstance.get("/enumeration/enumerators");
+      const res = await axiosInstance.get(
+        `/enumeration/enumerators?pageNumber=${pageNumber}&pageSize=20`
+      );
       //console.log(res.data);
       return res.data;
     } catch (error) {
@@ -41,12 +47,12 @@ class EnumerationService {
       throw new Error();
     }
   };
-  getLoginCredentials = async () => {
+  getLoginCredentials = async (pageNumber) => {
     try {
       const res = await axiosInstance.get(
-        "/enumeration/enumerators-credentials"
+        `/enumeration/enumerators-credentials?pageNumber=${pageNumber}&pageSize=20`
       );
-      return res.data.result;
+      return res.data;
     } catch (error) {
       console.log(error);
       throw new Error();
