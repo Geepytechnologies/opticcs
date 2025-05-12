@@ -1,10 +1,22 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axiosInstance from "../../../utils/axios";
 import { showError, showSuccess } from "../../../utils/Toastmessage";
 import { ToastContainer } from "react-toastify";
 import ToastBox from "../../../utils/ToastBox";
+import {
+  useGetAllLgas,
+  useGetAllSettlements,
+  useGetAllStates,
+  useGetAllWards,
+} from "../queries/enumeration";
+import { IoMdCloseCircle } from "react-icons/io";
 
 const CreateEnumeratorAccount = () => {
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedLga, setSelectedLga] = useState("");
+  const [selectedward, setSelectedWard] = useState("");
+  const [selectedSettlement, setSelectedSettlement] = useState([]);
+
   const [formData, setFormData] = useState({
     enumeratorName: "",
     phoneNumber: "",
@@ -13,7 +25,7 @@ const CreateEnumeratorAccount = () => {
     state: "",
     lga: "",
     ward: "",
-    settlement: "",
+    settlement: [""],
   });
 
   const [errors, setErrors] = useState({
@@ -89,10 +101,10 @@ const CreateEnumeratorAccount = () => {
       name: formData.enumeratorName,
       phone: formData.phoneNumber,
       gender: formData.gender,
-      state: formData.state,
-      lga: formData.lga,
-      ward: formData.ward,
-      settlement: formData.settlement,
+      state: selectedState,
+      lga: selectedLga,
+      ward: selectedward,
+      settlement: selectedSettlement,
       password: formData.password,
     };
     setLoading(true);
@@ -108,7 +120,7 @@ const CreateEnumeratorAccount = () => {
           state: "",
           lga: "",
           ward: "",
-          settlement: "",
+          settlement: [""],
         });
       }
     } catch (error) {
@@ -117,6 +129,34 @@ const CreateEnumeratorAccount = () => {
       setLoading(false);
     }
   };
+  const { states } = useGetAllStates();
+  useEffect(() => {
+    setSelectedState(states?.result[0]);
+  }, [states]);
+  const { lgas } = useGetAllLgas({
+    state: selectedState,
+    enabled: !!selectedState,
+  });
+
+  useEffect(() => {
+    setSelectedLga(lgas?.result[0]);
+  }, [lgas]);
+
+  const { wards } = useGetAllWards({
+    state: selectedState,
+    lga: selectedLga,
+    enabled: !!selectedLga,
+  });
+  useEffect(() => {
+    setSelectedWard(wards?.result[0]);
+  }, [wards]);
+
+  const { settlements } = useGetAllSettlements({
+    state: selectedState,
+    lga: selectedLga,
+    ward: selectedward,
+    enabled: !!selectedward,
+  });
 
   return (
     <div>
@@ -124,7 +164,7 @@ const CreateEnumeratorAccount = () => {
       <form onSubmit={handleSubmit} className="mt-12">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
           {/* Enumerator Name */}
-          <div className="flex flex-col">
+          <div className="flex flex-col min-w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Enumerator Name<span className="ml-2 text-red-500">*</span>
@@ -217,20 +257,27 @@ const CreateEnumeratorAccount = () => {
               <label className="text-[16px] font-[500] text-dark90">
                 State<span className="ml-2 text-red-500">*</span>
               </label>
+
               {errors.state && (
                 <span className="text-[12px] font-[500] italic text-red-500">
                   {errors.state}
                 </span>
               )}
             </div>
-            <input
-              type="text"
+            <select
               name="state"
-              value={formData.state}
-              onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter State"
-            />
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+              }}
+              value={selectedState}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              {states?.result.map((state, idx) => (
+                <option key={idx} data-state={""} data-lga={""} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* LGA */}
@@ -245,14 +292,20 @@ const CreateEnumeratorAccount = () => {
                 </span>
               )}
             </div>
-            <input
-              type="text"
+            <select
               name="lga"
-              value={formData.lga}
-              onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter LGA"
-            />
+              onChange={(e) => {
+                setSelectedLga(e.target.value);
+              }}
+              value={selectedLga}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              {lgas?.result.map((lga, idx) => (
+                <option key={idx} data-state={""} data-lga={""} value={lga}>
+                  {lga}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Ward */}
@@ -267,14 +320,20 @@ const CreateEnumeratorAccount = () => {
                 </span>
               )}
             </div>
-            <input
-              type="text"
+            <select
               name="ward"
-              value={formData.ward}
-              onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter Ward"
-            />
+              onChange={(e) => {
+                setSelectedWard(e.target.value);
+              }}
+              value={selectedward}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              {wards?.result.map((ward, idx) => (
+                <option key={idx} data-state={""} data-lga={""} value={ward}>
+                  {ward}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Settlement */}
@@ -289,14 +348,46 @@ const CreateEnumeratorAccount = () => {
                 </span>
               )}
             </div>
-            <input
-              type="text"
+            <select
               name="settlement"
-              value={formData.settlement}
-              onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter Settlement"
-            />
+              onChange={(e) => {
+                const value = e.target.value;
+                setSelectedSettlement((prevItems) =>
+                  prevItems.includes(value) ? prevItems : [...prevItems, value]
+                );
+              }}
+              value={""}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              <option value={""}>Choose Settlement</option>
+              {settlements?.result.map((item, idx) => (
+                <option
+                  key={idx}
+                  data-state={""}
+                  data-lga={""}
+                  value={item.name}
+                >
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            <div className="grid grid-cols-3 gap-3 mt-3">
+              {selectedSettlement?.map((settlement, idx) => (
+                <div
+                  key={idx}
+                  className="bg-primary10 flex items-center gap-3 rounded-lg p-2 text-sm text-primary90 cursor-pointer"
+                >
+                  {settlement}
+                  <IoMdCloseCircle
+                    onClick={() => {
+                      setSelectedSettlement((prevItems) =>
+                        prevItems.filter((item) => item !== settlement)
+                      );
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -145,7 +145,7 @@ const EnumerationModule = () => {
           </div>
         </div>
         {/* filter */}
-        <EnumerationFilter />
+        {/* <EnumerationFilter /> */}
         <div className="w-full flex items-center justify-center font-inter my-5">
           <div className="bg-white w-full  flex flex-col items-center justify-start px-3 py-4">
             {/* navigator */}

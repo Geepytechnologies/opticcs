@@ -2,76 +2,74 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const EnumerationFilter = () => {
+const EnumerationFilter = ({
+  selectedState,
+  setSelectedState,
+  selectedLga,
+  setSelectedLga,
+  selectedWard,
+  setSelectedWard,
+  dateCreated,
+  setDateCreated,
+  states,
+  lgas,
+  wards,
+}) => {
   return (
     <div className="p-6 bg-white my-3 flex flex-col gap-[21px]">
-      <div className="flex items-center justify-between w-full">
-        <div className="flex gap-6">
-          <input
-            type="text"
-            placeholder="house number, ward, state..."
-            className="rounded-[8px] border-[#899197] border py-2 px-4 outline-none"
-          />
-          <button className="bg-primary90 rounded-[8px] text-light10 text-[14px] p-2">
-            Search
-          </button>
-        </div>
-      </div>
       <div className="flex gap-[10px]">
         <div className="flex flex-col flex-1">
           <label className="text-primary90 font-[400]">State</label>
 
           <select
-            name="state"
-            onChange={() => {}}
-            value={""}
-            className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
           >
-            <option value="all">All States</option>
-            <option data-state={""} data-lga={""} key={1} value={""}>
-              State
-            </option>
+            <option value="">All States</option>
+            {states?.result.map((s, i) => (
+              <option key={i} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col flex-1">
           <label className="text-primary90 font-[400]">LGA</label>
 
           <select
-            name="lga"
-            onChange={() => {}}
-            value={""}
-            className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            value={selectedLga}
+            onChange={(e) => setSelectedLga(e.target.value)}
           >
-            <option value="all">All LGA</option>
-            <option data-state={""} data-lga={""} key={1} value={""}>
-              State
-            </option>
+            <option value="">All LGAs</option>
+            {lgas?.result.map((l, i) => (
+              <option key={i} value={l}>
+                {l}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col flex-1">
           <label className="text-primary90 font-[400]">Ward</label>
 
           <select
-            name="ward"
-            onChange={() => {}}
-            value={""}
-            className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            value={selectedWard}
+            onChange={(e) => setSelectedWard(e.target.value)}
           >
-            <option value="all">All Wards</option>
-            <option data-state={""} data-lga={""} key={1} value={""}>
-              Ward
-            </option>
+            <option value="">All Wards</option>
+            {wards?.result.map((w, i) => (
+              <option key={i} value={w}>
+                {w}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex flex-col flex-1">
           <label className="text-primary90 font-[400]">Date From</label>
           <DatePicker
-            className="custom-datepicker p-[16px] myselect text-secondary30 bg-transparent outline-none min-w-[180px] rounded-[8px] border border-[#C6C7C880] w-full"
-            placeholderText="Choose Date"
-            selected={""}
-            onChange={(date) => handleDateFromChange(date)}
+            selected={dateCreated}
+            onChange={(d) => setDateCreated(d)}
             dateFormat="yyyy-MM-dd"
-            defaultValue={""}
+            placeholderText="Pick a date"
           />
         </div>
       </div>
