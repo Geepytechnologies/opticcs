@@ -25,7 +25,7 @@ const CreateEnumeratorAccount = () => {
     state: "",
     lga: "",
     ward: "",
-    settlement: [""],
+    settlement: [],
   });
 
   const [errors, setErrors] = useState({
@@ -81,7 +81,7 @@ const CreateEnumeratorAccount = () => {
       newErrors.ward = "Ward is required";
       isValid = false;
     }
-    if (!formData.settlement.trim()) {
+    if (formData.settlement.length < 1) {
       newErrors.settlement = "Settlement is required";
       isValid = false;
     }
@@ -101,10 +101,10 @@ const CreateEnumeratorAccount = () => {
       name: formData.enumeratorName,
       phone: formData.phoneNumber,
       gender: formData.gender,
-      state: selectedState,
-      lga: selectedLga,
-      ward: selectedward,
-      settlement: selectedSettlement,
+      state: formData.state,
+      lga: formData.lga,
+      ward: formData.ward,
+      settlement: formData.settlement,
       password: formData.password,
     };
     setLoading(true);
@@ -131,31 +131,41 @@ const CreateEnumeratorAccount = () => {
   };
   const { states } = useGetAllStates();
   useEffect(() => {
-    setSelectedState(states?.result[0]);
+    setFormData((prev) => ({
+      ...prev,
+      state: states.result[0],
+    }));
   }, [states]);
+
   const { lgas } = useGetAllLgas({
-    state: selectedState,
-    enabled: !!selectedState,
+    state: formData.state,
+    enabled: !!formData.state,
   });
 
   useEffect(() => {
-    setSelectedLga(lgas?.result[0]);
+    setFormData((prev) => ({
+      ...prev,
+      lga: lgas?.result[0],
+    }));
   }, [lgas]);
 
   const { wards } = useGetAllWards({
-    state: selectedState,
-    lga: selectedLga,
-    enabled: !!selectedLga,
+    state: formData.state,
+    lga: formData.lga,
+    enabled: !!formData.lga,
   });
   useEffect(() => {
-    setSelectedWard(wards?.result[0]);
+    setFormData((prev) => ({
+      ...prev,
+      ward: wards?.result[0],
+    }));
   }, [wards]);
 
   const { settlements } = useGetAllSettlements({
-    state: selectedState,
-    lga: selectedLga,
-    ward: selectedward,
-    enabled: !!selectedward,
+    state: formData.state,
+    lga: formData.lga,
+    ward: formData.ward,
+    enabled: !!formData.ward,
   });
 
   return (
@@ -219,14 +229,15 @@ const CreateEnumeratorAccount = () => {
                 </span>
               )}
             </div>
-            <input
-              type="text"
+            <select
               name="gender"
-              value={formData.gender}
               onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter Gender"
-            />
+              value={formData.gender}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              <option>Male</option>
+              <option>Female</option>
+            </select>
           </div>
 
           {/* Password */}
@@ -266,10 +277,8 @@ const CreateEnumeratorAccount = () => {
             </div>
             <select
               name="state"
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-              }}
-              value={selectedState}
+              onChange={handleChange}
+              value={formData.state}
               className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
             >
               {states?.result.map((state, idx) => (
@@ -294,10 +303,8 @@ const CreateEnumeratorAccount = () => {
             </div>
             <select
               name="lga"
-              onChange={(e) => {
-                setSelectedLga(e.target.value);
-              }}
-              value={selectedLga}
+              onChange={handleChange}
+              value={formData.lga}
               className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
             >
               {lgas?.result.map((lga, idx) => (
@@ -322,10 +329,8 @@ const CreateEnumeratorAccount = () => {
             </div>
             <select
               name="ward"
-              onChange={(e) => {
-                setSelectedWard(e.target.value);
-              }}
-              value={selectedward}
+              onChange={handleChange}
+              value={formData.ward}
               className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
             >
               {wards?.result.map((ward, idx) => (
@@ -352,9 +357,17 @@ const CreateEnumeratorAccount = () => {
               name="settlement"
               onChange={(e) => {
                 const value = e.target.value;
-                setSelectedSettlement((prevItems) =>
-                  prevItems.includes(value) ? prevItems : [...prevItems, value]
-                );
+
+                setFormData((prev) => {
+                  const alreadySelected = prev.settlement.includes(value);
+
+                  return {
+                    ...prev,
+                    settlement: alreadySelected
+                      ? prev.settlement.filter((item) => item !== value)
+                      : [...prev.settlement, value],
+                  };
+                });
               }}
               value={""}
               className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
@@ -372,7 +385,7 @@ const CreateEnumeratorAccount = () => {
               ))}
             </select>
             <div className="grid grid-cols-3 gap-3 mt-3">
-              {selectedSettlement?.map((settlement, idx) => (
+              {formData.settlement?.map((settlement, idx) => (
                 <div
                   key={idx}
                   className="bg-primary10 flex items-center gap-3 rounded-lg p-2 text-sm text-primary90 cursor-pointer"
@@ -380,9 +393,15 @@ const CreateEnumeratorAccount = () => {
                   {settlement}
                   <IoMdCloseCircle
                     onClick={() => {
-                      setSelectedSettlement((prevItems) =>
-                        prevItems.filter((item) => item !== settlement)
-                      );
+                      setFormData({
+                        ...formData,
+                        settlement: formData.settlement.filter(
+                          (item) => item !== settlement
+                        ),
+                      });
+                      // setSelectedSettlement((prevItems) =>
+                      //   prevItems.filter((item) => item !== settlement)
+                      // );
                     }}
                   />
                 </div>

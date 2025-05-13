@@ -15,6 +15,7 @@ import CreateEnumeratorAccount from "../components/CreateEnumeratorAccount";
 import EnumeratorLoginCredentials from "../components/EnumeratorLoginCredentials";
 import EnumerationFilter from "../components/EnumerationFilter";
 import { useGetEnumerationWidgetData } from "../queries/enumeration";
+import EnumerationDataDownload from "../components/EnumerationDataDownload";
 
 const EnumerationModule = () => {
   const [stateAccounts, setStateAccounts] = useState();
@@ -39,6 +40,9 @@ const EnumerationModule = () => {
       break;
     case 5:
       componentToRender = <EnumeratorLoginCredentials />;
+      break;
+    case 6:
+      componentToRender = <EnumerationDataDownload />;
       break;
 
     default:
@@ -141,6 +145,16 @@ const EnumerationModule = () => {
               }`}
             >
               Login Credentials
+            </div>
+            <div
+              onClick={() => setNavigatorSlide(6)}
+              className={`cursor-pointer text-center ${
+                navigatorSlide === 6
+                  ? "text-primary70 border-b-4 font-[500] pb-2 border-primary70"
+                  : "text-light90 pb-2 font-[500]"
+              }`}
+            >
+              Download Data
             </div>
           </div>
         </div>
