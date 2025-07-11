@@ -85,6 +85,21 @@ const LandingPage = () => {
                     Login to Health Facility
                   </Link>
                 </div>
+                <div className="bg-light10 rounded-[20px] py-[48px] flex flex-col items-center justify-center min-w-[350px] h-[200px] col-span-2">
+                  <div className="font-[600] text-[18px] text-primary90">
+                    MAMII Portal
+                  </div>
+                  <div className="text-[#7A7C7F] text-center mb-[35px] mt-[12px] text-[12px] font-[400]">
+                    Embark on a transformative healthcare journey with our
+                    comprehensive app
+                  </div>
+                  <Link
+                    to="/mamii"
+                    className="bg-primary90 text-white rounded-[8px] px-[10px] py-[16px]"
+                  >
+                    Login to MAMII
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

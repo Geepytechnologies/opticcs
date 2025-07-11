@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
 import { axiosPrivate } from "../axios";
 
-
 const AuthContext = createContext({
   auth: null,
   rememberMe: JSON.parse(localStorage.getItem("persist") ?? "true"),
-  setRememberMe: () => { },
-  setAuth: () => { },
+  setRememberMe: () => {},
+  setAuth: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
@@ -15,12 +14,30 @@ export const AuthProvider = ({ children }) => {
   const [stateAuth, setStateAuth] = useState({});
   const [lgaAuth, setLgaAuth] = useState({});
   const [healthfacilityAuth, setHealthfacilityAuth] = useState({});
+  const [mamiiAuth, setMamiiAuth] = useState({});
   const [rememberMe, setRememberMe] = useState(
     JSON.parse(localStorage.getItem("persist") ?? "true")
   );
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, nationalAuth, setNationalAuth, stateAuth, setStateAuth, lgaAuth, setLgaAuth, healthfacilityAuth, setHealthfacilityAuth, rememberMe, setRememberMe }}>
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        nationalAuth,
+        setNationalAuth,
+        stateAuth,
+        setStateAuth,
+        lgaAuth,
+        setLgaAuth,
+        healthfacilityAuth,
+        setHealthfacilityAuth,
+        mamiiAuth,
+        setMamiiAuth,
+        rememberMe,
+        setRememberMe,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

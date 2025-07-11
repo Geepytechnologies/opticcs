@@ -85,3 +85,12 @@ export const useGetAllSettlements = ({ state, lga, ward, enabled }) => {
   });
   return { settlements: data, isLoading, error };
 };
+
+export const useGetAllHealthFacilities = ({ state, lga, ward, enabled }) => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["ievHealthFacilities", state, lga, ward],
+    queryFn: () => enumerationService.getIevHealthFacilities(state, lga, ward),
+    enabled: enabled,
+  });
+  return { healthFacilities: data, isLoading, error };
+};

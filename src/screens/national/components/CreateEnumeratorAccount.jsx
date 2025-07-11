@@ -8,24 +8,40 @@ import {
   useGetAllSettlements,
   useGetAllStates,
   useGetAllWards,
+  useGetAllHealthFacilities,
 } from "../queries/enumeration";
-import { IoMdCloseCircle } from "react-icons/io";
+import {
+  IoMdAddCircle,
+  IoMdAddCircleOutline,
+  IoMdCloseCircle,
+  IoMdEye,
+  IoMdEyeOff,
+} from "react-icons/io";
 
 const CreateEnumeratorAccount = () => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedLga, setSelectedLga] = useState("");
   const [selectedward, setSelectedWard] = useState("");
   const [selectedSettlement, setSelectedSettlement] = useState([]);
+  const [selectedHealthfacility, setSelectedHealthFacility] = useState([]);
+  const [showHealthFacilityOthers, setShowHealthFacilityOthers] =
+    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
   const [formData, setFormData] = useState({
     enumeratorName: "",
     phoneNumber: "",
-    gender: "",
+    gender: "Male",
     password: "",
     state: "",
     lga: "",
     ward: "",
     settlement: [],
+    healthfacility: [],
+    healthfacilityOthers: "",
   });
 
   const [errors, setErrors] = useState({
@@ -46,6 +62,30 @@ const CreateEnumeratorAccount = () => {
     setFormData({ ...formData, [name]: value });
     // Clear the error for the field being updated
     setErrors({ ...errors, [name]: "" });
+  };
+  const handlehfAddIcon = () => {
+    setFormData((prev) => ({
+      ...prev,
+      healthfacility: [...prev.healthfacility, formData.healthfacilityOthers],
+      healthfacilityOthers: "",
+    }));
+    setShowHealthFacilityOthers(false);
+  };
+  const handleHealthFacilityOthers = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const value = e.target.value.trim();
+      if (value) {
+        setFormData((prev) => ({
+          ...prev,
+          healthfacility: [...prev.healthfacility, value],
+          healthfacilityOthers: "",
+        }));
+        setShowHealthFacilityOthers(false);
+      } else {
+        showError("Health Facility name cannot be empty");
+      }
+    }
   };
 
   const validateForm = () => {
@@ -106,6 +146,7 @@ const CreateEnumeratorAccount = () => {
       ward: formData.ward,
       settlement: formData.settlement,
       password: formData.password,
+      healthfacility: formData.healthfacility,
     };
     setLoading(true);
     try {
@@ -115,25 +156,27 @@ const CreateEnumeratorAccount = () => {
         setFormData({
           enumeratorName: "",
           phoneNumber: "",
-          gender: "",
+          gender: "Male",
           password: "",
           state: "",
           lga: "",
           ward: "",
-          settlement: [""],
+          settlement: [],
         });
       }
     } catch (error) {
-      showError(error?.response?.data || "An error occurred");
+      console.log(error?.response.data);
+      showError(error?.response?.data.message || "An error occurred");
     } finally {
       setLoading(false);
+      setShowHealthFacilityOthers(false);
     }
   };
   const { states } = useGetAllStates();
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      state: states.result[0],
+      state: states?.result[0],
     }));
   }, [states]);
 
@@ -168,13 +211,20 @@ const CreateEnumeratorAccount = () => {
     enabled: !!formData.ward,
   });
 
+  const { healthFacilities } = useGetAllHealthFacilities({
+    state: formData.state,
+    lga: formData.lga,
+    ward: "",
+    enabled: !!formData.lga,
+  });
+
   return (
     <div>
       <ToastBox />
       <form onSubmit={handleSubmit} className="mt-12">
         <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-4 mt-4">
           {/* Enumerator Name */}
-          <div className="flex flex-col min-w-[350px]">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Enumerator Name<span className="ml-2 text-red-500">*</span>
@@ -196,7 +246,7 @@ const CreateEnumeratorAccount = () => {
           </div>
 
           {/* Phone Number */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Phone Number<span className="ml-2 text-red-500">*</span>
@@ -218,7 +268,7 @@ const CreateEnumeratorAccount = () => {
           </div>
 
           {/* Gender */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Gender<span className="ml-2 text-red-500">*</span>
@@ -235,13 +285,13 @@ const CreateEnumeratorAccount = () => {
               value={formData.gender}
               className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
             >
-              <option>Male</option>
-              <option>Female</option>
+              <option value={"Male"}>Male</option>
+              <option value={"Female"}>Female</option>
             </select>
           </div>
 
           {/* Password */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Password<span className="ml-2 text-red-500">*</span>
@@ -252,18 +302,31 @@ const CreateEnumeratorAccount = () => {
                 </span>
               )}
             </div>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="p-[16px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C8]"
-              placeholder="Enter Password"
-            />
+            <div className="flex gap-3 p-4 justify-between rounded-[8px] border border-[#C6C7C8]">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className=" text-secondary30 bg-transparent outline-none "
+                placeholder="Enter Password"
+              />
+              {showPassword ? (
+                <IoMdEye
+                  onClick={togglePasswordVisibility}
+                  className="text-xl cursor-pointer"
+                />
+              ) : (
+                <IoMdEyeOff
+                  onClick={togglePasswordVisibility}
+                  className="text-xl cursor-pointer"
+                />
+              )}
+            </div>
           </div>
 
           {/* State */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 State<span className="ml-2 text-red-500">*</span>
@@ -290,7 +353,7 @@ const CreateEnumeratorAccount = () => {
           </div>
 
           {/* LGA */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 LGA<span className="ml-2 text-red-500">*</span>
@@ -316,7 +379,7 @@ const CreateEnumeratorAccount = () => {
           </div>
 
           {/* Ward */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Ward<span className="ml-2 text-red-500">*</span>
@@ -342,7 +405,7 @@ const CreateEnumeratorAccount = () => {
           </div>
 
           {/* Settlement */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-[350px]">
             <div className="flex gap-3 items-center">
               <label className="text-[16px] font-[500] text-dark90">
                 Settlement<span className="ml-2 text-red-500">*</span>
@@ -384,7 +447,7 @@ const CreateEnumeratorAccount = () => {
                 </option>
               ))}
             </select>
-            <div className="grid grid-cols-3 gap-3 mt-3">
+            <div className="grid grid-cols-2 gap-3 mt-3">
               {formData.settlement?.map((settlement, idx) => (
                 <div
                   key={idx}
@@ -408,8 +471,98 @@ const CreateEnumeratorAccount = () => {
               ))}
             </div>
           </div>
-        </div>
 
+          {/* Health Facility */}
+          <div className="flex flex-col w-[350px]">
+            <div className="flex gap-3 items-center">
+              <label className="text-[16px] font-[500] text-dark90">
+                Health Facility<span className="ml-2 text-red-500">*</span>
+              </label>
+              {errors.healthfacility && (
+                <span className="text-[12px] font-[500] italic text-red-500">
+                  {errors.healthfacility}
+                </span>
+              )}
+            </div>
+            <select
+              name="healthfacility"
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === "Others") {
+                  setShowHealthFacilityOthers(true);
+
+                  return;
+                }
+                setFormData((prev) => {
+                  const alreadySelected = prev.settlement.includes(value);
+
+                  return {
+                    ...prev,
+                    healthfacility: alreadySelected
+                      ? prev.healthfacility.filter((item) => item !== value)
+                      : [...prev.healthfacility, value],
+                  };
+                });
+              }}
+              value={""}
+              className="p-[16px] myselect min-w-[150px] text-secondary30 bg-transparent outline-none rounded-[8px] border border-[#C6C7C880]"
+            >
+              <option value={""}>Choose Health Facility</option>
+              {healthFacilities?.result.map((item, idx) => (
+                <option key={idx} data-state={""} data-lga={""} value={item}>
+                  {item}
+                </option>
+              ))}
+              <option value="Others">Others</option>
+            </select>
+            <div className="grid grid-cols-2 gap-3 mt-3">
+              {formData.healthfacility?.map((hf, idx) => (
+                <div
+                  key={idx}
+                  className="bg-primary10 flex-1 flex items-center gap-3 rounded-lg p-2 text-sm text-primary90 cursor-pointer"
+                >
+                  {hf}
+                  <IoMdCloseCircle
+                    onClick={() => {
+                      setFormData({
+                        ...formData,
+                        healthfacility: formData.healthfacility.filter(
+                          (item) => item !== hf
+                        ),
+                      });
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Health Facility Others */}
+          {showHealthFacilityOthers && (
+            <div className="flex flex-col w-[350px]">
+              <div className="flex gap-3 items-center">
+                <label className="text-[16px] font-[500] text-dark90">
+                  Health Facility Others
+                </label>
+              </div>
+              <div className="flex gap-3 items-center justify-between p-4 rounded-[8px] border border-[#C6C7C8]">
+                <input
+                  type="text"
+                  name="healthfacilityOthers"
+                  value={formData.healthfacilityOthers || ""}
+                  onChange={handleChange}
+                  onKeyDown={handleHealthFacilityOthers}
+                  className="text-secondary30 bg-transparent outline-none "
+                  placeholder="Enter Health Facility Name"
+                />
+                <IoMdAddCircleOutline
+                  onClick={handlehfAddIcon}
+                  className="text-primary90 text-lg cursor-pointer"
+                />
+              </div>
+            </div>
+          )}
+        </div>
         {/* Submit Button */}
         <div className="flex items-center justify-center mt-8 w-full">
           <button
@@ -421,6 +574,12 @@ const CreateEnumeratorAccount = () => {
           >
             {loading ? "Creating..." : "Create"}
           </button>
+        </div>
+        <div className="text-center mt-4">
+          <p className="text-[14px] text-secondary30">
+            Note: All fields marked with an asterisk (
+            <span className="text-red-500">*</span>) are required.
+          </p>
         </div>
       </form>
       <ToastContainer />

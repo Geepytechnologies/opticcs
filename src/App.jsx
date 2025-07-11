@@ -36,6 +36,8 @@ import NationalLoginRecovery from "./screens/national/pages/NationalLoginRecover
 import NationalRecoveryConfirm from "./screens/national/pages/NationalRecoveryConfirm";
 import NationalResetPassword from "./screens/national/pages/NationalResetPassword";
 import DeletingAnAccount from "./components/DeletingAnAccount";
+import MamiiApp from "./screens/mamii/MamiiApp";
+import MamiiLogin from "./screens/mamii/pages/MamiiLogin";
 
 function App() {
   const { auth } = useAuth();
@@ -87,6 +89,8 @@ function App() {
             <Route path="/lga/*" element={<LgaApp />}></Route>
           </Route>
         </Route>
+        <Route path="/lga/login" element={<LgaLogin />}></Route>
+        {/* healthFacility */}
         <Route element={<PersistHealthfacilityLogin />}>
           <Route element={<RequireHealthfacilityAuth />}>
             <Route
@@ -96,11 +100,18 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="/lga/login" element={<LgaLogin />}></Route>
         <Route
           path="/healthfacility/login"
           element={<HealthfacilityLogin />}
         ></Route>
+        {/* mamii */}
+        {/* <Route element={<PersistHealthfacilityLogin />}> */}
+        {/* <Route element={<RequireHealthfacilityAuth />}> */}
+        <Route path="/mamii/*" element={<MamiiApp />}></Route>
+        {/* </Route> */}
+        {/* </Route> */}
+
+        <Route path="/mamii/login" element={<MamiiLogin />}></Route>
       </Routes>
     </BrowserRouter>
   );

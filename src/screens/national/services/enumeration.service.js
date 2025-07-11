@@ -104,6 +104,18 @@ class EnumerationService {
       throw new Error();
     }
   };
+
+  getIevHealthFacilities = async (state, lga, ward) => {
+    try {
+      const res = await axiosInstance.get(
+        `https://echis.up.railway.app/api/National/healthfacilities?state=${state}&lga=${lga}&ward=${ward}&all=${true}`
+      );
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error();
+    }
+  };
 }
 
 export default new EnumerationService();
